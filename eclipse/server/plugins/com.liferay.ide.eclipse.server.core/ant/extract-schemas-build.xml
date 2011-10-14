@@ -12,12 +12,12 @@
           target: copy-schema-files                      
          - - - - - - - - - - - - - - - - - -->
     <target name="copy-schema-files">
-    	<copy todir="${basedir}/../dtd">
+    	<copy todir="${basedir}/../dtd" overwrite="true">
 			<fileset dir="${portal.src}/definitions">
 				<include name="*.dtd"/>
 			</fileset>
 		</copy>
-    	<copy todir="${basedir}/../xsd">
+    	<copy todir="${basedir}/../xsd" overwrite="true">
 			<fileset dir="${portal.src}/definitions">
 				<include name="*.xsd"/>
 			</fileset>

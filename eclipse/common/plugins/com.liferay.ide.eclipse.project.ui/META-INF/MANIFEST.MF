@@ -30,7 +30,10 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jface.text,
  org.eclipse.ui.browser,
  org.eclipse.ant.ui,
- org.eclipse.jdt.ui;bundle-version="3.6.0"
+ org.eclipse.jdt.ui;bundle-version="3.6.0",
+ org.eclipse.equinox.p2.discovery;bundle-version="1.0.100",
+ org.eclipse.equinox.p2.discovery.compatibility;bundle-version="1.0.1",
+ org.eclipse.equinox.p2.ui.discovery;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Export-Package: com.liferay.ide.eclipse.project.ui,

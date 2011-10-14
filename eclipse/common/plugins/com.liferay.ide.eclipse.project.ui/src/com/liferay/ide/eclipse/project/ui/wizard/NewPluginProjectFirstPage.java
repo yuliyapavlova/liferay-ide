@@ -23,10 +23,18 @@ import com.liferay.ide.eclipse.sdk.SDKManager;
 import com.liferay.ide.eclipse.sdk.pref.SDKsPreferencePage;
 import com.liferay.ide.eclipse.ui.util.SWTUtil;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.equinox.internal.p2.discovery.DiscoveryCore;
+import org.eclipse.equinox.internal.p2.discovery.model.CatalogCategory;
+import org.eclipse.equinox.internal.p2.discovery.model.CatalogItem;
+import org.eclipse.equinox.internal.p2.discovery.model.Tag;
+import org.eclipse.equinox.internal.p2.ui.discovery.wizards.CatalogFilter;
+import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -44,8 +52,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+import org.eclipse.ui.part.PageBook;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelEvent;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelListener;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
 import org.eclipse.wst.common.project.facet.ui.internal.FacetsSelectionDialog;
 import org.eclipse.wst.server.ui.ServerUIUtil;
@@ -69,6 +80,10 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 	protected boolean shouldValidatePage = true;
 
 	protected Button themeType;
+
+	protected Button liferayDefaultTemplate;
+
+	protected Button marketplaceTemplate;
 
 	public NewPluginProjectFirstPage(NewPluginProjectWizard wizard, IDataModel model, String pageName) {
 		super(model, pageName);
@@ -247,7 +262,185 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 		SWTUtil.createLabel(group, "", 1);
 	}
 
-	protected void createPluginTypeGroup(Composite parent) {
+	protected void createProjectTemplateGroup( Composite parent ) {
+		Group group = SWTUtil.createGroup( parent, "Project Template", 2 );
+		group.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 2, 1 ) );
+
+		liferayDefaultTemplate =
+			SWTUtil.createRadioButton(
+				group, "Liferay SDK Default", getPluginImageDescriptor( "/icons/e16/liferay-cube.png" ).createImage(),
+				false, 1 );
+		Label l = SWTUtil.createLabel( group, SWT.WRAP, "The default template type that comes with Plugins SDK.", 1 );
+		l.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 1 ) );
+		this.synchHelper.synchCheckbox( liferayDefaultTemplate, TEMPLATE_TYPE_SDK_DEFAULT, null );
+
+		marketplaceTemplate =
+			SWTUtil.createRadioButton(
+				group, "Liferay Marketplace", getPluginImageDescriptor( "/icons/e16/marketplace.gif" ).createImage(),
+				false, 1 );
+		l =
+			SWTUtil.createLabel(
+				group, SWT.WRAP, "Existing Liferay Markplace application will be template for new project.", 1 );
+		l.setLayoutData( new GridData( SWT.FILL, SWT.CENTER, true, false, 1, 1 ) );
+		this.synchHelper.synchCheckbox( marketplaceTemplate, TEMPLATE_TYPE_MARKETPLACE, null );
+
+
+	}
+
+	protected void createProjectTemplateOptionsGroup( Composite parent ) {
+
+		final PageBook pageBook = new PageBook( parent, SWT.NONE );
+		GridDataFactory.fillDefaults().grab( true, false ).applyTo( pageBook );
+
+		final Group pluginTypeGroup = createPluginTypeGroup( pageBook );
+
+		final Composite marketplaceGroup = createMarketplaceGroup( pageBook );
+
+		pageBook.showPage( pluginTypeGroup );
+
+		this.synchHelper.getDataModel().addListener( new IDataModelListener() {
+
+			public void propertyChanged( DataModelEvent event ) {
+				IDataModel dm = event.getDataModel();
+
+				if ( event.getPropertyName().equals( TEMPLATE_TYPE_MARKETPLACE ) ) {
+					if ( dm.getBooleanProperty( TEMPLATE_TYPE_MARKETPLACE ) ) {
+						pageBook.showPage( marketplaceGroup );
+					}
+					else {
+						pageBook.showPage( pluginTypeGroup );
+					}
+
+				}
+			}
+		} );
+	}
+
+	protected Composite createMarketplaceGroup( Composite parent ) {
+		Group group = SWTUtil.createGroup( parent, "Liferay Marketplace Template", 2 );
+		group.setLayoutData( new GridData( SWT.FILL, SWT.LEFT, true, true, 2, 1 ) );
+
+		Link chooseLink = SWTUtil.createLink( group, SWT.NONE, "<a>Choose template from marketplace...</a>", 2 );
+
+		final Label imageLabel = SWTUtil.createLabel( group, "", 1 );
+		GridDataFactory.fillDefaults().grab( false, false ).span( 1, 2 ).hint( 90, 90 ).applyTo( imageLabel );
+		// imageLabel.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLUE ) );
+
+		final Label templateTitleLabel = SWTUtil.createLabel( group, "", 1 );
+		GridDataFactory.fillDefaults().grab( true, false ).applyTo( templateTitleLabel );
+
+		final Label wrapLabel = SWTUtil.createWrapLabel( group, "", 1, SWT.DEFAULT );
+		GridDataFactory.fillDefaults().grab( true, false ).applyTo( wrapLabel );
+
+		// selectedTemplateLabel.setVisible( false );
+		// templateTitleLabel.setVisible( false );
+		// imageLabel.setVisible( false );
+		// wrapLabel.setVisible( false );
+
+		chooseLink.addSelectionListener( new SelectionAdapter() {
+
+			public void widgetSelected( SelectionEvent e ) {
+				CatalogItem selectedItem = openMarketplaceWizard();
+				updatePageForItem( templateTitleLabel, imageLabel, wrapLabel, selectedItem );
+
+			}
+
+		} );
+
+		return group;
+	}
+
+	protected void updatePageForItem(
+		Label templateTitleLabel, Label imageLabel, Label wrapLabel, CatalogItem selectedItem ) {
+		templateTitleLabel.setText( selectedItem.getName() );
+		try {
+			imageLabel.setImage( ImageDescriptor.createFromURL( new URL( selectedItem.getIcon().getImage32() ) ).createImage() );
+			imageLabel.setSize( 90, 90 );
+			wrapLabel.setText( selectedItem.getDescription() );
+
+			String category = selectedItem.getCategoryId();
+			if ( category.equals( "portlet" ) ) {
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_PORTLET, true );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_HOOK, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_EXT, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_LAYOUTTPL, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_THEME, false );
+			}
+			else if ( category.equals( "hook" ) ) {
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_PORTLET, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_HOOK, true );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_EXT, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_LAYOUTTPL, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_THEME, false );
+			}
+			else if ( category.equals( "theme" ) ) {
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_PORTLET, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_HOOK, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_EXT, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_LAYOUTTPL, false );
+				getDataModel().setBooleanProperty( PLUGIN_TYPE_THEME, true );
+			}
+			
+			App app = (App) selectedItem.getData();
+			getDataModel().setProperty( TEMPLATE_FILE_PATH, app.getFilePath() );
+		}
+		catch ( MalformedURLException e1 ) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+	}
+
+	protected CatalogItem openMarketplaceWizard() {
+		final LRMarketplaceCatalog catalog = new LRMarketplaceCatalog();
+		catalog.setEnvironment( DiscoveryCore.createEnvironment() );
+
+		LRMarketplaceCatalogConfiguration configuration = new LRMarketplaceCatalogConfiguration();
+		configuration.setVerifyUpdateSiteAvailability( false );
+		configuration.setShowCategories( true );
+		configuration.setShowInstalled( false );
+		configuration.setShowInstalledFilter( false );
+		configuration.setShowTagFilter( false );
+
+		final AppTypeFilter typefilter = new AppTypeFilter() {
+
+			@Override
+			public void catalogUpdated( boolean wasCancelled ) {
+				List<Tag> choices = new ArrayList<Tag>();
+				for ( CatalogCategory category : catalog.getCategories() ) {
+					if ( category instanceof LRMarketplaceCategory ) {
+						LRMarketplaceCategory marketplaceCategory = (LRMarketplaceCategory) category;
+						Tag categoryTag =
+							new Tag(
+								LRMarketplaceCategory.class, marketplaceCategory.getId(), marketplaceCategory.getName() );
+						categoryTag.setData( marketplaceCategory );
+						choices.add( categoryTag );
+					}
+				}
+				setChoices( choices );
+			}
+		};
+		typefilter.setSelectAllOnNoSelection( true );
+		typefilter.setNoSelectionLabel( "All types" );
+		typefilter.setTagClassification( Object.class );
+		typefilter.setChoices( new ArrayList<Tag>() );
+
+		configuration.getFilters().add( typefilter );
+
+		for ( CatalogFilter filter : configuration.getFilters() ) {
+			( (MarketplaceFilter) filter ).setCatalog( catalog );
+		}
+
+		LRMarketplaceWizard mpWizard = new LRMarketplaceWizard( catalog, configuration );
+		WizardDialog d = new WizardDialog( getShell(), mpWizard );
+		d.open();
+
+		CatalogItem item = mpWizard.getSelectedItem();
+		return item;
+	}
+
+	protected Group createPluginTypeGroup( Composite parent ) {
 		Group group = SWTUtil.createGroup(parent, "Plugin Type", 2);
 		group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
 
@@ -285,6 +478,8 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 		l = SWTUtil.createLabel(group, SWT.WRAP, "Build a custom look and feel for the portal.", 1);
 		l.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		this.synchHelper.synchCheckbox(themeType, PLUGIN_TYPE_THEME, null);
+
+		return group;
 	}
 
 	protected void createProjectGroup(Composite parent) {
@@ -410,7 +605,10 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 		// createServerTargetComposite(top);
 		// createPresetPanel(top);
 
-		createPluginTypeGroup(top);
+		createProjectTemplateGroup( top );
+
+		createProjectTemplateOptionsGroup( top );
+
 
 		createWorkingSetGroupPanel(top, new String[] {
 			RESOURCE_WORKING_SET, JAVA_WORKING_SET

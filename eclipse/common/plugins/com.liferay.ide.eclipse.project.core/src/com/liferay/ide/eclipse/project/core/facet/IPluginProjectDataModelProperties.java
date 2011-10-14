@@ -52,6 +52,14 @@ public interface IPluginProjectDataModelProperties
 	
 	public static final String PLUGIN_FRAGMENT_ENABLED = "IPluginProjectDataModelProperties.PLUGIN_FRAGMENT_ENABLED";
 
+	public static final String TEMPLATE_TYPE_SDK_DEFAULT =
+		"IPluginProjectDataModelProperties.TEMPLATE_TYPE_SDK_DEFAULT";
+
+	public static final String TEMPLATE_TYPE_MARKETPLACE =
+		"IPluginProjectDataModelProperties.TEMPLATE_TYPE_MARKETPLACE";
+
+	public static final String TEMPLATE_FILE_PATH = "IPluginProjectDataModelProperties.TEMPLATE_FILE_PATH";
+
 	public static final String PLUGIN_TYPE_EXT = "IPluginProjectDataModelProperties.PLUGIN_TYPE_EXT";
 
 	public static final String PLUGIN_TYPE_HOOK = "IPluginProjectDataModelProperties.PLUGIN_TYPE_HOOK";

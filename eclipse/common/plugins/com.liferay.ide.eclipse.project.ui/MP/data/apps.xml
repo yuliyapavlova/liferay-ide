@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+
+<apps>
+
+	<app>
+		<title> 7 Cogs Hook	</title>
+		<subTitle> Liferay's sample site for a ficticious company.	</subTitle>
+		<description> The Seven Cogs App represents a sample site, installed
+			by default in Liferay installations. This component provides backend
+			functionality.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName> sevencogs-hook-6.0.6.1.war	</fileName>
+		<category>hook</category>
+		<iconFileName> 7COGS-HOOK.png	</iconFileName>
+		<screenShotFileName> 7 cogs hook.png	</screenShotFileName>
+		<userEmail> Ryan.Park@liferay.com	</userEmail>
+		<categoryName> Themes	</categoryName>
+		<subCategoryName> Simple	</subCategoryName>
+		<tags> 7cogs,hook,sample	</tags>
+		<featured> 1	</featured>
+		<new />
+	</app>
+
+	<app>
+		<title> 7 Cogs Mobile Theme	</title>
+		<subTitle> Liferay's sample site for a ficticious company.	</subTitle>
+		<description> The Seven Cogs App represents a sample site, installed
+			by default in Liferay installations. This component provides a mobile
+			version of the theme.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<category>theme</category>
+		<fileName> sevencogs-mobile-theme-6.0.6.1.war	</fileName>
+		<iconFileName> 7COGS-MOBILE.png	</iconFileName>
+		<screenShotFileName> 7 cogs mobile theme.png	</screenShotFileName>
+		<userEmail> Ryan.Park@liferay.com	</userEmail>
+		<categoryName> Themes	</categoryName>
+		<subCategoryName> Mobile	</subCategoryName>
+		<tags> 7cogs,theme,sample,mobile	</tags>
+		<featured> 1	</featured>
+		<new />
+	</app>
+
+	<app>
+		<title> 7 Cogs Theme	</title>
+		<subTitle> Liferay's sample site for a ficticious company.	</subTitle>
+		<description> The Seven Cogs App represents a sample site, installed
+			by default in Liferay installations. This component provides a
+			desktop theme suitable for large browser screens.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<category>theme</category>
+		<fileName> sevencogs-theme-6.0.6.1.war	</fileName>
+		<iconFileName> 7COGS-THEME2.png	</iconFileName>
+		<screenShotFileName> 7 cogs theme.png	</screenShotFileName>
+		<userEmail> Ryan.Park@liferay.com	</userEmail>
+		<categoryName> Themes	</categoryName>
+		<subCategoryName> Simple	</subCategoryName>
+		<tags> 7cogs,theme,sample,mobile	</tags>
+		<featured> 1	</featured>
+		<new />
+	</app>
+
+	<app>
+		<title> Chat	</title>
+		<subTitle> This app provides in-browser, realtime chat support,
+			including support for Jabber/XMPP.	</subTitle>
+		<description> This app provides in-browser, realtime chat support,
+			including support for Jabber/XMPP.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<category>portlet</category>
+		<fileName> chat-portlet-6.0.6.1.war	</fileName>
+		<iconFileName> CHAT.png	</iconFileName>
+		<screenShotFileName> chat1.jpg	</screenShotFileName>
+		<userEmail> Amos.Fong@liferay.com	</userEmail>
+		<categoryName> Apps	</categoryName>
+		<subCategoryName> Social	</subCategoryName>
+		<tags> chat,jabber,xmpp,im	</tags>
+		<featured> 1	</featured>
+		<new />
+	</app>
+
+
+
+	<app>
+		<title> Google Maps	</title>
+		<subTitle> Easily display dynamic maps on your site using Google Maps.
+		</subTitle>
+		<description> This app provides an integration with Google Maps.
+			Google Maps is a map service that you view in your web browser.
+			Depending on your location, you can view basic or custom maps and
+			local business information, including business locations, contact
+			information, and driving directions. Click and drag maps to view
+			adjacent sections immediately. View satellite images of your desired
+			location that you can zoom and pan.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> maps.google.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName> google-maps-portlet-6.0.6.1.war	</fileName>
+		<category>portlet</category>
+		<iconFileName> GOOGLE-MAPS.png	</iconFileName>
+		<screenShotFileName> Google Maps.png	</screenShotFileName>
+		<userEmail> Michael.Young@liferay.com	</userEmail>
+		<categoryName> Apps	</categoryName>
+		<subCategoryName> Utility	</subCategoryName>
+		<tags> google,maps,geocoding	</tags>
+		<featured> 1	</featured>
+		<new />
+	</app>
+
+	<app>
+		<title> OpenSocial	</title>
+		<subTitle> Integrates Google OpenSocial gadgets into Liferay.
+		</subTitle>
+		<description> This app provides an OpenSocial container based on
+			Apache Shindig, allowing OpenSocial Gadgets to be seemlessly
+			integrated into Liferay Portal. The OpenSocial API is fully
+			implemented, and hooks into Liferay's underlying social graph and
+			features. OpenSocial defines a common API for social applications
+			across multiple websites. With standard JavaScript and HTML,
+			developers can create apps that access a social network's friends and
+			update feeds.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website>
+			http://www.liferay.com/web/michael.young/blog/-/blogs/5043789
+		</website>
+		<demoWebsite> http://code.google.com/apis/opensocial/	</demoWebsite>
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName> opensocial-portlet-6.0.6.1.war	</fileName>
+		<category>portlet</category>
+		<iconFileName> OPENSOCIAL.png	</iconFileName>
+		<screenShotFileName> opensocial_screenshot.png	</screenShotFileName>
+		<userEmail> Michael.Young@liferay.com	</userEmail>
+		<categoryName> Apps	</categoryName>
+		<subCategoryName> Social	</subCategoryName>
+		<tags> opensocial,gadget,widget,javascript,css,html	</tags>
+		<featured />
+		<new> 1	</new>
+	</app>
+
+	
+
+	<app>
+		<title> Twitter	</title>
+		<subTitle> Twitter Integration	</subTitle>
+		<description> This app integrates Twitter feeds directly into the
+			Liferay Portal platform. Twitter is an online social networking and
+			microblogging service that enables its users to send and read
+			text-based posts of up to 140 characters, informally known as
+			"tweets", and images.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> twitter.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName> twitter-portlet-6.0.6.1.war	</fileName>
+		<iconFileName> TWITTER.png	</iconFileName>
+		<screenShotFileName> twitter_screenshot.png	</screenShotFileName>
+		<userEmail> Ryan.Park@liferay.com	</userEmail>
+		<category>portlet</category>
+		<categoryName> Apps	</categoryName>
+		<subCategoryName> Social	</subCategoryName>
+		<tags> twitter,microblogging,blog,tweet	</tags>
+		<featured />
+		<new> 1	</new>
+	</app>
+
+	<app>
+		<title> Web Form	</title>
+		<subTitle> Web Forms for Liferay	</subTitle>
+		<description> This app allows easy creation of online web forms which
+			can be submitted to maintainers of a Liferay-based site.
+		</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName> web-form-portlet-6.0.6.1.war	</fileName>
+		<category>portlet</category>
+		<iconFileName> WEB FORMS.png	</iconFileName>
+		<screenShotFileName> webform2.PNG	</screenShotFileName>
+		<userEmail> Julio.Camarero@liferay.com	</userEmail>
+		<categoryName> Apps	</categoryName>
+		<subCategoryName> Utility	</subCategoryName>
+		<tags> form,submit	</tags>
+		<featured />
+		<new> 1	</new>
+	</app>
+
+	<app>
+		<title> Modern Indigo Theme	</title>
+		<subTitle> A sleek, modern, corporate theme that has built in featured
+			sections.	</subTitle>
+		<description> A sleek, modern, corporate theme that has built in
+			featured sections.	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName />
+		<iconFileName> THEME.png	</iconFileName>
+		<category>theme</category>
+		<screenShotFileName> modern indigo theme.png	</screenShotFileName>
+		<userEmail> Bradley.Wood@liferay.com	</userEmail>
+		<categoryName> Themes	</categoryName>
+		<subCategoryName> Corporate	</subCategoryName>
+		<tags> blue, 1-3 columns, 2-2 columns	</tags>
+		<featured />
+		<new> 1	</new>
+	</app>
+
+	<app>
+		<title> Lithe Theme	</title>
+		<subTitle> Liferay's Lithe theme	</subTitle>
+		<description> Includes: Client Testimonial, Advanced Carousel, Social
+			Links, Advanced Footer	</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName />
+		<iconFileName> THEME.png	</iconFileName>
+		 <category>theme</category>
+		<screenShotFileName> Lithe_Theme.jpg	</screenShotFileName>
+		<userEmail> Bradley.Wood@liferay.com	</userEmail>
+		<categoryName> Themes	</categoryName>
+		<subCategoryName> Corporate	</subCategoryName>
+		<tags> Search, Client Testimonial, Advanced Carousel, Social Links,
+			Advanced Footer	</tags>
+		<featured />
+		<new> 1	</new>
+	</app>
+
+	<app>
+		<title> Paradise Theme	</title>
+		<subTitle> Perfect Theme to feature a hotel or resort getaway.
+		</subTitle>
+		<description> Perfect Theme to feature a hotel or resort getaway site.
+		</description>
+		<supportedBy> Liferay, Inc.	</supportedBy>
+		<website> liferay.com	</website>
+		<demoWebsite />
+		<version> 1.0.1	</version>
+		<category>theme</category>
+		<changeLog> Adapted for the latest version of Liferay.	</changeLog>
+		<fileName />
+		<iconFileName> THEME.png	</iconFileName>
+		<screenShotFileName> paradise-theme.jpg	</screenShotFileName>
+		<userEmail> Bradley.Wood@liferay.com	</userEmail>
+		<categoryName> Themes	</categoryName>
+		<subCategoryName> Hotel and Resort	</subCategoryName>
+		<tags> hotel, resort, 3-3-3 Columns, Search	</tags>
+		<featured />
+		<new> 1	</new>
+	</app>
+</apps>

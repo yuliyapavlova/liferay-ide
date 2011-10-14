@@ -90,6 +90,9 @@ public class PluginFacetProjectCreationDataModelProvider extends WebFacetProject
 		else if (LIFERAY_USE_CUSTOM_LOCATION.equals(propertyName)) {
 			return false;
 		}
+		else if ( TEMPLATE_TYPE_SDK_DEFAULT.equals( propertyName ) ) {
+			return true;
+		}
 		else if (PLUGIN_TYPE_PORTLET.equals(propertyName)) {
 			return true;
 		}
@@ -145,6 +148,8 @@ public class PluginFacetProjectCreationDataModelProvider extends WebFacetProject
 		propNames.add(LIFERAY_SDK_NAME);
 		propNames.add(LIFERAY_USE_SDK_LOCATION);
 		propNames.add(LIFERAY_USE_CUSTOM_LOCATION);
+		propNames.add( TEMPLATE_TYPE_SDK_DEFAULT );
+		propNames.add( TEMPLATE_TYPE_MARKETPLACE );
 		propNames.add(PLUGIN_TYPE_PORTLET);
 		propNames.add(PLUGIN_TYPE_HOOK);
 		propNames.add(PLUGIN_TYPE_EXT);
