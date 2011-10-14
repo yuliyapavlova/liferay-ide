@@ -5,9 +5,7 @@
 	<app>
 		<title> 7 Cogs Hook	</title>
 		<subTitle> Liferay's sample site for a ficticious company.	</subTitle>
-		<description> The Seven Cogs App represents a sample site, installed
-			by default in Liferay installations. This component provides backend
-			functionality.	</description>
+		<description> The Seven Cogs App represents a sample site, installed by default in Liferay installations. This component provides backend functionality.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -28,9 +26,7 @@
 	<app>
 		<title> 7 Cogs Mobile Theme	</title>
 		<subTitle> Liferay's sample site for a ficticious company.	</subTitle>
-		<description> The Seven Cogs App represents a sample site, installed
-			by default in Liferay installations. This component provides a mobile
-			version of the theme.	</description>
+		<description> The Seven Cogs App represents a sample site, installed by default in Liferay installations. This component provides a mobile version of the theme.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -51,9 +47,7 @@
 	<app>
 		<title> 7 Cogs Theme	</title>
 		<subTitle> Liferay's sample site for a ficticious company.	</subTitle>
-		<description> The Seven Cogs App represents a sample site, installed
-			by default in Liferay installations. This component provides a
-			desktop theme suitable for large browser screens.	</description>
+		<description> The Seven Cogs App represents a sample site, installed by default in Liferay installations. This component provides a desktop theme suitable for large browser screens.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -73,10 +67,8 @@
 
 	<app>
 		<title> Chat	</title>
-		<subTitle> This app provides in-browser, realtime chat support,
-			including support for Jabber/XMPP.	</subTitle>
-		<description> This app provides in-browser, realtime chat support,
-			including support for Jabber/XMPP.	</description>
+		<subTitle> This app provides in-browser, realtime chat support, including support for Jabber/XMPP.	</subTitle>
+		<description> This app provides in-browser, realtime chat support, including support for Jabber/XMPP.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -100,13 +92,7 @@
 		<title> Google Maps	</title>
 		<subTitle> Easily display dynamic maps on your site using Google Maps.
 		</subTitle>
-		<description> This app provides an integration with Google Maps.
-			Google Maps is a map service that you view in your web browser.
-			Depending on your location, you can view basic or custom maps and
-			local business information, including business locations, contact
-			information, and driving directions. Click and drag maps to view
-			adjacent sections immediately. View satellite images of your desired
-			location that you can zoom and pan.	</description>
+		<description> This app provides an integration with Google Maps. Google Maps is a map service that you view in your web browser. Depending on your location, you can view basic or custom maps and local business information, including business locations, contact information, and driving directions. Click and drag maps to view adjacent sections immediately. View satellite images of your desired location that you can zoom and pan.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> maps.google.com	</website>
 		<demoWebsite />
@@ -128,14 +114,7 @@
 		<title> OpenSocial	</title>
 		<subTitle> Integrates Google OpenSocial gadgets into Liferay.
 		</subTitle>
-		<description> This app provides an OpenSocial container based on
-			Apache Shindig, allowing OpenSocial Gadgets to be seemlessly
-			integrated into Liferay Portal. The OpenSocial API is fully
-			implemented, and hooks into Liferay's underlying social graph and
-			features. OpenSocial defines a common API for social applications
-			across multiple websites. With standard JavaScript and HTML,
-			developers can create apps that access a social network's friends and
-			update feeds.	</description>
+		<description> This app provides an OpenSocial container based on Apache Shindig, allowing OpenSocial Gadgets to be seemlessly integrated into Liferay Portal. The OpenSocial API is fully implemented, and hooks into Liferay's underlying social graph and features. OpenSocial defines a common API for social applications across multiple websites. With standard JavaScript and HTML, developers can create apps that access a social network's friends and update feeds.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website>
 			http://www.liferay.com/web/michael.young/blog/-/blogs/5043789
@@ -160,11 +139,7 @@
 	<app>
 		<title> Twitter	</title>
 		<subTitle> Twitter Integration	</subTitle>
-		<description> This app integrates Twitter feeds directly into the
-			Liferay Portal platform. Twitter is an online social networking and
-			microblogging service that enables its users to send and read
-			text-based posts of up to 140 characters, informally known as
-			"tweets", and images.	</description>
+		<description> This app integrates Twitter feeds directly into the Liferay Portal platform. Twitter is an online social networking and microblogging service that enables its users to send and read text-based posts of up to 140 characters, informally known as "tweets", and images.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> twitter.com	</website>
 		<demoWebsite />
@@ -185,9 +160,7 @@
 	<app>
 		<title> Web Form	</title>
 		<subTitle> Web Forms for Liferay	</subTitle>
-		<description> This app allows easy creation of online web forms which
-			can be submitted to maintainers of a Liferay-based site.
-		</description>
+		<description> This app allows easy creation of online web forms which can be submitted to maintainers of a Liferay-based site. </description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -207,10 +180,8 @@
 
 	<app>
 		<title> Modern Indigo Theme	</title>
-		<subTitle> A sleek, modern, corporate theme that has built in featured
-			sections.	</subTitle>
-		<description> A sleek, modern, corporate theme that has built in
-			featured sections.	</description>
+		<subTitle> A sleek, modern, corporate theme that has built in featured sections.	</subTitle>
+		<description> A sleek, modern, corporate theme that has built in featured sections.	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -231,8 +202,7 @@
 	<app>
 		<title> Lithe Theme	</title>
 		<subTitle> Liferay's Lithe theme	</subTitle>
-		<description> Includes: Client Testimonial, Advanced Carousel, Social
-			Links, Advanced Footer	</description>
+		<description> Includes: Client Testimonial, Advanced Carousel, Social Links, Advanced Footer	</description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />
@@ -253,10 +223,8 @@
 
 	<app>
 		<title> Paradise Theme	</title>
-		<subTitle> Perfect Theme to feature a hotel or resort getaway.
-		</subTitle>
-		<description> Perfect Theme to feature a hotel or resort getaway site.
-		</description>
+		<subTitle> Perfect Theme to feature a hotel or resort getaway. </subTitle>
+		<description> Perfect Theme to feature a hotel or resort getaway site. </description>
 		<supportedBy> Liferay, Inc.	</supportedBy>
 		<website> liferay.com	</website>
 		<demoWebsite />

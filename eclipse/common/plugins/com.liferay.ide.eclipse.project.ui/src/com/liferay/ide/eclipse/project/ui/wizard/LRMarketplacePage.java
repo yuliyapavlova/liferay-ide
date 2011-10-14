@@ -16,8 +16,8 @@ public class LRMarketplacePage extends CatalogPage {
 	public LRMarketplacePage( LRMarketplaceCatalog catalog, LRMarketplaceCatalogConfiguration configuration ) {
 		super( catalog );
 		this.configuration = configuration;
-		setDescription( "select template" );
-		setTitle( "Liferay marketplace" );
+		setDescription( "Select project template from an existing Liferay Marketplace application." );
+		setTitle( "Liferay Marketplace Templates" );
 	}
 
 	@Override

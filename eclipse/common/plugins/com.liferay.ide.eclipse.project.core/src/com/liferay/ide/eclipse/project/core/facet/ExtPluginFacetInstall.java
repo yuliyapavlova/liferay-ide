@@ -55,10 +55,8 @@ import org.w3c.dom.Element;
 public class ExtPluginFacetInstall extends PluginFacetInstall {
 
 	@Override
-	public void execute( IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor )
+	public void install( IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor )
 		throws CoreException {
-
-		super.execute( project, fv, config, monitor );
 
 		IDataModel model = (IDataModel) config;
 		IDataModel masterModel = (IDataModel) model.getProperty( FacetInstallDataModelProvider.MASTER_PROJECT_DM );

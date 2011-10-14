@@ -150,6 +150,7 @@ public class PluginFacetProjectCreationDataModelProvider extends WebFacetProject
 		propNames.add(LIFERAY_USE_CUSTOM_LOCATION);
 		propNames.add( TEMPLATE_TYPE_SDK_DEFAULT );
 		propNames.add( TEMPLATE_TYPE_MARKETPLACE );
+		propNames.add( TEMPLATE_FILE_PATH );
 		propNames.add(PLUGIN_TYPE_PORTLET);
 		propNames.add(PLUGIN_TYPE_HOOK);
 		propNames.add(PLUGIN_TYPE_EXT);

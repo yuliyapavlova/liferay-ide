@@ -323,7 +323,7 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 		Link chooseLink = SWTUtil.createLink( group, SWT.NONE, "<a>Choose template from marketplace...</a>", 2 );
 
 		final Label imageLabel = SWTUtil.createLabel( group, "", 1 );
-		GridDataFactory.fillDefaults().grab( false, false ).span( 1, 2 ).hint( 90, 90 ).applyTo( imageLabel );
+		GridDataFactory.fillDefaults().grab( false, false ).span( 1, 2 ).hint( 60, 60 ).applyTo( imageLabel );
 		// imageLabel.setBackground( parent.getDisplay().getSystemColor( SWT.COLOR_BLUE ) );
 
 		final Label templateTitleLabel = SWTUtil.createLabel( group, "", 1 );
@@ -355,7 +355,7 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 		templateTitleLabel.setText( selectedItem.getName() );
 		try {
 			imageLabel.setImage( ImageDescriptor.createFromURL( new URL( selectedItem.getIcon().getImage32() ) ).createImage() );
-			imageLabel.setSize( 90, 90 );
+			imageLabel.setSize( 60, 60 );
 			wrapLabel.setText( selectedItem.getDescription() );
 
 			String category = selectedItem.getCategoryId();
@@ -424,7 +424,12 @@ public class NewPluginProjectFirstPage extends WebProjectFirstPage implements IP
 		typefilter.setSelectAllOnNoSelection( true );
 		typefilter.setNoSelectionLabel( "All types" );
 		typefilter.setTagClassification( Object.class );
-		typefilter.setChoices( new ArrayList<Tag>() );
+		ArrayList<Tag> tags = new ArrayList<Tag>();
+		tags.add( new Tag( "", "Portlets" ) );
+		tags.add( new Tag( "", "Hooks" ) );
+		tags.add( new Tag( "", "Themes" ) );
+		tags.add( new Tag( "", "Layout Templates" ) );
+		typefilter.setChoices( tags );
 
 		configuration.getFilters().add( typefilter );
 

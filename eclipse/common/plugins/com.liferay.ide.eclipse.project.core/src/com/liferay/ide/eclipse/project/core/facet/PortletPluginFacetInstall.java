@@ -51,10 +51,8 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 public class PortletPluginFacetInstall extends PluginFacetInstall {
 
 	@Override
-	public void execute( IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor )
+	public void install( IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor )
 		throws CoreException {
-
-		super.execute( project, fv, config, monitor );
 
 		IDataModel model = (IDataModel) config;
 

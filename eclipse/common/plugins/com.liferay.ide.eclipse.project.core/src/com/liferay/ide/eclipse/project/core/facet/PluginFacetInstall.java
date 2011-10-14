@@ -17,11 +17,13 @@ package com.liferay.ide.eclipse.project.core.facet;
 
 import com.liferay.ide.eclipse.core.util.CoreUtil;
 import com.liferay.ide.eclipse.core.util.FileListing;
+import com.liferay.ide.eclipse.core.util.ZipUtil;
 import com.liferay.ide.eclipse.project.core.ProjectCorePlugin;
 import com.liferay.ide.eclipse.project.core.util.WebXMLDescriptorHelper;
 import com.liferay.ide.eclipse.sdk.ISDKConstants;
 import com.liferay.ide.eclipse.sdk.SDK;
 import com.liferay.ide.eclipse.sdk.SDKManager;
+import com.liferay.ide.eclipse.sdk.SDKPlugin;
 import com.liferay.ide.eclipse.server.core.ILiferayRuntime;
 import com.liferay.ide.eclipse.server.util.ServerUtil;
 
@@ -29,6 +31,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 
 import org.eclipse.core.resources.IFile;
@@ -69,7 +73,7 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntime;
  * @author Greg Amerson
  */
 @SuppressWarnings("restriction")
-public class PluginFacetInstall implements IDelegate, IPluginProjectDataModelProperties {
+public abstract class PluginFacetInstall implements IDelegate, IPluginProjectDataModelProperties {
 
 	/**
 	 * copied from ProjectFacetPreferencesGroup
@@ -130,7 +134,34 @@ public class PluginFacetInstall implements IDelegate, IPluginProjectDataModelPro
 		// (masterModel.getBooleanProperty(PLUGIN_TYPE_LAYOUT_TEMPLATE)) {
 		// installLayoutTplTemplate();
 		// }
+
+		install( project, fv, config, monitor );
+
+		// check to see if we have template to install
+		if ( this.masterModel.getBooleanProperty( TEMPLATE_TYPE_MARKETPLACE ) ) {
+			String templateFilePath = this.masterModel.getStringProperty( TEMPLATE_FILE_PATH );
+
+			IPath templateFileContents =
+				SDKPlugin.getDefault().getStateLocation().append( "template" ).append(
+					String.valueOf( System.currentTimeMillis() ) ).append( "docroot" );
+			templateFileContents.toFile().mkdirs();
+
+			try {
+				ZipUtil.unzip(
+					new File( URLDecoder.decode( new URL( templateFilePath ).getFile() ) ),
+					templateFileContents.toFile() );
+				processNewFiles( templateFileContents.removeLastSegments( 1 ), false );
+			}
+			catch ( IOException e ) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 	}
+
+	protected abstract void install( IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor )
+		throws CoreException;
 
 	protected void configWebXML() {
 		WebXMLDescriptorHelper webXmlHelper = new WebXMLDescriptorHelper(this.project);
