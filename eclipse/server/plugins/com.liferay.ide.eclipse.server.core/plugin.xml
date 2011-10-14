@@ -690,6 +690,15 @@
                uri="platform:/plugin/com.liferay.ide.eclipse.server.core/dtd/liferay-skin_2_0_0.dtd">
          </system>
          <public
+               publicId="-//Liferay//DTD Social 6.1.0//EN"
+               uri="platform:/plugin/com.liferay.ide.eclipse.server.core/dtd/liferay-social_6_1_0.dtd"
+               webURL="http://www.liferay.com/dtd/liferay-social_6_1_0.dtd">
+         </public>
+         <system
+               systemId="http://www.liferay.com/dtd/liferay-social_6_1_0.dtd"
+               uri="platform:/plugin/com.liferay.ide.eclipse.server.core/dtd/liferay-social_6_1_0.dtd">
+         </system>
+         <public
                publicId="-//Liferay//DTD Theme Loader 4.3.0//EN"
                uri="platform:/plugin/com.liferay.ide.eclipse.server.core/dtd/liferay-theme-loader_4_3_0.dtd"
                webURL="http://www.liferay.com/dtd/liferay-theme-loader_4_3_0.dtd">
