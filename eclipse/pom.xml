@@ -57,6 +57,7 @@
     <orbit-site>http://download.eclipse.org/tools/orbit/downloads/drops/R20110523182458/repository</orbit-site>
 <!--    <sapphire-site>http://download.eclipse.org/sapphire/0.3.1/repository</sapphire-site>-->
     <sapphire-site>https://hudson.eclipse.org/hudson/job/sapphire-0.4.x/lastSuccessfulBuild/artifact/build/repository</sapphire-site>
+    <equinox-sdk>file:///home/greg/Downloads/equinox-SDK-3.7.1/</equinox-sdk>
     <graphiti-site>http://download.eclipse.org/graphiti/updates/0.8.1</graphiti-site>
     <wtp-site>http://download.eclipse.org/webtools/repository/${platform-version-name}</wtp-site>
   </properties>
@@ -101,6 +102,11 @@
                     <layout>p2</layout>
                     <url>${sapphire-site}</url>
                 </repository>
+                <repository>
+                    <id>equinox-sdk</id>
+                    <layout>p2</layout>
+                    <url>${equinox-sdk}</url>
+		</repository>
                 <repository>
                     <id>graphiti</id>
                     <layout>p2</layout>
