@@ -18,14 +18,14 @@
 package com.liferay.ide.maven.ui;
 
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * @author Gregory Amerson
  */
-public class LiferayMavenUI extends Plugin
+public class LiferayMavenUI extends AbstractUIPlugin
 {
 
     // The plug-in ID
@@ -36,7 +36,7 @@ public class LiferayMavenUI extends Plugin
 
     /**
      * Returns the shared instance
-     * 
+     *
      * @return the shared instance
      */
     public static LiferayMavenUI getDefault()
@@ -44,9 +44,19 @@ public class LiferayMavenUI extends Plugin
         return plugin;
     }
 
+    public static void logError( String msg )
+    {
+        getDefault().getLog().log( new Status( IStatus.ERROR, PLUGIN_ID, msg, null ) );
+    }
+
     public static void logError( Throwable t )
     {
         getDefault().getLog().log( new Status( IStatus.ERROR, PLUGIN_ID, t.getMessage(), t ) );
+    }
+
+    public static void logError( String msg, Throwable t )
+    {
+        getDefault().getLog().log( new Status( IStatus.ERROR, PLUGIN_ID, msg, t ) );
     }
 
     /**

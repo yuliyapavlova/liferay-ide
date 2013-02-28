@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="com.liferay.ide.newWizards"
+            class="com.liferay.ide.maven.ui.wizard.NewLiferayMavenProjectWizard"
+            finalPerspective="com.liferay.ide.eclipse.ui.perspective.liferay"
+            icon="icons/n16/plugin_new.png"
+            id="com.liferay.ide.maven.ui.wizard.NewLiferayMavenProjectWizard"
+            name="%new.maven.project.wizard.name"
+            preferredPerspectives="com.liferay.ide.eclipse.ui.perspective.liferay,org.eclipse.jst.j2ee.J2EEPerspective"
+            project="true">
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+         <description>
+            %new.maven.project.wizard.description
+         </description>
+      </wizard>
+   </extension>
+
+</plugin>
