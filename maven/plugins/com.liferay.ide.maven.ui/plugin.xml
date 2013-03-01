@@ -5,7 +5,7 @@
          point="org.eclipse.ui.newWizards">
       <wizard
             category="com.liferay.ide.newWizards"
-            class="com.liferay.ide.maven.ui.wizard.NewLiferayMavenProjectWizard"
+            class="com.liferay.ide.maven.ui.wizard.LiferayMavenProjectWizard"
             finalPerspective="com.liferay.ide.eclipse.ui.perspective.liferay"
             icon="icons/n16/plugin_new.png"
             id="com.liferay.ide.maven.ui.wizard.NewLiferayMavenProjectWizard"

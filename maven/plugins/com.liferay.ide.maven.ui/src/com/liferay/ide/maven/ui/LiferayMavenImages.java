@@ -11,7 +11,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public class LiferayMavenImages
 {
     // wizard images
-    public static final ImageDescriptor WIZ_NEW_PROJECT = createDescriptor( "new_m2_project_wizard.gif" ); //$NON-NLS-1$
+    public static final ImageDescriptor WIZ_NEW_PROJECT = createDescriptor( "new_liferay_project_wizard.gif" ); //$NON-NLS-1$
 
     private static ImageDescriptor createDescriptor( String key )
     {

@@ -16,42 +16,62 @@ package com.liferay.ide.maven.ui.wizard;
 
 import com.liferay.ide.maven.ui.LiferayMavenImages;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizard;
+import org.eclipse.m2e.core.ui.internal.wizards.MavenProjectWizardArchetypeParametersPage;
 import org.eclipse.osgi.util.NLS;
+import org.eclipse.swt.widgets.Composite;
+
 
 
 /**
  * @author Gregory Amerson
  */
-@SuppressWarnings( "restriction" )
-public class NewLiferayMavenProjectWizard extends MavenProjectWizard
+@SuppressWarnings( { "restriction" } )
+public class LiferayMavenProjectWizard extends MavenProjectWizard
 {
-
     protected LiferayMavenProjectWizardPage liferayMavenProjectPage;
 
-    public NewLiferayMavenProjectWizard()
+    public LiferayMavenProjectWizard()
     {
         super();
 
-        setWindowTitle( Msgs.newLiferayProjectWithMaven );
+        setWindowTitle( Msgs.newLiferayProject );
         setDefaultPageImageDescriptor( LiferayMavenImages.WIZ_NEW_PROJECT );
     }
 
     @Override
     public void addPages()
     {
-        liferayMavenProjectPage = new LiferayMavenProjectWizardPage( importConfiguration );
+        liferayMavenProjectPage = new LiferayMavenProjectWizardPage( importConfiguration, this.workingSets ) ;
+        parametersPage = new MavenProjectWizardArchetypeParametersPage( importConfiguration );
 
-        super.addPages();
+        addPage( liferayMavenProjectPage );
+        addPage( parametersPage );
+    }
+
+    @Override
+    public void createPageControls( Composite pageContainer )
+    {
+        for( int i = 0; i < getPages().length; i++ )
+        {
+            IWizardPage page = (IWizardPage) getPages()[i];
+            page.createControl( pageContainer );
+            // page is responsible for ensuring the created control is
+            // accessable
+            // via getControl.
+            Assert.isNotNull( page.getControl() );
+        }
     }
 
     private static class Msgs extends NLS
     {
-        public static String newLiferayProjectWithMaven;
+        public static String newLiferayProject;
 
         static
         {
-            initializeMessages( NewLiferayMavenProjectWizard.class.getName(), Msgs.class );
+            initializeMessages( LiferayMavenProjectWizard.class.getName(), Msgs.class );
         }
     }
 }

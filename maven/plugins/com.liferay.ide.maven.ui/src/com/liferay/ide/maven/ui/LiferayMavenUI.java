@@ -29,7 +29,7 @@ public class LiferayMavenUI extends AbstractUIPlugin
 {
 
     // The plug-in ID
-    public static final String PLUGIN_ID = "com.liferay.ide.portal.ui"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "com.liferay.ide.maven.ui"; //$NON-NLS-1$
 
     // The shared instance
     private static LiferayMavenUI plugin;
