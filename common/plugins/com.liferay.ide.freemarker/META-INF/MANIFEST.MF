@@ -22,7 +22,7 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
- lib/freemarker-2.3.18.jar
+ lib/freemarker-2.3.17.jar
 Export-Package: org.jboss.ide.eclipse.freemarker,
  org.jboss.ide.eclipse.freemarker.configuration,
  org.jboss.ide.eclipse.freemarker.dialogs,
