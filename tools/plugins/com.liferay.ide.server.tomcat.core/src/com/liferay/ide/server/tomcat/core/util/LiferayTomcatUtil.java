@@ -97,6 +97,8 @@ public class LiferayTomcatUtil
         runtimeVMArgs.add( "-Dfile.encoding=UTF8" ); //$NON-NLS-1$
         runtimeVMArgs.add( "-Dorg.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES=false" ); //$NON-NLS-1$
         runtimeVMArgs.add( "-Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager" ); //$NON-NLS-1$
+        runtimeVMArgs.add( "-Dfreemarker.debug.password=foo" ); //$NON-NLS-1$
+        runtimeVMArgs.add( "-Dfreemarker.debug.port=7600" ); //$NON-NLS-1$
 
         Version portalVersion = new Version( getVersion( installPath, getPortalDir( installPath ) ) );
 
