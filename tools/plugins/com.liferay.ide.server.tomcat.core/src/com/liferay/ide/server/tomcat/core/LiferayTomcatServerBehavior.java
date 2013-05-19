@@ -80,7 +80,6 @@ public class LiferayTomcatServerBehavior extends TomcatServerBehaviour implement
     protected void publishModule( int kind, int deltaKind, IModule[] moduleTree, IProgressMonitor monitor )
         throws CoreException
     {
-
         boolean shouldPublishModule =
             LiferayPublishHelper.prePublishModule(
                 this, kind, deltaKind, moduleTree, getPublishedResourceDelta( moduleTree ), monitor );
@@ -207,7 +206,6 @@ public class LiferayTomcatServerBehavior extends TomcatServerBehaviour implement
     public void setupLaunchConfiguration( ILaunchConfigurationWorkingCopy workingCopy, IProgressMonitor monitor )
         throws CoreException
     {
-
         super.setupLaunchConfiguration( workingCopy, monitor );
 
         workingCopy.setAttribute( DebugPlugin.ATTR_CONSOLE_ENCODING, "UTF-8" ); //$NON-NLS-1$
@@ -242,9 +240,7 @@ public class LiferayTomcatServerBehavior extends TomcatServerBehaviour implement
 
     public void redeployModule( IModule[] module )
     {
-
         getServer().publish( IServer.PUBLISH_FULL, null );
-
     }
 
 }

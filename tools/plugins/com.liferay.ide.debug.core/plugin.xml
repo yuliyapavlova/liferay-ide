@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   
-  
-   
+
+  <extension
+         point="org.eclipse.debug.core.breakpoints">
+      <breakpoint
+            markerType="org.liferay.ide.debug.core.fm.lineBreakpoint.marker"
+            class="org.eclipse.debug.examples.core.pda.model.PDALineBreakpoint"
+            id="com.liferay.ide.debug.core.fm.lineBreakpoint">
+      </breakpoint>
+   </extension>
+   <extension
+         id="fm.lineBreakpoint.marker"
+         point="org.eclipse.core.resources.markers">
+      <super
+            type="org.eclipse.debug.core.lineBreakpointMarker">
+      </super>
+      <persistent
+            value="true">
+      </persistent>
+   </extension>
+
 </plugin>

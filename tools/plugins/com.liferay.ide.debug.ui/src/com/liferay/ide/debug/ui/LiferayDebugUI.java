@@ -13,7 +13,7 @@
  *
  *******************************************************************************/
 
-package com.liferay.ide.debug.core;
+package com.liferay.ide.debug.ui;
 
 import com.liferay.ide.core.LiferayCore;
 
@@ -27,16 +27,14 @@ import org.osgi.framework.BundleContext;
  *
  * @author Gregorg Amerson
  */
-public class LiferayDebugCore extends Plugin
+public class LiferayDebugUI extends Plugin
 {
 
     // The plugin ID
-    public static final String PLUGIN_ID = "com.liferay.ide.debug.core"; //$NON-NLS-1$
-
-    public static final String ID_FM_BREAKPOINT_TYPE = "org.liferay.ide.debug.core.fm.lineBreakpoint.marker";
+    public static final String PLUGIN_ID = "com.liferay.ide.debug.ui"; //$NON-NLS-1$
 
     // The shared instance
-    private static LiferayDebugCore plugin;
+    private static LiferayDebugUI plugin;
 
     public static IStatus createErrorStatus( String msg )
     {
@@ -53,7 +51,7 @@ public class LiferayDebugCore extends Plugin
      *
      * @return the shared instance
      */
-    public static LiferayDebugCore getDefault()
+    public static LiferayDebugUI getDefault()
     {
         return plugin;
     }
@@ -66,7 +64,7 @@ public class LiferayDebugCore extends Plugin
     /**
      * The constructor
      */
-    private LiferayDebugCore()
+    private LiferayDebugUI()
     {
     }
 
