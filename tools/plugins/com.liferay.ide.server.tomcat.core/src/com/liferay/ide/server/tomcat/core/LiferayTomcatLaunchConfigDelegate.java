@@ -17,6 +17,7 @@ package com.liferay.ide.server.tomcat.core;
 
 import com.liferay.ide.core.ILiferayConstants;
 import com.liferay.ide.core.util.CoreUtil;
+import com.liferay.ide.debug.core.fm.FMDebugTarget;
 import com.liferay.ide.server.core.ILiferayRuntime;
 
 import org.eclipse.core.runtime.CoreException;
@@ -24,6 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatLaunchConfigurationDelegate;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -80,8 +82,8 @@ public class LiferayTomcatLaunchConfigDelegate extends TomcatLaunchConfiguration
 
         if( ILaunchManager.DEBUG_MODE.equals( mode ) && FALSE.equals( stopServer ) )
         {
-//            IDebugTarget target = new FMDebugTarget( launch, launch.getProcesses()[0] );
-//            launch.addDebugTarget( target );
+            IDebugTarget target = new FMDebugTarget( launch, launch.getProcesses()[0] );
+            launch.addDebugTarget( target );
         }
     }
 }

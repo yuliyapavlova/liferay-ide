@@ -4,6 +4,7 @@ import com.liferay.ide.core.util.CoreUtil;
 import com.liferay.ide.debug.core.ILRDebugConstants;
 
 import freemarker.debug.Breakpoint;
+import freemarker.debug.DebuggedEnvironment;
 import freemarker.debug.Debugger;
 import freemarker.debug.DebuggerClient;
 import freemarker.debug.DebuggerListener;
@@ -266,6 +267,18 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     {
         //TODO resume
         //sendRequest("resume");
+        System.out.println("resume");
+        try
+        {
+            DebuggedEnvironment debuged = (DebuggedEnvironment) this.debuggerClient.getSuspendedEnvironments().iterator().next();
+
+            debuged.resume();
+        }
+        catch( RemoteException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
