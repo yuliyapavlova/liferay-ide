@@ -35,5 +35,6 @@ public interface ILiferayConstants
     String LIFERAY_PORTLET_XML_FILE = "liferay-portlet.xml"; //$NON-NLS-1$
     String LIFERAY_SERVICE_BUILDER_XML_FILE = "service.xml"; //$NON-NLS-1$
     String PORTLET_XML_FILE = "portlet.xml"; //$NON-NLS-1$
+    Version V6_2_0 = new Version( 6, 2, 0 );
     String WEB_XML_FILE = "web.xml"; //$NON-NLS-1$
 }

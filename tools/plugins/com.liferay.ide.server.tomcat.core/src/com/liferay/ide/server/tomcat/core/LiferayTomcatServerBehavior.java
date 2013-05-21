@@ -30,9 +30,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jst.server.tomcat.core.internal.Messages;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatPlugin;
@@ -60,18 +58,6 @@ public class LiferayTomcatServerBehavior extends TomcatServerBehaviour implement
     public LiferayTomcatServerBehavior()
     {
         super();
-    }
-
-    @Override
-    public void setupLaunch( ILaunch launch, String launchMode, IProgressMonitor monitor ) throws CoreException
-    {
-        super.setupLaunch( launch, launchMode, monitor );
-
-//        if ( ILaunchManager.DEBUG_MODE.equals( launchMode ) )
-//        {
-//            IDebugTarget target = new FMDebugTarget( launch, launch.getProcesses()[0] );
-//            launch.addDebugTarget( target );
-//        }
     }
 
     @Override
@@ -229,34 +215,11 @@ public class LiferayTomcatServerBehavior extends TomcatServerBehaviour implement
             }
 
             String argsWithoutMem =
-                mergeArguments( existingVMArgs, getRuntimeVMArguments( workingCopy ), memoryArgs.toArray( new String[0] ), false );
+                mergeArguments( existingVMArgs, getRuntimeVMArguments(), memoryArgs.toArray( new String[0] ), false );
             String fixedArgs = mergeArguments( argsWithoutMem, getRuntimeVMArguments(), null, false );
 
             workingCopy.setAttribute( IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, fixedArgs );
         }
-    }
-
-    private String[] getRuntimeVMArguments( ILaunchConfigurationWorkingCopy workingCopy )
-    {
-        String[] retval = null;
-
-        final String[] runtimeArgs = super.getRuntimeVMArguments();
-
-        try
-        {
-            if( workingCopy.getModes().contains( ILaunchManager.DEBUG_MODE ) )
-            {
-                retval = new String[ runtimeArgs.length + 2 ];
-                System.arraycopy( runtimeArgs, 0, retval, 0, runtimeArgs.length );
-                retval[ retval.length - 2 ] = "-Dfreemarker.debug.password=liferay"; //$NON-NLS-1$
-                retval[ retval.length - 1 ] = "-Dfreemarker.debug.port=7600"; //$NON-NLS-1$
-            }
-        }
-        catch( CoreException e )
-        {
-        }
-
-        return retval;
     }
 
     public void redeployModule( IModule[] module )

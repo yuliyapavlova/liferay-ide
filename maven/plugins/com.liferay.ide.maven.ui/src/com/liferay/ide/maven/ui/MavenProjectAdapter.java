@@ -14,6 +14,7 @@
  *******************************************************************************/
 package com.liferay.ide.maven.ui;
 
+import com.liferay.ide.core.ILiferayConstants;
 import com.liferay.ide.core.ILiferayProject;
 import com.liferay.ide.core.ILiferayProjectAdapter;
 import com.liferay.ide.core.util.CoreUtil;
@@ -32,7 +33,7 @@ import org.osgi.framework.Version;
 public class MavenProjectAdapter implements ILiferayProjectAdapter
 {
 
-    private static final Version v620 = new Version( 6, 2, 0 );
+    private static final Version v620 = ILiferayConstants.V6_2_0;
 
     public <T> T adapt( ILiferayProject liferayProject, Class<T> adapterType )
     {

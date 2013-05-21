@@ -52,6 +52,8 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
     class EventDispatchJob extends Job implements DebuggerListener
     {
+        private boolean setup;
+
         public EventDispatchJob()
         {
             super( "FM Event Dispatch" );
@@ -79,8 +81,22 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
                     continue;
                 }
 
-                setupDebugger(debugger);
+                if( !setup )
+                {
+                    setupDebugger(debugger);
+                    setup = true;
+                }
 
+                synchronized( eventDispatchJob )
+                {
+                    try
+                    {
+                        wait();
+                    }
+                    catch( InterruptedException e )
+                    {
+                    }
+                }
             }
 
             return Status.OK_STATUS;
@@ -90,7 +106,8 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         {
             try
             {
-                Object o = debugger.addDebuggerListener( this );
+                Object o = debugger.addDebuggerListener( eventDispatchJob );
+                System.out.println(o);
                 // register breakpoints
                 final IBreakpoint[] localBreakpoints =
                     DebugPlugin.getDefault().getBreakpointManager().getBreakpoints( getModelIdentifier() );
@@ -181,7 +198,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         {
             try
             {
-                this.debuggerClient = DebuggerClient.getDebugger( Inet4Address.getByName( "localhost" ), 7600, "foo" );
+                this.debuggerClient = DebuggerClient.getDebugger( Inet4Address.getByName( "localhost" ), 7600, "fmdebug" );
             }
             catch(Exception e )
             {
@@ -316,6 +333,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     {
         if( supportsBreakpoint( breakpoint ) )
         {
+            System.out.println(breakpoint);
 //            try
 //            {
                 //TODO add remove breakpoint
@@ -428,6 +446,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     {
         if( breakpoint.getModelIdentifier().equals( ILRDebugConstants.ID_FM_DEBUG_MODEL ) )
         {
+            System.out.println(breakpoint);
 //            String program = getLaunch().getLaunchConfiguration().getAttribute(IPDAConstants.ATTR_PDA_PROGRAM, (String)null);
 //            if (program != null) {
 //                IMarker marker = breakpoint.getMarker();
@@ -445,6 +464,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     {
         //TODO step()
 //        sendRequest("step");
+        System.out.println("step()");
     }
 
     /**
