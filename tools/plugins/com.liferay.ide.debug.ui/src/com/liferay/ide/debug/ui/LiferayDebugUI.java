@@ -64,7 +64,7 @@ public class LiferayDebugUI extends Plugin
     /**
      * The constructor
      */
-    private LiferayDebugUI()
+    public LiferayDebugUI()
     {
     }
 

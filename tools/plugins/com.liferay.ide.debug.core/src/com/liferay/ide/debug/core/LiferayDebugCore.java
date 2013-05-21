@@ -66,7 +66,7 @@ public class LiferayDebugCore extends Plugin
     /**
      * The constructor
      */
-    private LiferayDebugCore()
+    public LiferayDebugCore()
     {
     }
 

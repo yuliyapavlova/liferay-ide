@@ -9,153 +9,140 @@ import org.eclipse.debug.core.model.IVariable;
 
 public class FMStackFrame extends FMDebugElement implements IStackFrame
 {
+    private FMThread thread;
+    private IVariable[] variables;
+    private int linePC;
+    private String name;
 
-    public FMStackFrame( FMThread thread )
+    public FMStackFrame( FMThread thread, String name )
     {
         super( thread.getDebugTarget() );
+        this.thread = thread;
+        this.name = name;
     }
 
     public boolean canStepInto()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().canStepInto();
     }
 
     public boolean canStepOver()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().canStepOver();
     }
 
     public boolean canStepReturn()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().canStepReturn();
     }
 
     public boolean isStepping()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().isStepping();
     }
 
     public void stepInto() throws DebugException
     {
-        // TODO Auto-generated method stub
-
+        getThread().stepInto();
     }
 
     public void stepOver() throws DebugException
     {
-        // TODO Auto-generated method stub
-
+        getThread().stepOver();
     }
 
     public void stepReturn() throws DebugException
     {
-        // TODO Auto-generated method stub
-
+        getThread().stepReturn();
     }
 
     public boolean canResume()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().canResume();
     }
 
     public boolean canSuspend()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().canSuspend();
     }
 
     public boolean isSuspended()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().isSuspended();
     }
 
     public void resume() throws DebugException
     {
-        // TODO Auto-generated method stub
-
+        getThread().resume();
     }
 
     public void suspend() throws DebugException
     {
-        // TODO Auto-generated method stub
-
+        getThread().suspend();
     }
 
     public boolean canTerminate()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().canTerminate();
     }
 
     public boolean isTerminated()
     {
-        // TODO Auto-generated method stub
-        return false;
+        return getThread().isTerminated();
     }
 
     public void terminate() throws DebugException
     {
-        // TODO Auto-generated method stub
-
+        getThread().terminate();
     }
 
     public IThread getThread()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.thread;
     }
 
     public IVariable[] getVariables() throws DebugException
     {
-        // TODO Auto-generated method stub
-        return null;
+        if( this.variables == null )
+        {
+            //TODO getVariables
+        }
+
+        return this.variables;
     }
 
     public boolean hasVariables() throws DebugException
     {
-        // TODO Auto-generated method stub
-        return false;
+        return this.variables != null && this.variables.length > 0;
     }
 
     public int getLineNumber() throws DebugException
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return linePC;
     }
 
     public int getCharStart() throws DebugException
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return -1;
     }
 
     public int getCharEnd() throws DebugException
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return -1;
     }
 
     public String getName() throws DebugException
     {
-        // TODO Auto-generated method stub
-        return null;
+        return this.name;
     }
 
     public IRegisterGroup[] getRegisterGroups() throws DebugException
     {
-        // TODO Auto-generated method stub
         return null;
     }
 
     public boolean hasRegisterGroups() throws DebugException
     {
-        // TODO Auto-generated method stub
         return false;
     }
 
