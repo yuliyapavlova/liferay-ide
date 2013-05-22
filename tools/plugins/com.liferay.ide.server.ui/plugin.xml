@@ -23,7 +23,7 @@
             icon="icons/e16/server.png"
             id="com.liferay.ide.server.ui.serverview.plugins"
             labelProvider="com.liferay.ide.server.ui.PluginsCustomLabelProvider"
-            name="%navigator.content.name"
+            name="%plugins.content.name"
             priority="highest">
          <triggerPoints>
             <or>
@@ -56,6 +56,47 @@
                suppressedExtensionId="org.eclipse.wst.server.ui.ServersView.content.root">
          </override>
       </navigatorContent>
+      
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="com.liferay.ide.server.ui.PluginsCustomContentProvider"
+            icon="icons/e16/server.png"
+            id="com.liferay.ide.server.ui.serverview.resources"
+            labelProvider="com.liferay.ide.server.ui.PluginsCustomLabelProvider"
+            name="%resources.content.name"
+            priority="highest">
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="org.eclipse.wst.server.core.IServer">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.wst.server.ui.internal.view.servers.ModuleServer">
+               </instanceof>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <or>
+               <instanceof
+                     value="java.lang.Object">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.wst.server.core.IServer">
+               </instanceof>
+               <instanceof
+                     value="org.eclipse.wst.server.ui.internal.view.servers.ModuleServer">
+               </instanceof>
+               <instanceof
+                     value="com.liferay.ide.server.ui.PluginsContent">
+               </instanceof>
+            </or>
+         </possibleChildren>
+         <override
+               policy="InvokeAlwaysRegardlessOfSuppressedExt"
+               suppressedExtensionId="org.eclipse.wst.server.ui.ServersView.content.root">
+         </override>
+      </navigatorContent>
+      
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">

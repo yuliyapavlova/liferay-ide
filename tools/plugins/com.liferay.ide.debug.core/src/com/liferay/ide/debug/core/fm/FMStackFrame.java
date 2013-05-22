@@ -1,5 +1,7 @@
 package com.liferay.ide.debug.core.fm;
 
+import freemarker.debug.DebuggedEnvironment;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -105,7 +107,38 @@ public class FMStackFrame extends FMDebugElement implements IStackFrame
     {
         if( this.variables == null )
         {
-            //TODO getVariables
+            /*
+             * Represents the debugger-side mirror of a debugged freemarker.core.Environment object in the remote VM.
+             *
+             * This interface extends DebugModel, and the properties of the Environment are exposed as hash keys on it.
+             * Specifically, the following keys are supported: "currentNamespace", "dataModel", "globalNamespace",
+             * "knownVariables", "mainNamespace", and "template".
+             *
+             * The debug model for the template supports keys
+             * "configuration" and "name".
+             *
+             * The debug model for the configuration supports key "sharedVariables".
+             * Additionally, all of the debug models for environment, template, and configuration also support all the
+             * setting keys of freemarker.core.Configurable objects.
+             */
+            final DebuggedEnvironment env = this.thread.getEnvironment();
+
+            try
+            {
+                this.variables = new IVariable[]
+                {
+                    new FMVariable( this, "currentNamespace", env ),
+                    new FMVariable( this, "dataModel", env ),
+                    new FMVariable( this, "globalNamespace", env ),
+                    new FMVariable( this, "knownVariables", env ),
+                    new FMVariable( this, "mainNamespace", env ),
+                    new TemplateFMVariable( this, env ),
+                };
+            }
+            catch( Exception e )
+            {
+                e.printStackTrace();
+            }
         }
 
         return this.variables;

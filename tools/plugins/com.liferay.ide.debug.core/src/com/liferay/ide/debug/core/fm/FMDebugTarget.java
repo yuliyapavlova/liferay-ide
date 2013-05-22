@@ -2,6 +2,7 @@ package com.liferay.ide.debug.core.fm;
 
 import com.liferay.ide.core.util.CoreUtil;
 import com.liferay.ide.debug.core.ILRDebugConstants;
+import com.liferay.ide.debug.core.LiferayDebugCore;
 
 import freemarker.debug.Breakpoint;
 import freemarker.debug.DebuggedEnvironment;
@@ -10,14 +11,18 @@ import freemarker.debug.DebuggerClient;
 import freemarker.debug.DebuggerListener;
 import freemarker.debug.EnvironmentSuspendedEvent;
 
+import java.io.ByteArrayInputStream;
 import java.net.Inet4Address;
 import java.rmi.RemoteException;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
@@ -41,7 +46,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     private FMDebugTarget target;
     private IProcess process;
     private FMThread fmThread;
-    private IThread[] threads;
+    private IThread[] threads = new IThread[0];
     private EventDispatchJob eventDispatchJob;
 
     // suspend state
@@ -50,6 +55,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     // terminated state
     private boolean terminated = false;
     private Debugger debuggerClient;
+    private IStackFrame[] fmStackFrames = new IStackFrame[0];
 
     class EventDispatchJob extends Job implements DebuggerListener
     {
@@ -57,7 +63,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
         public EventDispatchJob()
         {
-            super( "FM Event Dispatch" );
+            super( "Freemarker Event Dispatch" );
             setSystem( true );
         }
 
@@ -84,8 +90,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
                 if( !setup )
                 {
-                    setupDebugger(debugger);
-                    setup = true;
+                    setup = setupDebugger(debugger);
                 }
 
                 synchronized( eventDispatchJob )
@@ -103,27 +108,44 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
             return Status.OK_STATUS;
         }
 
-        private void setupDebugger(Debugger debugger)
+        private boolean setupDebugger(Debugger debugger)
         {
             try
             {
-                Object o = debugger.addDebuggerListener( eventDispatchJob );
-                System.out.println(o);
-                // register breakpoints
-                final IBreakpoint[] localBreakpoints =
-                    DebugPlugin.getDefault().getBreakpointManager().getBreakpoints( getModelIdentifier() );
+                debugger.addDebuggerListener( eventDispatchJob );
 
-                for( IBreakpoint localBreakpoint : localBreakpoints )
+                FMDebugTarget.this.threads = new IThread[] { FMDebugTarget.this.fmThread };
+
+                try
                 {
-                    addRemoteBreakpoint( debugger, localBreakpoint );
+                    IFile bpFile = ResourcesPlugin.getWorkspace().getRoot().getFile( new Path( "Servers/10153#10193#10712" ) );
+                    if(!bpFile.exists())
+                    {
+                        bpFile.create( new ByteArrayInputStream( "".getBytes() ), true, null );
+                    }
+                    FMLineBreakpoint lineBreakpoint = new FMLineBreakpoint( bpFile, 1);
+                    DebugPlugin.getDefault().getBreakpointManager().addBreakpoint(lineBreakpoint);
+                }
+                catch( CoreException e )
+                {
                 }
 
-                final Breakpoint bp = new Breakpoint( "10153#10193#10712", 1 );
-                debugger.addBreakpoint( bp );
+//                final IBreakpoint[] localBreakpoints =
+//                    bpManager.getBreakpoints( getModelIdentifier() );
+//
+//                for( IBreakpoint localBreakpoint : localBreakpoints )
+//                {
+//                    addRemoteBreakpoint( debugger, localBreakpoint );
+//                }
+//                final Breakpoint bp = new Breakpoint( "10153#10193#10712", 1 );
+//                debugger.addBreakpoint( bp );
             }
             catch( RemoteException e )
             {
+                return false;
             }
+
+            return true;
         }
 
         public void environmentSuspended( EnvironmentSuspendedEvent event ) throws RemoteException
@@ -143,7 +165,11 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
                         {
                             if( lineBreakpoint.getLineNumber() == lineNumber )
                             {
+                                fmThread.setEnvironment( event.getEnvironment() );
                                 fmThread.setBreakpoints( new IBreakpoint[] { breakpoint } );
+                                String templateName = breakpoint.getMarker().getAttribute( "templateName", "" );
+                                fmStackFrames = new FMStackFrame[] { new FMStackFrame( fmThread, templateName ) };
+
                                 break;
                             }
                         }
@@ -174,7 +200,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         this.process = process;
 
         this.fmThread = new FMThread( this.target );
-        this.threads = new IThread[] { this.fmThread };
+//        this.threads = new IThread[] { this.fmThread };
         this.eventDispatchJob = new EventDispatchJob();
         this.eventDispatchJob.schedule();
 
@@ -183,7 +209,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
     public void addRemoteBreakpoint( Debugger debugger, IBreakpoint localBreakpoint ) throws RemoteException
     {
-        String templateName = localBreakpoint.getMarker().getAttribute( "templateName", null );
+        String templateName = localBreakpoint.getMarker().getAttribute( FMLineBreakpoint.ATTR_TEMPLATE_NAME, null );
         int line = localBreakpoint.getMarker().getAttribute( IMarker.LINE_NUMBER, -1 );
 
         if( ! CoreUtil.isNullOrEmpty( templateName ) && line > -1 )
@@ -205,7 +231,6 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
             {
                 e.printStackTrace();
             }
-
         }
 
         return this.debuggerClient;
@@ -233,11 +258,16 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
     public void terminate() throws DebugException
     {
-        //TODO terminate
-//        synchronized (fRequestSocket) {
-//            fRequestWriter.println("exit");
-//            fRequestWriter.flush();
-//        }
+        try
+        {
+            getDebuggerClient().shutdown();
+        }
+        catch( RemoteException e )
+        {
+            e.printStackTrace();
+        }
+
+        terminated();
     }
 
     public boolean canResume()
@@ -251,7 +281,8 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
      */
     public boolean canSuspend()
     {
-        return !isTerminated() && !isSuspended();
+//        return !isTerminated() && !isSuspended();
+        return false;
     }
 
     /*
@@ -265,19 +296,16 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
     public void resume() throws DebugException
     {
-        //TODO resume
-        //sendRequest("resume");
-        System.out.println("resume");
         try
         {
             DebuggedEnvironment debuged = (DebuggedEnvironment) this.debuggerClient.getSuspendedEnvironments().iterator().next();
 
             debuged.resume();
+
+            resumed( DebugEvent.CLIENT_REQUEST );
         }
         catch( RemoteException e )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
@@ -290,6 +318,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     private void resumed( int detail )
     {
         this.suspended = false;
+        this.fmStackFrames = new IStackFrame[0];
         this.fmThread.fireResumeEvent( detail );
     }
 
@@ -346,15 +375,16 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     {
         if( supportsBreakpoint( breakpoint ) )
         {
-            System.out.println(breakpoint);
-//            try
-//            {
-                //TODO add remove breakpoint
-//                sendRequest( "clear " + ( (ILineBreakpoint) breakpoint ).getLineNumber() );
-//            }
-//            catch( CoreException e )
-//            {
-//            }
+            try
+            {
+                String templateName = breakpoint.getMarker().getAttribute( "templateName", "" );
+                final Breakpoint bp = new Breakpoint( templateName, breakpoint.getMarker().getAttribute( IMarker.LINE_NUMBER, -1 ) );
+                getDebuggerClient().removeBreakpoint( bp );
+            }
+            catch( RemoteException e )
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -447,9 +477,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     {
         if( this.name == null )
         {
-            this.name = "FM Debugger";
-
-//            this.name = getLaunch().getLaunchConfiguration().getAttribute( ILRDebugConstants.ATTR_FM_PROGRAM, "FM VM" );
+            this.name = "Freemarker Debugger";
         }
 
         return this.name;
@@ -460,6 +488,15 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         if( breakpoint.getModelIdentifier().equals( ILRDebugConstants.ID_FM_DEBUG_MODEL ) )
         {
             System.out.println(breakpoint);
+            try
+            {
+                return breakpoint.getMarker().getType().equals( LiferayDebugCore.ID_FM_BREAKPOINT_TYPE );
+            }
+            catch( CoreException e )
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 //            String program = getLaunch().getLaunchConfiguration().getAttribute(IPDAConstants.ATTR_PDA_PROGRAM, (String)null);
 //            if (program != null) {
 //                IMarker marker = breakpoint.getMarker();
@@ -495,26 +532,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
     protected IStackFrame[] getStackFrames()
     {
-//        synchronized (fRequestSocket) {
-//            fRequestWriter.println("stack");
-//            fRequestWriter.flush();
-//            try {
-//                String framesData = fRequestReader.readLine();
-//                if (framesData != null) {
-//                    String[] frames = framesData.split("#");
-//                    IStackFrame[] theFrames = new IStackFrame[frames.length];
-//                    for (int i = 0; i < frames.length; i++) {
-//                        String data = frames[i];
-//                        theFrames[frames.length - i - 1] = new PDAStackFrame(fThread, data, i);
-//                    }
-//                    return theFrames;
-//                }
-//            } catch (IOException e) {
-//                abort("Unable to retrieve stack frames", e);
-//            }
-//        }
-        //TODO getStackFrames()
-        return new IStackFrame[0];
+        return this.fmStackFrames;
     }
 
 }

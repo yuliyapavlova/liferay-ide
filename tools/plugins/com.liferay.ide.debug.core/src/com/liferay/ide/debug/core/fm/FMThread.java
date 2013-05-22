@@ -1,5 +1,7 @@
 package com.liferay.ide.debug.core.fm;
 
+import freemarker.debug.DebuggedEnvironment;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.IStackFrame;
@@ -19,6 +21,8 @@ public class FMThread extends FMDebugElement implements IThread
      * Whether this thread is stepping
      */
     private boolean stepping = false;
+
+    private DebuggedEnvironment suspendedEnvironment;
 
     /**
      * Constructs a new thread for the given target
@@ -86,7 +90,7 @@ public class FMThread extends FMDebugElement implements IThread
      */
     public String getName() throws DebugException
     {
-        return "Thread[1]";
+        return "FM Environment";
     }
 
     /*
@@ -99,6 +103,7 @@ public class FMThread extends FMDebugElement implements IThread
         {
             return new IBreakpoint[0];
         }
+
         return this.breakpoints;
     }
 
@@ -255,5 +260,15 @@ public class FMThread extends FMDebugElement implements IThread
     protected void setStepping( boolean stepping )
     {
         this.stepping = stepping;
+    }
+
+    public DebuggedEnvironment getEnvironment()
+    {
+        return this.suspendedEnvironment;
+    }
+
+    public void setEnvironment( DebuggedEnvironment environment )
+    {
+        this.suspendedEnvironment = environment;
     }
 }

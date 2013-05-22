@@ -13,7 +13,7 @@
  *
  *******************************************************************************/
 /**
- * 
+ *
  */
 
 package com.liferay.ide.server.ui;
@@ -33,9 +33,9 @@ public class PluginsContent
 
     protected List<ModuleServer> input;
 
-    public PluginsContent( List<ModuleServer> input, Object parent )
+    public PluginsContent( List<ModuleServer> liferayPlugins, Object parent )
     {
-        this.input = input;
+        this.input = liferayPlugins;
 
         this.parent = parent;
     }

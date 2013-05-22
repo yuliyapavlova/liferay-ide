@@ -67,19 +67,19 @@ public class PluginsCustomContentProvider extends AbstractNavigatorContentProvid
             return EMPTY;
         }
 
-        List<IModule> liferayPlugins = new ArrayList<IModule>();
+        List<ModuleServer> liferayPlugins = new ArrayList<ModuleServer>();
 
         for( IModule module : server.getModules() )
         {
             if( ProjectUtil.isLiferayFacetedProject( module.getProject() ) )
             {
-                liferayPlugins.add( module );
+                liferayPlugins.add( (ModuleServer) module.loadAdapter( ModuleServer.class, null ) );
             }
         }
 
-        return EMPTY;
-        // return new Object[] {new PluginsContent(liferayPlugins,
-        // parentElement)};
+        this.pluginsContentNode = new PluginsContent( liferayPlugins, parentElement );
+
+        return new Object[] { this.pluginsContentNode };
     }
 
     public Object getParent( Object element )

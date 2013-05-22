@@ -14,6 +14,8 @@ import org.eclipse.debug.core.model.LineBreakpoint;
 
 public class FMLineBreakpoint extends LineBreakpoint
 {
+    
+    public static final String ATTR_TEMPLATE_NAME = "templateName";
 
     public FMLineBreakpoint()
     {
@@ -21,16 +23,21 @@ public class FMLineBreakpoint extends LineBreakpoint
 
     public FMLineBreakpoint( final IResource resource, final int line ) throws CoreException
     {
-        IWorkspaceRunnable runnable = new IWorkspaceRunnable()
+        final IWorkspaceRunnable runnable = new IWorkspaceRunnable()
         {
+            private String createMessage( IResource resource )
+            {
+                return "Freemarker line breakpoint: " + resource.getName() + " [line: " + line + "]";
+            }
+
             public void run( IProgressMonitor monitor ) throws CoreException
             {
-                IMarker marker = resource.createMarker( LiferayDebugCore.ID_FM_BREAKPOINT_TYPE );
+                final IMarker marker = resource.createMarker( LiferayDebugCore.ID_FM_BREAKPOINT_TYPE );
                 marker.setAttribute( IBreakpoint.ENABLED, Boolean.TRUE );
                 marker.setAttribute( IMarker.LINE_NUMBER, line );
                 marker.setAttribute( IBreakpoint.ID, getModelIdentifier() );
-                marker.setAttribute( IMarker.MESSAGE, "Line breakpoint: " + resource.getName() + " [line: " + line +
-                    "]" );
+                marker.setAttribute( IMarker.MESSAGE, createMessage( resource ) );
+                marker.setAttribute( "templateName", resource.getName() );
 
                 setMarker( marker );
             }

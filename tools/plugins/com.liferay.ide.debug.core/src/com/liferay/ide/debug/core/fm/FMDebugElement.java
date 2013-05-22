@@ -3,6 +3,10 @@ package com.liferay.ide.debug.core.fm;
 import com.liferay.ide.debug.core.ILRDebugConstants;
 import com.liferay.ide.debug.core.LiferayDebugCore;
 
+import freemarker.debug.DebugModel;
+
+import java.rmi.RemoteException;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.core.runtime.Status;
@@ -103,5 +107,49 @@ public class FMDebugElement extends PlatformObject implements IDebugElement
     protected void fireTerminateEvent()
     {
         fireEvent( new DebugEvent( this, DebugEvent.TERMINATE ) );
+    }
+
+    protected static String getReferenceTypeName( DebugModel model ) throws DebugException
+    {
+        try
+        {
+            switch( model.getModelTypes() )
+            {
+                case DebugModel.TYPE_BOOLEAN:
+                    return "boolean";
+                case DebugModel.TYPE_COLLECTION:
+                    return "collection";
+                case DebugModel.TYPE_CONFIGURATION:
+                    return "configuration";
+                case DebugModel.TYPE_DATE:
+                    return "date";
+                case DebugModel.TYPE_ENVIRONMENT:
+                    return "environment";
+                case DebugModel.TYPE_HASH:
+                    return "hash";
+                case DebugModel.TYPE_HASH_EX:
+                    return "hash_ex";
+                case DebugModel.TYPE_METHOD:
+                    return "method";
+                case DebugModel.TYPE_METHOD_EX:
+                    return "method_ex";
+                case DebugModel.TYPE_NUMBER:
+                    return "number";
+                case DebugModel.TYPE_SCALAR:
+                    return "scalar";
+                case DebugModel.TYPE_SEQUENCE:
+                    return "sequence";
+                case DebugModel.TYPE_TEMPLATE:
+                    return "template";
+                case DebugModel.TYPE_TRANSFORM:
+                    return "transform";
+            }
+        }
+        catch( RemoteException e )
+        {
+            e.printStackTrace();
+        }
+
+        return "var";
     }
 }
