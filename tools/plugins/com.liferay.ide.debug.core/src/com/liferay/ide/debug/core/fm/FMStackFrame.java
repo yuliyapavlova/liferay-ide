@@ -6,6 +6,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IStackFrame;
 import org.eclipse.debug.core.model.IThread;
+import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.core.model.IVariable;
 
 
@@ -127,12 +128,19 @@ public class FMStackFrame extends FMDebugElement implements IStackFrame
             {
                 this.variables = new IVariable[]
                 {
-                    new FMVariable( this, "currentNamespace", env ),
-                    new FMVariable( this, "dataModel", env ),
-                    new FMVariable( this, "globalNamespace", env ),
-                    new FMVariable( this, "knownVariables", env ),
-                    new FMVariable( this, "mainNamespace", env ),
-                    new TemplateFMVariable( this, env ),
+                    new FMVariable( this, "currentNamespace", env.get("currentNamespace") ),
+                    new FMVariable( this, "dataModel", env.get( "dataModel" ) ),
+                    new FMVariable( this, "globalNamespace", env.get( "globalNamespace" ) ),
+                    new FMVariable( this, "knownVariables", env.get( "knownVariables" ) ),
+                    new FMVariable( this, "mainNamespace", env.get( "mainNamespace" ) ),
+                    new FMVariable( this, "template", env.get( "template" ) )
+                    {
+                        @Override
+                        public IValue getValue() throws DebugException
+                        {
+                            return new TemplateVMValue( stackFrame, debugModel );
+                        }
+                    },
                 };
             }
             catch( Exception e )

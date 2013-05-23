@@ -10,26 +10,18 @@ import org.eclipse.debug.core.model.IVariable;
 public class FMVariable extends FMDebugElement implements IVariable
 {
 
-//    private FMStackFrame stackFrame;
+    protected FMStackFrame stackFrame;
     private String name;
-    private DebugModel debugModel;
+    protected DebugModel debugModel;
     private IValue value;
 
     public FMVariable( FMStackFrame stackFrame, String name, DebugModel debugModel )
     {
         super( stackFrame.getDebugTarget() );
 
-//        this.stackFrame = stackFrame;
+        this.stackFrame = stackFrame;
         this.name = name;
-
-        try
-        {
-            this.debugModel = debugModel.get( this.name );
-        }
-        catch( Exception e )
-        {
-            e.printStackTrace();
-        }
+        this.debugModel = debugModel;
     }
 
     public DebugModel getDebugModel()
@@ -64,7 +56,7 @@ public class FMVariable extends FMDebugElement implements IVariable
     {
         if( this.value == null )
         {
-            this.value = new FMValue( this.getDebugTarget(), this.debugModel );
+            this.value = new FMValue( this.stackFrame, this.debugModel );
         }
 
         return this.value;

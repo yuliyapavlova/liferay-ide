@@ -1,6 +1,11 @@
 package com.liferay.ide.debug.core.fm;
 
 import freemarker.debug.DebugModel;
+import freemarker.template.TemplateModelException;
+
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IValue;
@@ -9,18 +14,21 @@ import org.eclipse.debug.core.model.IVariable;
 
 public class FMValue extends FMDebugElement implements IValue
 {
+    private static final int VALID_VARIBLE_TYPES = DebugModel.TYPE_BOOLEAN | DebugModel.TYPE_COLLECTION |
+        DebugModel.TYPE_CONFIGURATION | DebugModel.TYPE_DATE | DebugModel.TYPE_HASH | DebugModel.TYPE_HASH_EX |
+        DebugModel.TYPE_NUMBER | DebugModel.TYPE_SCALAR | DebugModel.TYPE_SEQUENCE | DebugModel.TYPE_TEMPLATE;
 
-    private DebugModel debugModel;
+    protected DebugModel debugModel;
+    protected FMStackFrame stackFrame;
     private IVariable[] variables;
 
-    public FMValue( FMDebugTarget target, DebugModel debugModel )
+    public FMValue( FMStackFrame stackFrame, DebugModel debugModel )
     {
-        super( target );
+        super( stackFrame.getDebugTarget() );
 
+        this.stackFrame = stackFrame;
         this.debugModel = debugModel;
     }
-
-
 
     public String getValueString() throws DebugException
     {
@@ -62,7 +70,7 @@ public class FMValue extends FMDebugElement implements IValue
 
             if( ( DebugModel.TYPE_HASH_EX & types ) > 0 )
             {
-                retval = "Hash_ex";
+                retval = getHashValueString( this.debugModel );
             }
 
             if( ( DebugModel.TYPE_METHOD & types ) > 0 )
@@ -87,7 +95,7 @@ public class FMValue extends FMDebugElement implements IValue
 
             if( ( DebugModel.TYPE_SEQUENCE & types ) > 0 )
             {
-                retval = "sequence";
+                retval = getSequenceValueString( this.debugModel );
             }
 
             if( ( DebugModel.TYPE_TEMPLATE & types ) > 0 )
@@ -111,6 +119,104 @@ public class FMValue extends FMDebugElement implements IValue
         }
 
         return retval;
+    }
+
+    private String getSequenceValueString( DebugModel model )
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append( '[' );
+
+        try
+        {
+            for( int i = 0; i < model.size(); i++ )
+            {
+                final DebugModel val = model.get( i );
+                final String value = getModelValueString( val );
+
+                if( value != null )
+                {
+                    sb.append( value );
+                    sb.append(',');
+                }
+            }
+        }
+        catch( Exception e )
+        {
+            sb.append( e.getMessage() );
+        }
+
+        String value = sb.toString();
+
+        return value.endsWith( "," ) ? value.replaceFirst( ",$", "]" ) : value;
+    }
+
+    private String getModelValueString( DebugModel model ) throws RemoteException, TemplateModelException
+    {
+        String value = null;
+
+        final int modelTypes = model.getModelTypes();
+
+        if( isStringType( modelTypes ) && !isHashType( modelTypes ) )
+        {
+            value = model.getAsString();
+        }
+        else if( isNumberType( modelTypes ) )
+        {
+            value = model.getAsNumber().toString();
+        }
+        else if( isDateType( modelTypes ) )
+        {
+            value = model.getAsDate().toString();
+        }
+        else if( isHashType( modelTypes ) )
+        {
+            value = getHashValueString( model );
+        }
+        else if( isCollectionType( modelTypes ) )
+        {
+            value = getHashValueString( model );
+        }
+        else if( isMethodType( modelTypes) )
+        {
+            value = null;
+        }
+        else
+        {
+            System.out.println("unsupported model type: " + modelTypes );
+        }
+
+        return value;
+    }
+
+    private String getHashValueString( DebugModel model )
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append( '{' );
+
+        try
+        {
+            for( String key : model.keys() )
+            {
+                final DebugModel val = model.get( key );
+                final String value = getModelValueString( val );
+
+                if( value != null )
+                {
+                    sb.append( key );
+                    sb.append('=');
+                    sb.append( value );
+                    sb.append(',');
+                }
+            }
+        }
+        catch( Exception e )
+        {
+            sb.append( e.getMessage() );
+        }
+
+        String value = sb.toString();
+
+        return value.endsWith( "," ) ? value.replaceFirst( ",$", "}" ) : value;
     }
 
     public boolean isAllocated() throws DebugException
@@ -137,15 +243,108 @@ public class FMValue extends FMDebugElement implements IValue
 
         if( this.variables == null )
         {
+            List<IVariable> vars = new ArrayList<IVariable>();
 
+            try
+            {
+                int types = this.debugModel.getModelTypes();
+
+                if( isHashType( types) )
+                {
+                    String[] keys = this.debugModel.keys();
+
+                    DebugModel[] vals = this.debugModel.get( keys );
+
+                    for( int i = 0; i < keys.length; i++ )
+                    {
+                        DebugModel hashValue = vals[i];
+
+                        if( isValidVariable( hashValue ) )
+                        {
+                            vars.add( new FMVariable( stackFrame, keys[i] , hashValue ) );
+                        }
+                    }
+                }
+                else if( isCollectionType( types ) )
+                {
+                    String[] keys = this.debugModel.keys();
+
+                    System.out.println(keys);
+
+//                    if( isValidVariable( hashValue ) )
+//                    {
+//                        vars.add( new FMVariable( stackFrame, key , debugModel ) );
+//                    }
+                }
+                else if( isStringType( types ) || isNumberType( types ) )
+                {
+                    // no variables
+                }
+                else
+                {
+                    System.out.println( getReferenceTypeName( this.debugModel ) );
+                }
+            }
+            catch( Exception e )
+            {
+                e.printStackTrace();
+            }
+
+            this.variables = vars.toArray( new IVariable[vars.size()] );
         }
 
-//      DebugModel name = template.get( "name" );
-//      DebugModel configuration = template.get( "configuration" );
-
-//      DebugModel sharedVariables = configuration.get( "sharedVariables" );
-
         return this.variables;
+    }
+
+    private boolean isHashType( int types )
+    {
+        return ( DebugModel.TYPE_HASH & types ) > 0 || ( DebugModel.TYPE_HASH_EX & types ) > 0;
+    }
+
+    private boolean isMethodType( int types )
+    {
+        return ( DebugModel.TYPE_METHOD & types ) > 0 || ( DebugModel.TYPE_METHOD_EX & types ) > 0;
+    }
+
+    private boolean isStringType( int types )
+    {
+        return ( DebugModel.TYPE_SCALAR & types ) > 0;
+    }
+
+    private boolean isNumberType( int types )
+    {
+        return ( DebugModel.TYPE_NUMBER & types ) > 0;
+    }
+
+    private boolean isDateType( int types )
+    {
+        return ( DebugModel.TYPE_DATE & types ) > 0;
+    }
+
+    private boolean isCollectionType( int types )
+    {
+        return ( DebugModel.TYPE_COLLECTION & types ) > 0;
+    }
+
+    private boolean isValidVariable( DebugModel model )
+    {
+        boolean retval = false;
+
+        if( model != null )
+        {
+            try
+            {
+                int types = model.getModelTypes();
+
+                retval = ( VALID_VARIBLE_TYPES & types ) > 0;
+            }
+            catch( RemoteException e )
+            {
+                e.printStackTrace();
+            }
+        }
+
+        return retval;
     }
 
     public boolean hasVariables() throws DebugException
