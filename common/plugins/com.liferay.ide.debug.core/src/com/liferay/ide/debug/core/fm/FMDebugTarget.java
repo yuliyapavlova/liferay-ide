@@ -162,7 +162,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
                             {
                                 fmThread.setEnvironment( event.getEnvironment() );
                                 fmThread.setBreakpoints( new IBreakpoint[] { breakpoint } );
-                                String templateName = breakpoint.getMarker().getAttribute( "templateName", "" );
+                                String templateName = breakpoint.getMarker().getAttribute( ILRDebugConstants.FM_TEMPLATE_NAME, "" );
                                 fmStackFrames = new FMStackFrame[] { new FMStackFrame( fmThread, templateName ) };
 
                                 break;
@@ -372,7 +372,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         {
             try
             {
-                String templateName = breakpoint.getMarker().getAttribute( "templateName", "" );
+                String templateName = breakpoint.getMarker().getAttribute( ILRDebugConstants.FM_TEMPLATE_NAME, "" );
                 final Breakpoint bp = new Breakpoint( templateName, breakpoint.getMarker().getAttribute( IMarker.LINE_NUMBER, -1 ) );
                 getDebuggerClient().removeBreakpoint( bp );
             }

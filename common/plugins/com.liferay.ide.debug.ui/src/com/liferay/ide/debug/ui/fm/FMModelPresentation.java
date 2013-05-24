@@ -1,4 +1,4 @@
-package com.liferay.ide.debug.ui.fm.model;
+package com.liferay.ide.debug.ui.fm;
 
 import com.liferay.ide.core.util.StringPool;
 import com.liferay.ide.debug.core.fm.FMValue;
@@ -46,7 +46,7 @@ public class FMModelPresentation extends LabelProvider implements IDebugModelPre
     {
         if( element instanceof IFile || element instanceof ILineBreakpoint )
         {
-            return "org.eclipse.ui.DefaultTextEditor";
+            return "com.liferay.ide.freemarker.editor.FreemarkerEditor";
         }
 
         return null;
@@ -67,7 +67,7 @@ public class FMModelPresentation extends LabelProvider implements IDebugModelPre
         return null;
     }
 
-    public void computeDetail(IValue value, IValueDetailListener listener)
+    public void computeDetail( IValue value, IValueDetailListener listener )
     {
         String detail = StringPool.EMPTY;
 
@@ -77,7 +77,7 @@ public class FMModelPresentation extends LabelProvider implements IDebugModelPre
             detail = fmValue.getDetailString();
         }
 
-        listener.detailComputed(value, detail);
+        listener.detailComputed( value, detail );
     }
 
 }

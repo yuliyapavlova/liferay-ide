@@ -1,4 +1,4 @@
-package com.liferay.ide.debug.ui.fm.model;
+package com.liferay.ide.debug.ui.fm;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdapterFactory;

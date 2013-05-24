@@ -5,14 +5,14 @@
  <extension
          point="org.eclipse.debug.ui.debugModelPresentations">
       <debugModelPresentation
-            class="com.liferay.ide.debug.ui.fm.model.FMModelPresentation"
+            class="com.liferay.ide.debug.ui.fm.FMModelPresentation"
             id="com.liferay.ide.debug.freemarker">
       </debugModelPresentation>
    </extension>
    <extension
          point="org.eclipse.core.runtime.adapters">
       <factory
-            class="com.liferay.ide.debug.ui.fm.model.FMBreakpointAdapterFactory"
+            class="com.liferay.ide.debug.ui.fm.FMBreakpointAdapterFactory"
             adaptableType="org.eclipse.ui.texteditor.ITextEditor">
          <adapter
                type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget">
@@ -41,7 +41,7 @@
          point="org.eclipse.wst.sse.ui.breakpoint">
       <breakpointContribution>
          <provider
-               class="com.liferay.ide.debug.ui.FMBreakpointProvider"
+               class="com.liferay.ide.debug.ui.fm.FMBreakpointProvider"
                contentTypes="com.liferay.ide.freemarker.contentType">
          </provider>
       </breakpointContribution>

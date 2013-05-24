@@ -26,6 +26,7 @@ import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IDebugTarget;
+import org.eclipse.debug.core.sourcelookup.ISourceLookupDirector;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatLaunchConfigurationDelegate;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
@@ -74,6 +75,11 @@ public class LiferayTomcatLaunchConfigDelegate extends TomcatLaunchConfiguration
     public void launch( ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor )
         throws CoreException
     {
+        ISourceLookupDirector sourceLocator = new PortalSourceLookupDirector();
+        sourceLocator.setSourcePathComputer(getLaunchManager().getSourcePathComputer("com.liferay.ide.server.tomcat.portalSourcePathComputer")); //$NON-NLS-1$
+        sourceLocator.initializeDefaults(configuration);
+        launch.setSourceLocator(sourceLocator);
+
         this.tempMode = mode;
         super.launch( configuration, mode, launch, monitor );
         this.tempMode = null;

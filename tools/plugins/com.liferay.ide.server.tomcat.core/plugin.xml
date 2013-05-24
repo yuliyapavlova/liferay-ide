@@ -132,15 +132,19 @@
             id="com.liferay.ide.server.62.tomcat.70.launchConfigurationType"
             modes="run, debug, profile"
             name="%liferay.v62.ce.tomcat70.launch.config.type.name"
-            sourceLocatorId="com.liferay.ide.server.tomcat.SourceLookupDirector"
-            sourcePathComputerId="com.liferay.ide.server.tomcat.sourcePathComputer">
+            sourceLocatorId="com.liferay.ide.server.tomcat.sourceLookupDirector"
+            sourcePathComputerId="com.liferay.ide.server.tomcat.sortalSourcePathComputer">
       </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.core.sourcePathComputers">
       <sourcePathComputer
-            class="com.liferay.ide.server.tomcat.core.PortalSourcePathComputerDelegate"
+            class="org.eclipse.jst.server.tomcat.core.internal.TomcatSourcePathComputerDelegate"
             id="com.liferay.ide.server.tomcat.sourcePathComputer">
+      </sourcePathComputer>
+      <sourcePathComputer
+            class="com.liferay.ide.server.tomcat.core.PortalSourcePathComputerDelegate"
+            id="com.liferay.ide.server.tomcat.portalSourcePathComputer">
       </sourcePathComputer>
    </extension>
    
@@ -309,7 +313,7 @@
        point="org.eclipse.debug.core.sourceLocators">
     <sourceLocator
           class="com.liferay.ide.server.tomcat.core.PortalSourceLookupDirector"
-          id="com.liferay.ide.server.tomcat.SourceLookupDirector"
+          id="com.liferay.ide.server.tomcat.sourceLookupDirector"
           name="%liferay.portal.source.locator.name">
     </sourceLocator>
  </extension>
