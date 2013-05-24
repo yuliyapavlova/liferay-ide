@@ -5,9 +5,10 @@
   <extension
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint
+            class="com.liferay.ide.debug.core.fm.FMLineBreakpoint"
+            id="com.liferay.ide.debug.core.fm.lineBreakpoint"
             markerType="org.liferay.ide.debug.core.fm.lineBreakpoint.marker"
-            class="org.eclipse.debug.examples.core.pda.model.PDALineBreakpoint"
-            id="com.liferay.ide.debug.core.fm.lineBreakpoint">
+            name="Freemarker Line Breakpoint">
       </breakpoint>
    </extension>
    <extension

@@ -11,18 +11,14 @@ import freemarker.debug.DebuggerClient;
 import freemarker.debug.DebuggerListener;
 import freemarker.debug.EnvironmentSuspendedEvent;
 
-import java.io.ByteArrayInputStream;
 import java.net.Inet4Address;
 import java.rmi.RemoteException;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IMarkerDelta;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugEvent;
@@ -116,19 +112,19 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
                 FMDebugTarget.this.threads = new IThread[] { FMDebugTarget.this.fmThread };
 
-                try
-                {
-                    IFile bpFile = ResourcesPlugin.getWorkspace().getRoot().getFile( new Path( "Servers/10153#10193#10712" ) );
-                    if(!bpFile.exists())
-                    {
-                        bpFile.create( new ByteArrayInputStream( "".getBytes() ), true, null );
-                    }
-                    FMLineBreakpoint lineBreakpoint = new FMLineBreakpoint( bpFile, 1);
-                    DebugPlugin.getDefault().getBreakpointManager().addBreakpoint(lineBreakpoint);
-                }
-                catch( CoreException e )
-                {
-                }
+//                try
+//                {
+//                    IFile bpFile = ResourcesPlugin.getWorkspace().getRoot().getFile( new Path( "Servers/10153#10193#10712" ) );
+//                    if(!bpFile.exists())
+//                    {
+//                        bpFile.create( new ByteArrayInputStream( "".getBytes() ), true, null );
+//                    }
+//                    FMLineBreakpoint lineBreakpoint = new FMLineBreakpoint( bpFile, 1);
+//                    DebugPlugin.getDefault().getBreakpointManager().addBreakpoint(lineBreakpoint);
+//                }
+//                catch( CoreException e )
+//                {
+//                }
 
 //                final IBreakpoint[] localBreakpoints =
 //                    bpManager.getBreakpoints( getModelIdentifier() );

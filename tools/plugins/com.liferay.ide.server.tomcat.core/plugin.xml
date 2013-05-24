@@ -132,14 +132,14 @@
             id="com.liferay.ide.server.62.tomcat.70.launchConfigurationType"
             modes="run, debug, profile"
             name="%liferay.v62.ce.tomcat70.launch.config.type.name"
-            sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+            sourceLocatorId="com.liferay.ide.server.tomcat.SourceLookupDirector"
             sourcePathComputerId="com.liferay.ide.server.tomcat.sourcePathComputer">
       </launchConfigurationType>
    </extension>
    <extension
          point="org.eclipse.debug.core.sourcePathComputers">
       <sourcePathComputer
-            class="org.eclipse.jst.server.tomcat.core.internal.TomcatSourcePathComputerDelegate"
+            class="com.liferay.ide.server.tomcat.core.PortalSourcePathComputerDelegate"
             id="com.liferay.ide.server.tomcat.sourcePathComputer">
       </sourcePathComputer>
    </extension>
@@ -304,5 +304,13 @@
           name="Liferay v6.2 (Tomcat 7) Bundle"
           runtimeTypeId="com.liferay.ide.server.62.tomcat.runtime.70">
     </liferayRuntimeStub>
+ </extension>
+ <extension
+       point="org.eclipse.debug.core.sourceLocators">
+    <sourceLocator
+          class="com.liferay.ide.server.tomcat.core.PortalSourceLookupDirector"
+          id="com.liferay.ide.server.tomcat.SourceLookupDirector"
+          name="%liferay.portal.source.locator.name">
+    </sourceLocator>
  </extension>
 </plugin>

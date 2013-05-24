@@ -1,7 +1,11 @@
 package com.liferay.ide.debug.ui.fm.model;
 
+import com.liferay.ide.core.util.StringPool;
+import com.liferay.ide.debug.core.fm.FMValue;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.debug.core.DebugException;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.core.model.IValue;
 import org.eclipse.debug.ui.IDebugModelPresentation;
@@ -15,25 +19,42 @@ import org.eclipse.ui.part.FileEditorInput;
 public class FMModelPresentation extends LabelProvider implements IDebugModelPresentation
 {
 
-    public IEditorInput getEditorInput(Object element) {
-        if (element instanceof IFile) {
-            return new FileEditorInput((IFile)element);
+    public IEditorInput getEditorInput( Object element )
+    {
+        IEditorInput editorInput = null;
+
+        if( element instanceof IFile )
+        {
+            editorInput = new FileEditorInput( (IFile) element );
         }
-        if (element instanceof ILineBreakpoint) {
-            return new FileEditorInput((IFile)((ILineBreakpoint)element).getMarker().getResource());
+        else if( element instanceof ILineBreakpoint )
+        {
+            final IMarker marker = ( (ILineBreakpoint) element ).getMarker();
+
+            IResource resource = marker.getResource();
+
+            if( resource instanceof IFile )
+            {
+                editorInput = new FileEditorInput( (IFile) resource );
+            }
         }
-        return null;
+
+        return editorInput;
     }
 
-    public String getEditorId(IEditorInput input, Object element) {
-        if (element instanceof IFile || element instanceof ILineBreakpoint) {
+    public String getEditorId( IEditorInput input, Object element )
+    {
+        if( element instanceof IFile || element instanceof ILineBreakpoint )
+        {
             return "org.eclipse.ui.DefaultTextEditor";
         }
+
         return null;
     }
 
     public void setAttribute( String attribute, Object value )
     {
+        System.out.println(attribute + " " + value);
     }
 
     public Image getImage(Object element)
@@ -46,12 +67,16 @@ public class FMModelPresentation extends LabelProvider implements IDebugModelPre
         return null;
     }
 
-    public void computeDetail(IValue value, IValueDetailListener listener) {
-        String detail = "";
-        try {
-            detail = value.getValueString();
-        } catch (DebugException e) {
+    public void computeDetail(IValue value, IValueDetailListener listener)
+    {
+        String detail = StringPool.EMPTY;
+
+        if( value instanceof FMValue )
+        {
+            FMValue fmValue = (FMValue) value;
+            detail = fmValue.getDetailString();
         }
+
         listener.detailComputed(value, detail);
     }
 

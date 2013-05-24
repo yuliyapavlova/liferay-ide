@@ -70,17 +70,8 @@ public class FMValue extends FMDebugElement implements IValue
 
             if( ( DebugModel.TYPE_HASH_EX & types ) > 0 )
             {
-                retval = getHashValueString( this.debugModel );
-            }
-
-            if( ( DebugModel.TYPE_METHOD & types ) > 0 )
-            {
-                retval = "Method";
-            }
-
-            if( ( DebugModel.TYPE_METHOD_EX & types ) > 0 )
-            {
-                retval = "Method_ex";
+//                retval = getHashValueString( this.debugModel );
+                retval = "HashEx";
             }
 
             if( ( DebugModel.TYPE_NUMBER & types ) > 0 )
@@ -95,17 +86,18 @@ public class FMValue extends FMDebugElement implements IValue
 
             if( ( DebugModel.TYPE_SEQUENCE & types ) > 0 )
             {
-                retval = getSequenceValueString( this.debugModel );
+//                retval = getSequenceValueString( this.debugModel );
+                retval = "Sequence";
             }
 
             if( ( DebugModel.TYPE_TEMPLATE & types ) > 0 )
             {
-                retval = "template";
+                retval = "Template";
             }
 
             if( ( DebugModel.TYPE_TRANSFORM & types ) > 0 )
             {
-                retval = "transform";
+                retval = "Transform";
             }
         }
         catch( Exception e )
@@ -121,7 +113,7 @@ public class FMValue extends FMDebugElement implements IValue
         return retval;
     }
 
-    private String getSequenceValueString( DebugModel model )
+    private String getCollectionDetailString( DebugModel model )
     {
         StringBuilder sb = new StringBuilder();
         sb.append( '[' );
@@ -131,7 +123,7 @@ public class FMValue extends FMDebugElement implements IValue
             for( int i = 0; i < model.size(); i++ )
             {
                 final DebugModel val = model.get( i );
-                final String value = getModelValueString( val );
+                final String value = getModelDetailString( val );
 
                 if( value != null )
                 {
@@ -150,7 +142,36 @@ public class FMValue extends FMDebugElement implements IValue
         return value.endsWith( "," ) ? value.replaceFirst( ",$", "]" ) : value;
     }
 
-    private String getModelValueString( DebugModel model ) throws RemoteException, TemplateModelException
+    private String getSequenceDetailString( DebugModel model )
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append( '[' );
+
+        try
+        {
+            for( int i = 0; i < model.size(); i++ )
+            {
+                final DebugModel val = model.get( i );
+                final String value = getModelDetailString( val );
+
+                if( value != null )
+                {
+                    sb.append( value );
+                    sb.append(',');
+                }
+            }
+        }
+        catch( Exception e )
+        {
+            sb.append( e.getMessage() );
+        }
+
+        String value = sb.toString();
+
+        return value.endsWith( "," ) ? value.replaceFirst( ",$", "]" ) : value;
+    }
+
+    private String getModelDetailString( DebugModel model ) throws RemoteException, TemplateModelException
     {
         String value = null;
 
@@ -168,27 +189,119 @@ public class FMValue extends FMDebugElement implements IValue
         {
             value = model.getAsDate().toString();
         }
+        else if( isBooleanType( modelTypes ) )
+        {
+            value = Boolean.toString( model.getAsBoolean() );
+        }
         else if( isHashType( modelTypes ) )
         {
-            value = getHashValueString( model );
+//            value = getHashDetailString( model );
+            value = "Hash";
         }
         else if( isCollectionType( modelTypes ) )
         {
-            value = getHashValueString( model );
+//            value = getHashDetailString( model );
+            value = "Collection";
         }
-        else if( isMethodType( modelTypes) )
+        else if( isSequenceType( modelTypes ) )
+        {
+//            value = getSequenceDetailString( model );
+            value = "Sequence";
+        }
+        else if( isMethodType( modelTypes) || isTransformType( modelTypes ) || modelTypes == 0 )
         {
             value = null;
         }
         else
         {
-            System.out.println("unsupported model type: " + modelTypes );
+            System.out.println("unsupported detail model type: " + modelTypes );
         }
 
         return value;
     }
 
-    private String getHashValueString( DebugModel model )
+    public String getDetailString()
+    {
+        String retval = null;
+
+        try
+        {
+            int types = this.debugModel.getModelTypes();
+
+            if( ( DebugModel.TYPE_BOOLEAN & types ) > 0 )
+            {
+                retval = Boolean.toString( this.debugModel.getAsBoolean() );
+            }
+
+            if( ( DebugModel.TYPE_COLLECTION & types ) > 0 )
+            {
+                retval = getCollectionDetailString( this.debugModel );
+            }
+
+            if( ( DebugModel.TYPE_CONFIGURATION & types ) > 0 )
+            {
+                retval = "Configuration";
+            }
+
+            if( ( DebugModel.TYPE_DATE & types ) > 0 )
+            {
+                retval = this.debugModel.getAsDate().toString();
+            }
+
+            if( ( DebugModel.TYPE_ENVIRONMENT & types ) > 0 )
+            {
+                retval = "Environment";
+            }
+
+            if( ( DebugModel.TYPE_HASH & types ) > 0 )
+            {
+                retval = "Hash";
+            }
+
+            if( ( DebugModel.TYPE_HASH_EX & types ) > 0 )
+            {
+                retval = getHashDetailString( this.debugModel );
+            }
+
+            if( ( DebugModel.TYPE_NUMBER & types ) > 0 )
+            {
+                retval = this.debugModel.getAsNumber().toString();
+            }
+
+            if( ( DebugModel.TYPE_SCALAR & types ) > 0 )
+            {
+                retval = this.debugModel.getAsString();
+            }
+
+            if( ( DebugModel.TYPE_SEQUENCE & types ) > 0 )
+            {
+                retval = getSequenceDetailString( this.debugModel );
+            }
+
+            if( ( DebugModel.TYPE_TEMPLATE & types ) > 0 )
+            {
+                retval = "Template";
+            }
+
+            if( ( DebugModel.TYPE_TRANSFORM & types ) > 0 )
+            {
+                retval = "Transform";
+            }
+        }
+        catch( Exception e )
+        {
+            e.printStackTrace();
+        }
+
+        if( retval == null )
+        {
+            retval = "";
+        }
+
+        return retval;
+    }
+
+    private String getHashDetailString( DebugModel model )
     {
         StringBuilder sb = new StringBuilder();
         sb.append( '{' );
@@ -198,7 +311,7 @@ public class FMValue extends FMDebugElement implements IValue
             for( String key : model.keys() )
             {
                 final DebugModel val = model.get( key );
-                final String value = getModelValueString( val );
+                final String value = getModelDetailString( val );
 
                 if( value != null )
                 {
@@ -276,7 +389,21 @@ public class FMValue extends FMDebugElement implements IValue
 //                        vars.add( new FMVariable( stackFrame, key , debugModel ) );
 //                    }
                 }
-                else if( isStringType( types ) || isNumberType( types ) )
+                else if( isSequenceType( types ) )
+                {
+                    int length = this.debugModel.size();
+
+                    DebugModel[] vals = this.debugModel.get( 0, length );
+
+                    for( int i = 0; i < length; i++ )
+                    {
+                        if( isValidVariable( vals[i] ) )
+                        {
+                            vars.add( new FMVariable( stackFrame, Integer.toString( i ), vals[i] ) );
+                        }
+                    }
+                }
+                else if( isStringType( types ) || isNumberType( types ) || isBooleanType( types ) )
                 {
                     // no variables
                 }
@@ -306,6 +433,11 @@ public class FMValue extends FMDebugElement implements IValue
         return ( DebugModel.TYPE_METHOD & types ) > 0 || ( DebugModel.TYPE_METHOD_EX & types ) > 0;
     }
 
+    private boolean isTransformType( int types )
+    {
+        return ( DebugModel.TYPE_TRANSFORM & types ) > 0;
+    }
+
     private boolean isStringType( int types )
     {
         return ( DebugModel.TYPE_SCALAR & types ) > 0;
@@ -321,9 +453,19 @@ public class FMValue extends FMDebugElement implements IValue
         return ( DebugModel.TYPE_DATE & types ) > 0;
     }
 
+    private boolean isBooleanType( int types )
+    {
+        return ( DebugModel.TYPE_BOOLEAN & types ) > 0;
+    }
+
     private boolean isCollectionType( int types )
     {
         return ( DebugModel.TYPE_COLLECTION & types ) > 0;
+    }
+
+    private boolean isSequenceType( int types )
+    {
+        return ( DebugModel.TYPE_SEQUENCE & types ) > 0;
     }
 
     private boolean isValidVariable( DebugModel model )
