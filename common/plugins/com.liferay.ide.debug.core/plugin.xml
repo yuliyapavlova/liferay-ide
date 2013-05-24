@@ -6,13 +6,13 @@
          point="org.eclipse.debug.core.breakpoints">
       <breakpoint
             class="com.liferay.ide.debug.core.fm.FMLineBreakpoint"
-            id="com.liferay.ide.debug.core.fm.lineBreakpoint"
-            markerType="org.liferay.ide.debug.core.fm.lineBreakpoint.marker"
+            id="com.liferay.ide.debug.core.fmLineBreakpoint"
+            markerType="com.liferay.ide.debug.core.fmLineBreakpointMarker"
             name="Freemarker Line Breakpoint">
       </breakpoint>
    </extension>
    <extension
-         id="fm.lineBreakpoint.marker"
+         id="fmLineBreakpointMarker"
          point="org.eclipse.core.resources.markers">
       <super
             type="org.eclipse.debug.core.lineBreakpointMarker">

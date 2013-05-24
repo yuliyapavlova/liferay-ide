@@ -14,7 +14,7 @@ import org.eclipse.debug.core.model.LineBreakpoint;
 
 public class FMLineBreakpoint extends LineBreakpoint
 {
-    
+
     public static final String ATTR_TEMPLATE_NAME = "templateName";
 
     public FMLineBreakpoint()
@@ -33,17 +33,25 @@ public class FMLineBreakpoint extends LineBreakpoint
             public void run( IProgressMonitor monitor ) throws CoreException
             {
                 final IMarker marker = resource.createMarker( LiferayDebugCore.ID_FM_BREAKPOINT_TYPE );
+//                final IMarker marker = resource.createMarker( IBreakpoint.LINE_BREAKPOINT_MARKER );
                 marker.setAttribute( IBreakpoint.ENABLED, Boolean.TRUE );
                 marker.setAttribute( IMarker.LINE_NUMBER, line );
                 marker.setAttribute( IBreakpoint.ID, getModelIdentifier() );
                 marker.setAttribute( IMarker.MESSAGE, createMessage( resource ) );
-                marker.setAttribute( "templateName", resource.getName() );
+
+                marker.setAttribute( "templateName", getTemplateName( resource ) );
 
                 setMarker( marker );
             }
         };
 
         run( getMarkerRule( resource ), runnable );
+    }
+
+    protected String getTemplateName( IResource resource )
+    {
+        //FMDebug-theme_SERVLET_CONTEXT_/templates/portal_normal.ftl
+        return "FMDebug-theme_SERVLET_CONTEXT_/templates/portal_normal.ftl";
     }
 
     public String getModelIdentifier()

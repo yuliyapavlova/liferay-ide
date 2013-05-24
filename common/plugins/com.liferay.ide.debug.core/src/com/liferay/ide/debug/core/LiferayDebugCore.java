@@ -33,7 +33,7 @@ public class LiferayDebugCore extends Plugin
     // The plugin ID
     public static final String PLUGIN_ID = "com.liferay.ide.debug.core"; //$NON-NLS-1$
 
-    public static final String ID_FM_BREAKPOINT_TYPE = "org.liferay.ide.debug.core.fm.lineBreakpoint.marker";
+    public static final String ID_FM_BREAKPOINT_TYPE = "com.liferay.ide.debug.core.fmLineBreakpointMarker";
 
     // The shared instance
     private static LiferayDebugCore plugin;

@@ -34,8 +34,6 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>com.liferay.ide.debug.core</module>
-        <module>com.liferay.ide.debug.ui</module>
         <module>com.liferay.ide.hook.core</module>
         <module>com.liferay.ide.hook.ui</module>
         <module>com.liferay.ide.layouttpl.core</module>

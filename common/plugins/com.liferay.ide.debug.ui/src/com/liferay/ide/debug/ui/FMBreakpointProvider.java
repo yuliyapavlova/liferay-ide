@@ -1,8 +1,12 @@
 package com.liferay.ide.debug.ui;
 
+import com.liferay.ide.debug.core.fm.FMLineBreakpoint;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IFileEditorInput;
@@ -26,12 +30,13 @@ public class FMBreakpointProvider implements IBreakpointProvider
         if( input instanceof IFileEditorInput )
         {
             IFileEditorInput fileEditorInput = (IFileEditorInput) input;
-            
-            fileEditorInput.getFile();
+
+            FMLineBreakpoint bp = new FMLineBreakpoint( fileEditorInput.getFile(), lineNumber );
+            DebugPlugin.getDefault().getBreakpointManager().addBreakpoint( bp );
         }
-        
-        
-        return null;
+
+
+        return Status.OK_STATUS;
     }
 
     public IResource getResource( IEditorInput input )

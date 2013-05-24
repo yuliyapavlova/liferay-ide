@@ -126,13 +126,12 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 //                {
 //                }
 
-//                final IBreakpoint[] localBreakpoints =
-//                    bpManager.getBreakpoints( getModelIdentifier() );
-//
-//                for( IBreakpoint localBreakpoint : localBreakpoints )
-//                {
-//                    addRemoteBreakpoint( debugger, localBreakpoint );
-//                }
+                final IBreakpoint[] localBreakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints( getModelIdentifier() );
+
+                for( IBreakpoint localBreakpoint : localBreakpoints )
+                {
+                    addRemoteBreakpoint( debugger, localBreakpoint );
+                }
 //                final Breakpoint bp = new Breakpoint( "10153#10193#10712", 1 );
 //                debugger.addBreakpoint( bp );
             }
@@ -159,7 +158,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
                         try
                         {
-                            if( lineBreakpoint.getLineNumber() == lineNumber )
+                            if( lineBreakpoint.getLineNumber() - 1 == lineNumber )
                             {
                                 fmThread.setEnvironment( event.getEnvironment() );
                                 fmThread.setBreakpoints( new IBreakpoint[] { breakpoint } );
