@@ -158,7 +158,9 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
                         try
                         {
-                            if( lineBreakpoint.getLineNumber() - 1 == lineNumber )
+                            final int bpLineNumber = lineBreakpoint.getLineNumber();
+
+                            if( bpLineNumber == lineNumber )
                             {
                                 fmThread.setEnvironment( event.getEnvironment() );
                                 fmThread.setBreakpoints( new IBreakpoint[] { breakpoint } );
@@ -345,18 +347,12 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
             {
                 if( breakpoint.isEnabled() )
                 {
-                    try
-                    {
-                        addRemoteBreakpoint( getDebuggerClient(), breakpoint );
-                    }
-                    catch( RemoteException e )
-                    {
-                        e.printStackTrace();
-                    }
+                    addRemoteBreakpoint( getDebuggerClient(), breakpoint );
                 }
             }
-            catch( CoreException e )
+            catch( Exception e )
             {
+                LiferayDebugCore.logError( "Error adding breakpoint.", e );
             }
         }
     }
