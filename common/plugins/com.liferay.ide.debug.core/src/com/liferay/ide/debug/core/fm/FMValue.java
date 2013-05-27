@@ -70,7 +70,6 @@ public class FMValue extends FMDebugElement implements IValue
 
             if( ( DebugModel.TYPE_HASH_EX & types ) > 0 )
             {
-//                retval = getHashValueString( this.debugModel );
                 retval = "HashEx";
             }
 
@@ -86,7 +85,6 @@ public class FMValue extends FMDebugElement implements IValue
 
             if( ( DebugModel.TYPE_SEQUENCE & types ) > 0 )
             {
-//                retval = getSequenceValueString( this.debugModel );
                 retval = "Sequence";
             }
 
@@ -389,7 +387,7 @@ public class FMValue extends FMDebugElement implements IValue
 //                        vars.add( new FMVariable( stackFrame, key , debugModel ) );
 //                    }
                 }
-                else if( isSequenceType( types ) )
+                else if( isSequenceType( types ) && isValidSequence( this.debugModel ) )
                 {
                     int length = this.debugModel.size();
 
@@ -421,6 +419,18 @@ public class FMValue extends FMDebugElement implements IValue
         }
 
         return this.variables;
+    }
+
+    private boolean isValidSequence( DebugModel model )
+    {
+        try
+        {
+            return model != null && model.size() > 0;
+        }
+        catch( Exception e )
+        {
+            return false;
+        }
     }
 
     private boolean isHashType( int types )
@@ -479,6 +489,11 @@ public class FMValue extends FMDebugElement implements IValue
                 int types = model.getModelTypes();
 
                 retval = ( VALID_VARIBLE_TYPES & types ) > 0;
+
+                if( retval && isSequenceType( types ) && ! isValidSequence( model ) )
+                {
+                    retval = false;
+                }
             }
             catch( RemoteException e )
             {

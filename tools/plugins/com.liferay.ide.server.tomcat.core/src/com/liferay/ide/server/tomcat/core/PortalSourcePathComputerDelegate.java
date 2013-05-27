@@ -1,9 +1,19 @@
 package com.liferay.ide.server.tomcat.core;
 
+import com.liferay.ide.project.core.util.ProjectUtil;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.sourcelookup.ISourceContainer;
+import org.eclipse.debug.core.sourcelookup.containers.FolderSourceContainer;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatSourcePathComputerDelegate;
 
 
@@ -15,14 +25,27 @@ public class PortalSourcePathComputerDelegate extends TomcatSourcePathComputerDe
     public ISourceContainer[] computeSourceContainers( ILaunchConfiguration configuration, IProgressMonitor monitor )
         throws CoreException
     {
-        ISourceContainer[] containers = super.computeSourceContainers( configuration, monitor );
+        ISourceContainer[] superContainers = super.computeSourceContainers( configuration, monitor );
 
-//        IFolder diffs = CoreUtil.getProject( "fmtest-theme" ).getFolder( "docroot/_diffs/" ); //$NON-NLS-1$ //$NON-NLS-2$
-//        ISourceContainer[] retval = new ISourceContainer[ containers.length + 1 ];
-//        retval[0] = new FolderSourceContainer( diffs, true );
-//        System.arraycopy( containers, 0, retval, 1, containers.length );
+        // add theme plugin _diffs folders
+        List<ISourceContainer> containers = new ArrayList<ISourceContainer>();
 
-        return containers;
+        for( IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects() )
+        {
+            if( ProjectUtil.isThemeProject( project ) )
+            {
+                IFolder diffs = project.getFolder( "docroot/_diffs" ); //$NON-NLS-1$
+
+                if( diffs.exists() )
+                {
+                    containers.add( new FolderSourceContainer( diffs, true ) );
+                }
+            }
+        }
+
+        Collections.addAll( containers, superContainers );
+
+        return containers.toArray( new ISourceContainer[0] );
     }
 
 }

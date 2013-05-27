@@ -98,7 +98,9 @@ public class PortalSourceLookupParticipant extends AbstractSourceLookupParticipa
 
                 IPath templatePath = new Path( templateName ).removeFirstSegments( 1 );
 
-                retval = templatePath.toPortableString();
+//                String contextPath = new Path( templateName ).segment( 0 ).replaceAll( "_SERVLET_CONTEXT_", "" );  //$NON-NLS-1$//$NON-NLS-2$
+
+                retval = "_diffs/" + templatePath.toPortableString(); //$NON-NLS-1$
             }
             catch( Exception e )
             {

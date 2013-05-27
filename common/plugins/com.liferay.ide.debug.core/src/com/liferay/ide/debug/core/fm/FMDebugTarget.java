@@ -46,7 +46,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     private EventDispatchJob eventDispatchJob;
 
     // suspend state
-    private boolean suspended = true;
+    private boolean suspended = false;
 
     // terminated state
     private boolean terminated = false;
@@ -165,7 +165,8 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
                                 fmThread.setEnvironment( event.getEnvironment() );
                                 fmThread.setBreakpoints( new IBreakpoint[] { breakpoint } );
                                 String templateName = breakpoint.getMarker().getAttribute( ILRDebugConstants.FM_TEMPLATE_NAME, "" );
-                                fmStackFrames = new FMStackFrame[] { new FMStackFrame( fmThread, templateName ) };
+                                String frameName = templateName + " line: " + lineNumber;
+                                fmStackFrames = new FMStackFrame[] { new FMStackFrame( fmThread, frameName ) };
 
                                 break;
                             }
@@ -317,6 +318,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         this.suspended = false;
         this.fmStackFrames = new IStackFrame[0];
         this.fmThread.fireResumeEvent( detail );
+        this.fireResumeEvent( detail );
     }
 
     /**
