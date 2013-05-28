@@ -32,9 +32,9 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     public JSONObject getCompanyIdByVirtualHost() throws APIException
     {
         JSONObject company = null;
-        
+
         Object jsonResponse = getJSONAPI( GET_COMPANY_BY_VIRTUAL_HOST_API, "virtualHost", getHost() ); //$NON-NLS-1$
-        
+
         if( jsonResponse instanceof JSONObject )
         {
             company = (JSONObject) jsonResponse;
@@ -46,13 +46,14 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
 
         return company;
     }
-    
-    public JSONArray getJournalArticles( long groupId, long userId ) throws APIException
+
+    public JSONArray getJournalArticles( long groupId, long folderId ) throws APIException
     {
         JSONArray journalArticles = null;
-        
-        Object jsonResponse = getJSONAPI( GET_JOURNAL_ARTICLES_API, "groupId", groupId, "userId", userId, "start", -1, "end", -1, "-obc", null ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-        
+
+//        Object jsonResponse = getJSONAPI( GET_JOURNAL_ARTICLES_API, "groupId", groupId, "userId", userId, "start", -1, "end", -1, "-obc", null ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        Object jsonResponse = getJSONAPI( GET_JOURNAL_ARTICLES_API, "groupId", groupId, "folderId", folderId ); //$NON-NLS-1$ //$NON-NLS-2$
+
         if( jsonResponse instanceof JSONArray )
         {
             journalArticles = (JSONArray) jsonResponse;
@@ -68,9 +69,9 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     public JSONArray getStructures( long groupId ) throws APIException
     {
         JSONArray structures = null;
-        
+
         Object jsonResponse = getJSONAPI( GET_STRUCTURES_API, "groupId", groupId ); //$NON-NLS-1$
-        
+
         if( jsonResponse instanceof JSONArray )
         {
             structures = (JSONArray) jsonResponse;
@@ -82,13 +83,13 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
 
         return structures;
     }
-    
+
     public JSONArray getStructureTemplates( long groupId, long structureId ) throws APIException
     {
         JSONArray structureTemplates = null;
-        
+
         Object jsonResponse = getJSONAPI( GET_STRUCTURE_TEMPLATES_API, "groupId", groupId, "structureId", structureId ); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         if( jsonResponse instanceof JSONArray )
         {
             structureTemplates = (JSONArray) jsonResponse;
@@ -104,9 +105,9 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     public JSONObject getUserByEmailAddress(long companyId) throws APIException
     {
         JSONObject user = null;
-        
+
         Object jsonResponse = getJSONAPI( GET_USER_BY_EMAIL_ADDRESS_API, "companyId", Long.toString( companyId), "emailAddress", getUsername() ); //$NON-NLS-1$ //$NON-NLS-2$
-        
+
         if( jsonResponse instanceof JSONObject )
         {
             user = (JSONObject) jsonResponse;
@@ -122,9 +123,9 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     public JSONArray getUserSites() throws APIException
     {
         JSONArray sites = null;
-        
+
         Object jsonResponse = getJSONAPI( GET_USER_SITES_API );
-        
+
         if( jsonResponse instanceof JSONArray )
         {
             sites = (JSONArray) jsonResponse;
@@ -133,8 +134,42 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
         {
             throw new APIException( GET_USER_SITES_API, "Unable to get JSONArray" ); //$NON-NLS-1$
         }
-        
+
         return sites;
+    }
+
+    public JSONArray getTemplates( long groupId, long classNameId ) throws APIException
+    {
+        JSONArray templates = null;
+
+        Object jsonResponse = getJSONAPI( GET_TEMPLATES_API,
+                                          "groupId", groupId,  //$NON-NLS-1$
+                                          "classNameId", classNameId ); //$NON-NLS-1$
+
+        if( jsonResponse instanceof JSONArray )
+        {
+            templates = (JSONArray) jsonResponse;
+        }
+        else
+        {
+            throw new APIException( GET_TEMPLATES_API, "Unable to get JSONArray" ); //$NON-NLS-1$
+        }
+
+        return templates;
+    }
+
+    public long fetchClassNameId( String value ) throws APIException
+    {
+        long retval = -1;
+
+        Object jsonResponse = getJSONAPI( FETCH_CLASSNAME_ID_API, "value", value ); //$NON-NLS-1$
+
+        if( jsonResponse instanceof Long )
+        {
+            retval = ( ( Long) jsonResponse ).longValue();
+        }
+
+        return retval;
     }
 
 }

@@ -22,7 +22,6 @@ import com.liferay.ide.core.util.CoreUtil;
 import com.liferay.ide.core.util.StringPool;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -30,19 +29,24 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.AuthCache;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.protocol.ClientContext;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.params.ConnRoutePNames;
 import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.impl.client.BasicAuthCache;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
+import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.core.net.proxy.IProxyData;
 import org.eclipse.core.net.proxy.IProxyService;
@@ -62,6 +66,7 @@ public class RemoteConnection implements IRemoteConnection
     private int httpPort;
     private String password;
     private String username;
+    private BasicHttpContext httpContext;
 
     protected Object deleteJSONAPI( Object... args ) throws APIException
     {
@@ -138,9 +143,9 @@ public class RemoteConnection implements IRemoteConnection
                         }
                     }
                 }
-                catch( URISyntaxException e )
+                catch( Exception e )
                 {
-                    LiferayCore.logError( "Unable to read proxy data", e ); //$NON-NLS-1$
+//                    LiferayCore.logError( "Unable to read proxy data", e ); //$NON-NLS-1$
                 }
 
                 if( newDefaultHttpClient == null )
@@ -148,9 +153,23 @@ public class RemoteConnection implements IRemoteConnection
                     newDefaultHttpClient = new DefaultHttpClient();
                 }
 
+
                 newDefaultHttpClient.getCredentialsProvider().setCredentials(
-                    new AuthScope( getHost(), getHttpPort() ),
+//                    new AuthScope( getHost(), getHttpPort() ),
+                    AuthScope.ANY,
                     new UsernamePasswordCredentials( getUsername(), getPassword() ) );
+
+                // Create AuthCache instance
+                AuthCache authCache = new BasicAuthCache();
+                // Generate BASIC scheme object and add it to the local auth cache
+                BasicScheme basicAuth = new BasicScheme();
+                HttpHost targetHost = new HttpHost(getHost(), getHttpPort(), "http"); //$NON-NLS-1$
+                authCache.put(targetHost, basicAuth);
+
+                // Add AuthCache to the execution context
+                BasicHttpContext localcontext = new BasicHttpContext();
+                localcontext.setAttribute(ClientContext.AUTH_CACHE, authCache);
+                this.httpContext = localcontext;
 
                 this.httpClient = newDefaultHttpClient;
             }
@@ -166,7 +185,18 @@ public class RemoteConnection implements IRemoteConnection
 
     protected String getHttpResponse( HttpUriRequest request ) throws Exception
     {
-        HttpResponse response = getHttpClient().execute( request );
+        HttpResponse response = null;
+        HttpClient client = getHttpClient();
+
+        if( this.httpContext != null  )
+        {
+            response = client.execute( request, this.httpContext );
+        }
+        else
+        {
+            response = client.execute( request );
+        }
+
         int statusCode = response.getStatusLine().getStatusCode();
 
         if( statusCode == HttpStatus.SC_OK )
@@ -213,6 +243,13 @@ public class RemoteConnection implements IRemoteConnection
             }
             catch( JSONException e1 )
             {
+                try
+                {
+                    retval = Long.parseLong( response );
+                }
+                catch( NumberFormatException nfe )
+                {
+                }
             }
         }
 
@@ -264,9 +301,9 @@ public class RemoteConnection implements IRemoteConnection
             builder.setPort( getHttpPort() );
             builder.setPath( api );
 
-            if( params.length >= 2 )
+            if( params.length >= 3 )
             {
-                for( int i = 0; i < params.length; i += 2 )
+                for( int i = 1; i < params.length; i += 2 )
                 {
                     String name = null;
                     String value = StringPool.EMPTY;

@@ -114,6 +114,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
 //                try
 //                {
+//                                                                                                        /companyId/groupId/templateKey
 //                    IFile bpFile = ResourcesPlugin.getWorkspace().getRoot().getFile( new Path( "Servers/10153#10193#10712" ) );
 //                    if(!bpFile.exists())
 //                    {
