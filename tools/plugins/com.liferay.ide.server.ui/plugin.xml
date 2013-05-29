@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   
-   
+
+
    <extension
          point="org.eclipse.ui.navigator.viewer">
       <viewerContentBinding
@@ -56,7 +56,7 @@
                suppressedExtensionId="org.eclipse.wst.server.ui.ServersView.content.root">
          </override>
       </navigatorContent>
-      
+
       <navigatorContent
             activeByDefault="true"
             contentProvider="com.liferay.ide.server.ui.PluginsCustomContentProvider"
@@ -96,7 +96,7 @@
                suppressedExtensionId="org.eclipse.wst.server.ui.ServersView.content.root">
          </override>
       </navigatorContent>
-      
+
    </extension>
    <extension
          point="org.eclipse.ui.popupMenus">
@@ -138,7 +138,7 @@
             adaptable="true"
             id="com.liferay.ide.server.ui.popup.module"
             objectClass="org.eclipse.wst.server.ui.IServerModule">
-         
+
          <visibility>
             <and>
                       <objectState
@@ -161,7 +161,7 @@
                id="com.liferay.ide.server.ui.action.redeploy"
                label="%redeploy.action.label">
          </action>
-         
+
       </objectContribution>
    </extension>
    <extension
@@ -248,7 +248,7 @@
             typeIds="com.liferay.ide.eclipse.server.remote">
       </section>
    </extension>
-   
+
    <extension
          point="org.eclipse.wst.sse.ui.breakpoint">
       <breakpointContribution
@@ -272,7 +272,7 @@
             type="java.lang.Object">
       </propertyTester>
    </extension>
-   
+
    <!--
    <extension
          point="org.eclipse.jdt.ui.classpathContainerPage">
@@ -283,4 +283,103 @@
       </classpathContainerPage>
    </extension>
 	-->
+
+    <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerContentBinding
+            viewerId="org.eclipse.wst.server.ui.ServersView">
+         <includes>
+            <contentExtension
+                  isRoot="false"
+                  pattern="com.liferay.ide.server.ui.portal.content">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <navigatorContent
+            activeByDefault="true"
+            contentProvider="com.liferay.ide.server.ui.portal.PortalCustomContentProvider"
+            icon="icons/e16/sites_16x16.png"
+            id="com.liferay.ide.server.ui.portal.content"
+            labelProvider="com.liferay.ide.server.ui.portal.PortalDecorator"
+            name="Portal Content"
+            priority="higher"
+            providesSaveables="true">
+         <triggerPoints>
+            <or>
+               <instanceof
+                     value="org.eclipse.wst.server.core.IServer">
+               </instanceof>
+            </or>
+         </triggerPoints>
+         <possibleChildren>
+            <or>
+               <instanceof
+                     value="java.lang.Object">
+               </instanceof>
+               <instanceof
+                     value="com.liferay.ide.server.ui.portal.SitesFolder">
+               </instanceof>
+               <!--
+               <instanceof
+                     value="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionEntry">
+               </instanceof>
+               -->
+            </or>
+         </possibleChildren>
+         <override
+               policy="InvokeAlwaysRegardlessOfSuppressedExt"
+               suppressedExtensionId="org.eclipse.wst.server.ui.ServersView.content.root">
+         </override>
+         <!--<actionProvider
+            class="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionsActionProvider"
+            id="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionsActionProvider"
+            priority="highest">
+         <enablement>
+            <or>
+               <instanceof
+                     value="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionsFolder">
+               </instanceof>
+               <instanceof
+                     value="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionEntry">
+               </instanceof>
+            </or>
+         </enablement>
+      </actionProvider>-->
+         <dropAssistant
+               class="com.liferay.ide.server.ui.portal.PortalDropAdapterAssistant"
+               id="com.liferay.ide.server.ui.portal.dropAssistant">
+            <possibleDropTargets>
+               <or>
+                  <instanceof value="com.liferay.ide.server.ui.portal.SitesFolder">
+                  </instanceof>
+               </or>
+            </possibleDropTargets>
+         </dropAssistant>
+      </navigatorContent>
+   </extension>
+   <extension
+         point="org.eclipse.ui.decorators">
+      <decorator
+            class="com.liferay.ide.server.ui.portal.PortalDecorator"
+            icon="/icons/e16/sites_16x16.png"
+            id="com.liferay.ide.portal.ui.portalDecorator"
+            label="Portal Decorator"
+            lightweight="true"
+            state="true">
+         <enablement>
+            <or>
+               <objectClass
+                     name="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionEntry">
+               </objectClass>
+               <objectClass
+                     name="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionsFolder">
+               </objectClass>
+            </or>
+         </enablement>
+      </decorator>
+   </extension>
+
 </plugin>

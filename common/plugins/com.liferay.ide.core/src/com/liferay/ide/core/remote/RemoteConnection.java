@@ -416,6 +416,7 @@ public class RemoteConnection implements IRemoteConnection
         {
             this.httpClient.getConnectionManager().shutdown();
             this.httpClient = null;
+            this.httpContext = null;
         }
     }
 }

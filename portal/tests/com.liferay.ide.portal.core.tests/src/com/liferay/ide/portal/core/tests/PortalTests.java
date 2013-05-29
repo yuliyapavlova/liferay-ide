@@ -29,7 +29,7 @@ public class PortalTests
     private static void testWebdav()
     {
 
-        Sardine sardine = SardineFactory.begin("test@liferay.com", "test1"); //$NON-NLS-1$ //$NON-NLS-2$
+        Sardine sardine = SardineFactory.begin("test@liferay.com", "test"); //$NON-NLS-1$ //$NON-NLS-2$
 
         List<DavResource> resources;
         try
@@ -90,7 +90,7 @@ public class PortalTests
                     }
                 }
 
-                long classNameId = connection.fetchClassNameId( "com.liferay.portlet.dynamicdatamapping.model.DDMStructure" );
+                long classNameId = connection.fetchClassNameId( IPortalConnection.DDM_CLASSNAME );
 
                 JSONArray templates = connection.getTemplates( groupId, classNameId );
 

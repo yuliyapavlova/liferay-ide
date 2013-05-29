@@ -42,8 +42,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.internal.ide.IDEInternalPreferences;
 import org.eclipse.ui.internal.ide.IDEWorkbenchPlugin;
+import org.eclipse.ui.internal.navigator.NavigatorContentService;
 import org.eclipse.ui.internal.util.PrefUtil;
 import org.eclipse.ui.internal.wizards.newresource.ResourceMessages;
+import org.eclipse.ui.navigator.CommonViewer;
+import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.osgi.framework.Bundle;
 
 /**
@@ -317,5 +320,29 @@ public class UIUtil
                 // ignore
             }
         }
+    }
+
+    public static void refreshContent( ICommonContentExtensionSite site, final Object elementOrTreePath )
+    {
+        final NavigatorContentService s = (NavigatorContentService) site.getService();
+    
+        sync
+        (
+            new Runnable()
+            {
+                public void run()
+                {
+                    try
+                    {
+                        final CommonViewer viewer = (CommonViewer) s.getViewer();
+                        viewer.refresh( true );
+                        viewer.setExpandedState( elementOrTreePath, true );
+                    }
+                    catch (Exception e)
+                    {
+                    }
+                }
+            }
+        );
     }
 }

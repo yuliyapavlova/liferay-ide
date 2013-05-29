@@ -18,6 +18,8 @@ package com.liferay.ide.server.core;
 import com.liferay.ide.core.LiferayCore;
 import com.liferay.ide.core.util.CoreUtil;
 import com.liferay.ide.core.util.StringPool;
+import com.liferay.ide.portal.core.IPortalConnection;
+import com.liferay.ide.portal.core.PortalConnection;
 import com.liferay.ide.server.remote.IRemoteServer;
 import com.liferay.ide.server.remote.IServerManagerConnection;
 import com.liferay.ide.server.remote.ServerManagerConnection;
@@ -50,6 +52,7 @@ public class LiferayServerCore extends LiferayCore
 {
 
     private static Map<String, IServerManagerConnection> connections = null;
+    private static HashMap<String, IPortalConnection> portalConnections;
 
     // The shared instance
     private static LiferayServerCore plugin;
@@ -362,6 +365,82 @@ public class LiferayServerCore extends LiferayCore
         }
 
         return Status.OK_STATUS;
+    }
+
+    public static IPortalConnection getPortalConnection( final ILiferayServer liferayServer )
+    {
+        if( portalConnections == null )
+        {
+            portalConnections = new HashMap<String, IPortalConnection>();
+
+            ServerCore.addServerLifecycleListener( new IServerLifecycleListener()
+            {
+
+                public void serverAdded( IServer server )
+                {
+                }
+
+                public void serverChanged( IServer server )
+                {
+                }
+
+                public void serverRemoved( IServer s )
+                {
+                    if( liferayServer.equals( s ) )
+                    {
+                        IPortalConnection service = portalConnections.get( liferayServer.getId() );
+
+                        if( service != null )
+                        {
+                            service = null;
+                            portalConnections.put( liferayServer.getId(), null );
+                        }
+                    }
+                }
+            } );
+        }
+
+        IPortalConnection service = portalConnections.get( liferayServer.getId() );
+
+        if( service == null )
+        {
+            service = new PortalConnection();
+
+            updatePortalConnectionSettings( liferayServer, service );
+
+            portalConnections.put( liferayServer.getId(), service );
+        }
+
+        return service;
+    }
+
+    public static IPortalConnection getPortalConnection( IServer parent )
+    {
+        return getPortalConnection( (ILiferayServer) parent.loadAdapter( ILiferayServer.class, null ) );
+    }
+
+    public static void updatePortalConnectionSettings( ILiferayServer server )
+    {
+        updatePortalConnectionSettings( server, getPortalConnection( server ) );
+    }
+
+    public static void updatePortalConnectionSettings( ILiferayServer server, IPortalConnection connection )
+    {
+        connection.setHost( server.getHost() );
+        connection.setHttpPort( server.getHttpPort() );
+
+        if( server instanceof IRemoteServer )
+        {
+            // TODO refactor RemoteServer to ILiferayServer
+            IRemoteServer remoteServer = (IRemoteServer) server;
+            connection.setUsername( remoteServer.getUsername() );
+            connection.setPassword( remoteServer.getPassword() );
+        }
+        else
+        {
+            connection.setUsername( "test@liferay.com" ); //$NON-NLS-1$
+            connection.setPassword( "test" ); //$NON-NLS-1$
+        }
     }
 
     /**
