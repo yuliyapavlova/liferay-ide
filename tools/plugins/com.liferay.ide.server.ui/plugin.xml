@@ -322,6 +322,9 @@
                <instanceof
                      value="com.liferay.ide.server.ui.portal.SitesFolder">
                </instanceof>
+               <instanceof
+                     value="com.liferay.ide.server.ui.portal.Node">
+               </instanceof>
                <!--
                <instanceof
                      value="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionEntry">
@@ -358,6 +361,21 @@
                </or>
             </possibleDropTargets>
          </dropAssistant>
+         <actionProvider
+               class="com.liferay.ide.server.ui.portal.PortalActionProvider"
+               id="com.liferay.ide.server.ui.portal.PortalActionProvider"
+               priority="highest">
+            <enablement>
+               <or>
+                  <instanceof
+                        value="com.liferay.ide.server.ui.portal.SitesFolder">
+                  </instanceof>
+                  <instanceof
+                        value="com.liferay.ide.server.ui.portal.Node">
+                  </instanceof>
+               </or>
+            </enablement>
+         </actionProvider>
       </navigatorContent>
    </extension>
    <extension
@@ -372,10 +390,10 @@
          <enablement>
             <or>
                <objectClass
-                     name="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionEntry">
+                     name="com.liferay.ide.server.ui.portal.SitesFolder">
                </objectClass>
                <objectClass
-                     name="com.liferay.studio.eclipse.kaleo.ui.navigator.WorkflowDefinitionsFolder">
+                     name="com.liferay.ide.server.ui.portal.Node">
                </objectClass>
             </or>
          </enablement>

@@ -23,11 +23,13 @@ public class SitesFolder extends RemoteFolder
 {
 
     private Map<String, Long> classNameIds;
+    private Map<Long, Long> companyGroupIds;
 
-    public SitesFolder( ICommonContentExtensionSite site, IServer server, Map<String, Long> classNameIds )
+    public SitesFolder( ICommonContentExtensionSite site, IServer server, Map<String, Long> classNameIds, Map<Long, Long> companyGroupIds )
     {
         super( site, server, server, "Sites" ); //$NON-NLS-1$
         this.classNameIds = classNameIds;
+        this.companyGroupIds = companyGroupIds;
     }
 
     protected Job createCacheChildrenJob()
@@ -53,7 +55,7 @@ public class SitesFolder extends RemoteFolder
                     {
                         JSONObject site = (JSONObject) userSites.get( i );
 
-                        SiteFolder siteFolder = new SiteFolder( getExt(), getServer(), SitesFolder.this, classNameIds );
+                        SiteFolder siteFolder = new SiteFolder( getExt(), getServer(), SitesFolder.this, classNameIds, companyGroupIds );
                         siteFolder.initFromJSON( site );
 
                         siteFolders.add( siteFolder );

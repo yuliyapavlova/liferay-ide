@@ -215,7 +215,7 @@ public class RemoteConnection implements IRemoteConnection
         }
     }
 
-    protected Object getJSONAPI( Object... args ) throws APIException
+    protected Object invokeJSONAPI( Object... args ) throws APIException
     {
         if( !( args[0] instanceof String ) )
         {

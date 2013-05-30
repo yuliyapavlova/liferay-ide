@@ -5,7 +5,8 @@ public class Node
 {
 
     private Object parent;
-    protected String displayName;
+    private String displayName;
+    private String id;
 
     public Node( Object parent )
     {
@@ -16,6 +17,16 @@ public class Node
     {
         this.parent = parent;
         this.displayName = displayName;
+    }
+    
+    public String getId()
+    {
+        return this.id;
+    }
+    
+    public void setId( String id )
+    {
+        this.id = id;
     }
 
     public Object getParent()

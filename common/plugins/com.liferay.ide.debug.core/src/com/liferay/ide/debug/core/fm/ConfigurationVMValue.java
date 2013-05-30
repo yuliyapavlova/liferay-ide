@@ -2,6 +2,10 @@ package com.liferay.ide.debug.core.fm;
 
 import freemarker.debug.DebugModel;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
 
@@ -36,13 +40,26 @@ public class ConfigurationVMValue extends FMValue
 
         if( this.variables == null )
         {
+            List<IVariable> vars = new ArrayList<IVariable>();
 
+            try
+            {
+                vars.add( new FMVariable( this.stackFrame, "sharedVariables", this.debugModel.get( "sharedVariables" ) ) );
+            }
+            catch( Exception e )
+            {
+                e.printStackTrace();
+            }
+
+            Collections.addAll( vars, super.getVariables() );
+
+            this.variables = vars.toArray( new IVariable[ vars.size() ] );
         }
 
-//      DebugModel name = template.get( "name" );
-//      DebugModel configuration = template.get( "configuration" );
+        if( this.variables == null )
+        {
 
-//      DebugModel sharedVariables = configuration.get( "sharedVariables" );
+        }
 
         return this.variables;
     }

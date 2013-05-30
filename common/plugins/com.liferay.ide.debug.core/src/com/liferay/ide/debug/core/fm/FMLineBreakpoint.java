@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LineBreakpoint;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -61,35 +62,42 @@ public class FMLineBreakpoint extends LineBreakpoint
 
         if( project != null )
         {
-            // get context root
-            final IVirtualComponent c = ComponentCore.createComponent( project, true );
-            final String contextRoot = c.getMetaProperties().getProperty( "context-root" );
-            final String servletContext = contextRoot + "_SERVLET_CONTEXT_/";
-
-            for( IContainer parentFolder : c.getRootFolder().getUnderlyingFolders() )
+            if( "Servers".equals( project.getName() ) )
             {
-                final IPath parentFullPath = parentFolder.getFullPath();
-                final IPath fileFullPath = resource.getFullPath();
+                return new Path(resource.getName()).removeFileExtension().toPortableString();
+            }
+            else
+            {
+             // get context root
+                final IVirtualComponent c = ComponentCore.createComponent( project, true );
+                final String contextRoot = c.getMetaProperties().getProperty( "context-root" );
+                final String servletContext = contextRoot + "_SERVLET_CONTEXT_/";
 
-                if( parentFullPath.isPrefixOf( fileFullPath ) )
+                for( IContainer parentFolder : c.getRootFolder().getUnderlyingFolders() )
                 {
-                    final IPath relativePath = fileFullPath.makeRelativeTo( parentFullPath );
-                    final String relativePathValue = relativePath.toPortableString();
+                    final IPath parentFullPath = parentFolder.getFullPath();
+                    final IPath fileFullPath = resource.getFullPath();
 
-                    // remove _diffs
-                    final String prefix = "_diffs/";
-
-                    if( relativePathValue.startsWith( prefix ) )
+                    if( parentFullPath.isPrefixOf( fileFullPath ) )
                     {
-                        retval =
-                            servletContext + relativePathValue.substring( prefix.length(), relativePathValue.length() );
-                    }
-                    else
-                    {
-                        retval = servletContext + relativePathValue;
-                    }
+                        final IPath relativePath = fileFullPath.makeRelativeTo( parentFullPath );
+                        final String relativePathValue = relativePath.toPortableString();
 
-                    break;
+                        // remove _diffs
+                        final String prefix = "_diffs/";
+
+                        if( relativePathValue.startsWith( prefix ) )
+                        {
+                            retval =
+                                servletContext + relativePathValue.substring( prefix.length(), relativePathValue.length() );
+                        }
+                        else
+                        {
+                            retval = servletContext + relativePathValue;
+                        }
+
+                        break;
+                    }
                 }
             }
         }

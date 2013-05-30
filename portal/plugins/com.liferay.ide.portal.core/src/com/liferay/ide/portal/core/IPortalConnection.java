@@ -47,4 +47,6 @@ public interface IPortalConnection extends IRemoteConnection
 
     long fetchClassNameId( String value ) throws APIException;
 
+    JSONObject getGroup( long companyId, String name ) throws APIException;
+
 }

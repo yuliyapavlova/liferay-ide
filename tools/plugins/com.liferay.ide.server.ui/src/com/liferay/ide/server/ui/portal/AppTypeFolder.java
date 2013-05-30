@@ -1,6 +1,9 @@
 package com.liferay.ide.server.ui.portal;
 
 import com.liferay.ide.core.util.StringPool;
+import com.liferay.ide.ui.util.UIUtil;
+
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -14,16 +17,18 @@ public class AppTypeFolder extends RemoteFolder
 {
 
     private long classNameId;
+    private Map<Long, Long> companyGroupIds;
 
     public AppTypeFolder( ICommonContentExtensionSite ext,
                           IServer server,
                           Object parent,
                           String displayName,
-                          long classNameId )
+                          long classNameId, Map<Long, Long> companyGroupIds )
     {
         super( ext, server, parent, displayName );
 
         this.classNameId = classNameId;
+        this.companyGroupIds = companyGroupIds;
     }
 
     @Override
@@ -37,12 +42,12 @@ public class AppTypeFolder extends RemoteFolder
                 Object[] children =
                 {
                     new StructuresFolder( getExt(), getServer(), AppTypeFolder.this ),
-                    new TemplatesFolder( getExt(), getServer(), AppTypeFolder.this ),
+                    new TemplatesFolder( getExt(), getServer(), AppTypeFolder.this, companyGroupIds ),
                 };
 
                 setChildren( children );
 
-                getExt().getService().update();
+                UIUtil.refreshContent( getExt(), this );
 
                 return Status.OK_STATUS;
             }

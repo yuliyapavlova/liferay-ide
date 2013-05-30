@@ -96,11 +96,18 @@ public class PortalSourceLookupParticipant extends AbstractSourceLookupParticipa
 
                 String templateName = getTemplateName( frame );
 
-                IPath templatePath = new Path( templateName ).removeFirstSegments( 1 );
+                if( templateName.contains( "#" ) ) //$NON-NLS-1$
+                {
+                    retval = templateName + ".ftl"; //$NON-NLS-1$
+                }
+                else
+                {
+                    IPath templatePath = new Path( templateName ).removeFirstSegments( 1 );
 
-//                String contextPath = new Path( templateName ).segment( 0 ).replaceAll( "_SERVLET_CONTEXT_", "" );  //$NON-NLS-1$//$NON-NLS-2$
+//                  String contextPath = new Path( templateName ).segment( 0 ).replaceAll( "_SERVLET_CONTEXT_", "" );  //$NON-NLS-1$//$NON-NLS-2$
 
-                retval = "_diffs/" + templatePath.toPortableString(); //$NON-NLS-1$
+                  retval = "_diffs/" + templatePath.toPortableString(); //$NON-NLS-1$
+                }
             }
             catch( Exception e )
             {

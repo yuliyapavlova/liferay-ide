@@ -1,9 +1,11 @@
 package com.liferay.ide.server.ui.portal;
 
 import com.liferay.ide.portal.core.IPortalConnection;
+import com.liferay.ide.ui.util.UIUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -18,9 +20,12 @@ import org.json.JSONObject;
 public class TemplatesFolder extends RemoteFolder
 {
 
-    public TemplatesFolder( ICommonContentExtensionSite ext, IServer server, Object parent )
+    private Map<Long, Long> companyGroupIds;
+
+    public TemplatesFolder( ICommonContentExtensionSite ext, IServer server, Object parent, Map<Long, Long> companyGroupIds )
     {
         super( ext, server, parent, "Templates" ); //$NON-NLS-1$
+        this.companyGroupIds = companyGroupIds;
     }
 
     @Override
@@ -44,6 +49,8 @@ public class TemplatesFolder extends RemoteFolder
                         JSONObject template = templates.getJSONObject( i );
 
                         TemplateEntry templateEntry = new TemplateEntry( TemplatesFolder.this );
+                        long companyId = template.getLong( "companyId" ); //$NON-NLS-1$
+                        template.put( "companyGroupId", companyGroupIds.get( companyId ) ); //$NON-NLS-1$
                         templateEntry.initFromJSON( template );
 
                         templateEntries.add( templateEntry );
@@ -51,7 +58,7 @@ public class TemplatesFolder extends RemoteFolder
 
                     setChildren( templateEntries.toArray( new Object[0] ) );
 
-                    getExt().getService().update();
+                    UIUtil.refreshContent( getExt(), this );
                 }
                 catch( Exception e )
                 {

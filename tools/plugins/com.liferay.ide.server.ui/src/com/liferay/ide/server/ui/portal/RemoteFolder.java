@@ -18,6 +18,7 @@ public abstract class RemoteFolder extends Node
     private IStatus currentStatus;
     private Object[] cachedChildren;
     private Job cacheChildrenJob;
+
     public RemoteFolder( ICommonContentExtensionSite ext, IServer server, Object parent, String displayName )
     {
         super( parent, displayName );
@@ -43,7 +44,7 @@ public abstract class RemoteFolder extends Node
                 cacheChildrenJob.schedule();
             }
         }
-        
+
     }
 
     protected void refresh ()
@@ -109,5 +110,10 @@ public abstract class RemoteFolder extends Node
     {
         LoadingNode node = new LoadingNode( this, "Loading..." ); //$NON-NLS-1$
         return node;
+    }
+
+    public void clearCache()
+    {
+        this.cachedChildren = null;
     }
 }

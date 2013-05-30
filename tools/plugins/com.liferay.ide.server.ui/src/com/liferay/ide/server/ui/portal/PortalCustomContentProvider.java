@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.navigator.PipelinedViewerUpdate;
 import org.eclipse.wst.server.core.IServer;
+import org.json.JSONObject;
 
 
 public class PortalCustomContentProvider extends PluginsCustomContentProvider
@@ -25,6 +26,7 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
 
     private final Map<String, SitesFolder> sitesFolders = new HashMap<String, SitesFolder>();
     private final Map<String, Long> appTypeClassNameIds = new HashMap<String, Long>();
+    private final Map<Long, Long> companyGroupIds = new HashMap<Long, Long>();
 
     private final Map<String, IStatus> checkApiStatuses = new HashMap<String, IStatus>();
 
@@ -45,9 +47,9 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
         {
             return null;
         }
-        else if( parentElement instanceof SitesFolder )
+        else if( parentElement instanceof RemoteFolder )
         {
-            return ( (SitesFolder) parentElement ).getChildren();
+            return ( (RemoteFolder) parentElement ).getChildren();
         }
 
         return null;
@@ -58,6 +60,10 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
         if( element instanceof IWorkspaceRoot )
         {
             return null;
+        }
+        else if( element instanceof Node )
+        {
+            return ( (Node) element ).getParent();
         }
 
         return null;
@@ -92,6 +98,16 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
                                     long ddlClassNameId = portalConnection.fetchClassNameId( IPortalConnection.DDM_CLASSNAME );
 
                                     appTypeClassNameIds.put( IPortalConnection.DDM_CLASSNAME, ddlClassNameId );
+                                    
+                                    JSONObject company = portalConnection.getCompanyIdByVirtualHost();
+                                    
+                                    long companyId = company.getLong( "companyId" ); //$NON-NLS-1$
+                                    
+                                    JSONObject group = portalConnection.getGroup( companyId, String.valueOf( companyId ) );
+                                    
+                                    long companyGroupId = group.getLong( "groupId" ); //$NON-NLS-1$
+                                    
+                                    companyGroupIds.put( companyId, companyGroupId );
 
                                     PortalCustomContentProvider.this.checkApiStatuses.put(
                                         server.getId(), Status.OK_STATUS );
@@ -148,7 +164,7 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
     private void insertSitesNode( IServer server, Set currentChildren )
     {
         //put sites folder at the top of the list
-        SitesFolder node = new SitesFolder( this.getConfig(), server, this.appTypeClassNameIds );
+        SitesFolder node = new SitesFolder( this.getConfig(), server, this.appTypeClassNameIds, this.companyGroupIds );
 
         this.sitesFolders.put( server.getId(), node );
 
@@ -157,19 +173,10 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
 
     public Object getPipelinedParent( final Object object, final Object suggestedParent )
     {
-        if( object instanceof SitesFolder )
+        if( object instanceof Node )
         {
-            return ( (SitesFolder) object ).getParent();
-
-            // if ( ProjectUtil.isLiferayProject( project ) && this.sitesContentNode != null )
-            // {
-            // return this.sitesContentNode;
-            // }
+            return ( (Node) object ).getParent();
         }
-        // else if ( anObject instanceof DefinitionsContainer && anObject.equals( this.sitesContentNode ) )
-        // {
-        // return this.sitesContentNode.getParent();
-        // }
 
         return null;
     }
@@ -195,9 +202,9 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
                 }
             }
         }
-        else if( element instanceof SitesFolder )
+        else if( element instanceof RemoteFolder )
         {
-            return true;
+            return ( (RemoteFolder) element ).getChildren().length > 0;
         }
 
         return false;

@@ -41,7 +41,12 @@ public class PortalSourcePathComputerDelegate extends TomcatSourcePathComputerDe
                     containers.add( new FolderSourceContainer( diffs, true ) );
                 }
             }
+            else if( "Servers".equals( project.getName() ) ) //$NON-NLS-1$
+            {
+                containers.add( new FolderSourceContainer( project, true ) );
+            }
         }
+
 
         Collections.addAll( containers, superContainers );
 

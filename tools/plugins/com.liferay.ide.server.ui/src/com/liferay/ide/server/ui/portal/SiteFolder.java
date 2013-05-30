@@ -1,6 +1,7 @@
 package com.liferay.ide.server.ui.portal;
 
 import com.liferay.ide.portal.core.IPortalConnection;
+import com.liferay.ide.ui.util.UIUtil;
 
 import java.util.Map;
 
@@ -19,11 +20,13 @@ public class SiteFolder extends RemoteFolder
     private long groupId = -1;
     private Map<String, Long> classNameIds;
     private String friendlyUrl;
+    private Map<Long, Long> companyGroupIds;
 
-    public SiteFolder( ICommonContentExtensionSite ext, IServer server, Object parent, Map<String, Long> classNameIds )
+    public SiteFolder( ICommonContentExtensionSite ext, IServer server, Object parent, Map<String, Long> classNameIds, Map<Long, Long> companyGroupIds )
     {
         super( ext, server, parent, "<undefined>" ); //$NON-NLS-1$
         this.classNameIds = classNameIds;
+        this.companyGroupIds = companyGroupIds;
     }
 
     public void initFromJSON( JSONObject site ) throws JSONException
@@ -45,14 +48,14 @@ public class SiteFolder extends RemoteFolder
 
                 Object[] children =
                 {
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", -1 ), //$NON-NLS-1$
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "DDL", ddlClassNameId ), //$NON-NLS-1$
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "WCM", -1 ), //$NON-NLS-1$
+                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", -1, companyGroupIds ), //$NON-NLS-1$
+                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "DDL", ddlClassNameId, companyGroupIds ), //$NON-NLS-1$
+                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "WCM", -1, companyGroupIds ), //$NON-NLS-1$
                 };
 
                 setChildren( children );
 
-                getExt().getService().update();
+                UIUtil.refreshContent( getExt(), this );
 
                 return Status.OK_STATUS;
             }

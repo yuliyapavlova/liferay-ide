@@ -506,7 +506,14 @@ public class FMValue extends FMDebugElement implements IValue
 
     public boolean hasVariables() throws DebugException
     {
-        return getVariables().length > 0;
+        try{
+            return getVariables().length > 0;
+        }
+        catch (NullPointerException e)
+        {
+            return false;
+        }
+
     }
 
     public String getReferenceTypeName() throws DebugException

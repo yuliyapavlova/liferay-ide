@@ -40,6 +40,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     private static final String FETCH_CLASSNAME_ID_API = _API + _CLASSNAME + "/fetch-class-name-id"; //$NON-NLS-1$
 //    private static final String GET_ARTICLES_BY_USER_ID_API = _API + _JOURNALARTICLE + "/get-articles-by-user-id"; //$NON-NLS-1$
     private static final String GET_COMPANY_BY_VIRTUAL_HOST_API = _API + _COMPANY + "/get-company-by-virtual-host"; //$NON-NLS-1$
+    private static final String GET_GROUP_API = _API + _GROUP + "/get-group"; //$NON-NLS-1$
 //    private static final String GET_JOURNAL_ARTICLES_API = _API + _JOURNALARTICLE + "/get-articles"; //$NON-NLS-1$
     private static final String GET_STRUCTURE_TEMPLATES_API = _API + _JOURNALTEMPLATE + "/get-structure-templates"; //$NON-NLS-1$
     private static final String GET_STRUCTURES_API = _API + _JOURNALSTRUCTURE + "/get-structures"; //$NON-NLS-1$
@@ -51,7 +52,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         JSONObject company = null;
 
-        Object jsonResponse = getJSONAPI( GET_COMPANY_BY_VIRTUAL_HOST_API, "virtualHost", getHost() ); //$NON-NLS-1$
+        Object jsonResponse = invokeJSONAPI( GET_COMPANY_BY_VIRTUAL_HOST_API, "virtualHost", getHost() ); //$NON-NLS-1$
 
         if( jsonResponse instanceof JSONObject )
         {
@@ -87,7 +88,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         JSONArray structures = null;
 
-        Object jsonResponse = getJSONAPI( GET_STRUCTURES_API, "groupId", groupId ); //$NON-NLS-1$
+        Object jsonResponse = invokeJSONAPI( GET_STRUCTURES_API, "groupId", groupId ); //$NON-NLS-1$
 
         if( jsonResponse instanceof JSONArray )
         {
@@ -105,7 +106,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         JSONArray structureTemplates = null;
 
-        Object jsonResponse = getJSONAPI( GET_STRUCTURE_TEMPLATES_API, "groupId", groupId, "structureId", structureId ); //$NON-NLS-1$ //$NON-NLS-2$
+        Object jsonResponse = invokeJSONAPI( GET_STRUCTURE_TEMPLATES_API, "groupId", groupId, "structureId", structureId ); //$NON-NLS-1$ //$NON-NLS-2$
 
         if( jsonResponse instanceof JSONArray )
         {
@@ -123,7 +124,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         JSONObject user = null;
 
-        Object jsonResponse = getJSONAPI( GET_USER_BY_EMAIL_ADDRESS_API, "companyId", Long.toString( companyId), "emailAddress", getUsername() ); //$NON-NLS-1$ //$NON-NLS-2$
+        Object jsonResponse = invokeJSONAPI( GET_USER_BY_EMAIL_ADDRESS_API, "companyId", Long.toString( companyId), "emailAddress", getUsername() ); //$NON-NLS-1$ //$NON-NLS-2$
 
         if( jsonResponse instanceof JSONObject )
         {
@@ -141,7 +142,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         JSONArray sites = null;
 
-        Object jsonResponse = getJSONAPI( GET_USER_SITES_API );
+        Object jsonResponse = invokeJSONAPI( GET_USER_SITES_API );
 
         if( jsonResponse instanceof JSONArray )
         {
@@ -159,7 +160,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         JSONArray templates = null;
 
-        Object jsonResponse = getJSONAPI( GET_TEMPLATES_API,
+        Object jsonResponse = invokeJSONAPI( GET_TEMPLATES_API,
                                           "groupId", groupId,  //$NON-NLS-1$
                                           "classNameId", classNameId ); //$NON-NLS-1$
 
@@ -179,11 +180,25 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     {
         long retval = -1;
 
-        Object jsonResponse = getJSONAPI( FETCH_CLASSNAME_ID_API, "value", value ); //$NON-NLS-1$
+        Object jsonResponse = invokeJSONAPI( FETCH_CLASSNAME_ID_API, "value", value ); //$NON-NLS-1$
 
         if( jsonResponse instanceof Long )
         {
             retval = ( ( Long) jsonResponse ).longValue();
+        }
+
+        return retval;
+    }
+
+    public JSONObject getGroup( long companyId, String name ) throws APIException
+    {
+        JSONObject retval = null;
+
+        Object jsonResponse = invokeJSONAPI( GET_GROUP_API, "companyId", companyId, "name", name ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if( jsonResponse instanceof JSONObject )
+        {
+            retval = (JSONObject) jsonResponse;
         }
 
         return retval;

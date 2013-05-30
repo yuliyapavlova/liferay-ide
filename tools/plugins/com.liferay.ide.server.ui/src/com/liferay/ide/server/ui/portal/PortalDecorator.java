@@ -1,6 +1,7 @@
 package com.liferay.ide.server.ui.portal;
 
 import com.liferay.ide.core.remote.APIException;
+import com.liferay.ide.core.util.CoreUtil;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IDecoration;
@@ -10,6 +11,7 @@ import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.server.core.IServer;
 
 
 public class PortalDecorator extends LabelProvider implements ILightweightLabelDecorator
@@ -59,43 +61,53 @@ public class PortalDecorator extends LabelProvider implements ILightweightLabelD
                 decoration.addSuffix( "" ); //$NON-NLS-1$
             }
         }
+        else if( element instanceof Node )
+        {
+            final Node node = (Node) element;
+            final String id = node.getId();
+
+            if( ! CoreUtil.isNullOrEmpty( id ) )
+            {
+                decoration.addSuffix( " [" + id + "]" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
     }
 
     @Override
     public Image getImage( Object element )
     {
-        if( element instanceof SitesFolder || element instanceof SiteFolder )
+        if( element instanceof RemoteFolder )
         {
             return PortalImages.IMG_SITES_FOLDER;
         }
-//        else if( element instanceof WorkflowDefinitionEntry )
-//        {
-//            WorkflowDefinitionEntry definition = (WorkflowDefinitionEntry) element;
-//
-//            if( definition.isLoadingNode() )
-//            {
-//                return KaleoImages.IMG_LOADING;
-//            }
-//            else
-//            {
-//                return KaleoImages.IMG_WORKFLOW_DEFINITION;
-//            }
-//        }
+        else if( element instanceof LoadingNode )
+        {
+            return PortalImages.IMG_LOADING;
+        }
+        else if( element instanceof TemplateEntry )
+        {
+            return PortalImages.IMG_USER_TEMPLATE;
+        }
+        else if( element instanceof IServer )
+        {
+            return null;
+        }
+        else
+        {
+            return null;
+        }
 
-        return null;
+//        return null;
     }
 
     public StyledString getStyledText( Object element )
     {
-        if( element instanceof SitesFolder )
+        String text = getText( element );
+
+        if( ! CoreUtil.isNullOrEmpty( text ) )
         {
-            return new StyledString( SITES_FOLDER_NAME );
+            return new StyledString( text );
         }
-//        else if( element instanceof WorkflowDefinitionEntry )
-//        {
-//            WorkflowDefinitionEntry definitionNode = (WorkflowDefinitionEntry) element;
-//            return new StyledString( definitionNode.getName() );
-//        }
         else
         {
             return null;
@@ -109,12 +121,16 @@ public class PortalDecorator extends LabelProvider implements ILightweightLabelD
         {
             return SITES_FOLDER_NAME;
         }
-//        else if( element instanceof WorkflowDefinitionEntry )
-//        {
-//            WorkflowDefinitionEntry definitionNode = (WorkflowDefinitionEntry) element;
-//
-//            return definitionNode.getName();
-//        }
+        else if( element instanceof Node )
+        {
+            Node node = (Node) element;
+
+            return node.getDisplayName();
+        }
+        else if( element instanceof LoadingNode )
+        {
+            return "loading..."; //$NON-NLS-1$
+        }
         else
         {
             return null;
