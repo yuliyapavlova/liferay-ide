@@ -257,14 +257,17 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
     public void terminate() throws DebugException
     {
-        try
-        {
-            getDebuggerClient().shutdown();
-        }
-        catch( RemoteException e )
-        {
-            e.printStackTrace();
-        }
+//        try
+//        {
+//            getDebuggerClient().shutdown();
+//        }
+//        catch( RemoteException e )
+//        {
+//            e.printStackTrace();
+//        }
+
+        // TODO remove breakpoints
+
 
         terminated();
     }
