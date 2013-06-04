@@ -98,15 +98,15 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
                                     long ddlClassNameId = portalConnection.fetchClassNameId( IPortalConnection.DDM_CLASSNAME );
 
                                     appTypeClassNameIds.put( IPortalConnection.DDM_CLASSNAME, ddlClassNameId );
-                                    
+
                                     JSONObject company = portalConnection.getCompanyIdByVirtualHost();
-                                    
+
                                     long companyId = company.getLong( "companyId" ); //$NON-NLS-1$
-                                    
+
                                     JSONObject group = portalConnection.getGroup( companyId, String.valueOf( companyId ) );
-                                    
+
                                     long companyGroupId = group.getLong( "groupId" ); //$NON-NLS-1$
-                                    
+
                                     companyGroupIds.put( companyId, companyGroupId );
 
                                     PortalCustomContentProvider.this.checkApiStatuses.put(
@@ -127,6 +127,8 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
                         // for now mark this as Info so a check job isn't created again
                         PortalCustomContentProvider.this.checkApiStatuses.put(
                             server.getId(), LiferayServerUIPlugin.createInfoStatus( "checking api" ) ); //$NON-NLS-1$
+
+
 
                         checkJob.schedule();
                     }

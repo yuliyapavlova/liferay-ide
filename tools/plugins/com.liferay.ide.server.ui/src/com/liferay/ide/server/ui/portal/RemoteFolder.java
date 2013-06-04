@@ -108,8 +108,7 @@ public abstract class RemoteFolder extends Node
 
     protected Object createLoadingNode()
     {
-        LoadingNode node = new LoadingNode( this, "Loading..." ); //$NON-NLS-1$
-        return node;
+        return new LoadingNode( this, "Loading..." ); //$NON-NLS-1$
     }
 
     public void clearCache()
