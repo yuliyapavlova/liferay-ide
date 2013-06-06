@@ -28,31 +28,25 @@ import org.json.JSONObject;
  */
 public interface IPortalConnection extends IRemoteConnection
 {
-    String _COMPANY = "/company"; //$NON-NLS-1$
-    String _GROUP = "/group"; //$NON-NLS-1$
-    String _JOURNALARTICLE = "/journalarticle"; //$NON-NLS-1$
-    String _JOURNALSTRUCTURE = "/journalstructure"; //$NON-NLS-1$
-    String _JOURNALTEMPLATE = "/journaltemplate"; //$NON-NLS-1$
-    String _USER = "/user"; //$NON-NLS-1$
 
-    String GET_ARTICLES_BY_USER_ID_API = _API + _JOURNALARTICLE + "/get-articles-by-user-id"; //$NON-NLS-1$
-    String GET_COMPANY_BY_VIRTUAL_HOST_API = _API + _COMPANY + "/get-company-by-virtual-host"; //$NON-NLS-1$
-    String GET_JOURNAL_ARTICLES_API = _API + _JOURNALARTICLE + "/get-articles-by-user-id"; //$NON-NLS-1$
-    String GET_STRUCTURE_TEMPLATES_API = _API + _JOURNALTEMPLATE + "/get-structure-templates"; //$NON-NLS-1$
-    String GET_STRUCTURES_API = _API + _JOURNALSTRUCTURE + "/get-structures"; //$NON-NLS-1$
-    String GET_USER_BY_EMAIL_ADDRESS_API = _API + _USER + "/get-user-by-email-address"; //$NON-NLS-1$
-    String GET_USER_SITES_API = _API + _GROUP + "/get-user-sites"; //$NON-NLS-1$
-    
+    String DDM_CLASSNAME = "com.liferay.portlet.dynamicdatamapping.model.DDMStructure"; //$NON-NLS-1$
+
     JSONObject getCompanyIdByVirtualHost() throws APIException;
-    
-    JSONArray getJournalArticles( long groupId, long userId ) throws APIException;
-    
+
+//    JSONArray getJournalArticles( long groupId, long userId ) throws APIException;
+
     JSONArray getStructures( long groupId ) throws APIException;
 
     JSONArray getStructureTemplates( long groupId, long structureId ) throws APIException;
 
+    JSONArray getTemplates( long groupId, long classNameId ) throws APIException;
+
     JSONObject getUserByEmailAddress( long companyId ) throws APIException;
 
     JSONArray getUserSites() throws APIException;
+
+    long fetchClassNameId( String value ) throws APIException;
+
+    JSONObject getGroup( long companyId, String name ) throws APIException;
 
 }
