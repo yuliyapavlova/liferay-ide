@@ -12,6 +12,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.LineBreakpoint;
 import org.eclipse.wst.common.componentcore.ComponentCore;
@@ -60,14 +61,12 @@ public class FMLineBreakpoint extends LineBreakpoint
 
         final IProject project = resource.getProject();
 
-        if( project != null && CoreUtil.isLiferayProject( project ) )
+        if( project != null && "Servers".equals( project.getName() ))
         {
-//            if( "Servers".equals( project.getName() ) )
-//            {
-//                return new Path(resource.getName()).removeFileExtension().toPortableString();
-//            }
-//            else
-//            {
+           return new Path(resource.getName()).removeFileExtension().toPortableString();
+        }
+        else if (CoreUtil.isLiferayProject( project ))
+            {
 
             // get context root
             final IVirtualComponent c = ComponentCore.createComponent( project, true );
@@ -100,7 +99,7 @@ public class FMLineBreakpoint extends LineBreakpoint
                     break;
                 }
             }
-//            }
+
         }
 
         return retval;

@@ -180,4 +180,14 @@ public class LiferayServerUIPlugin extends AbstractUIPlugin
         return registry;
     }
 
+    public static void logInfo( String string, IStatus checkApiStatus )
+    {
+        plugin.getLog().log( new Status( IStatus.INFO, PLUGIN_ID, checkApiStatus.getMessage() ) );
+    }
+
+    public static IStatus createInfoStatus( String msg )
+    {
+        return new Status( IStatus.INFO, PLUGIN_ID, msg );
+    }
+
 }

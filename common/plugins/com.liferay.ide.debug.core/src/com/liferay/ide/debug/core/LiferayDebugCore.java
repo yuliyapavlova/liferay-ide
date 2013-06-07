@@ -95,4 +95,9 @@ public class LiferayDebugCore extends Plugin
         super.stop( context );
     }
 
+    public static IStatus createErrorStatus( String msg, Exception e )
+    {
+        return LiferayCore.createErrorStatus( PLUGIN_ID, msg, e );
+    }
+
 }

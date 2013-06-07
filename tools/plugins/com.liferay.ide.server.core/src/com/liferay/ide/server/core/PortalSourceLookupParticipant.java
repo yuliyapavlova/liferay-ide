@@ -99,12 +99,12 @@ public class PortalSourceLookupParticipant extends AbstractSourceLookupParticipa
 
                 String templateName = getTemplateName( frame );
 
-//                if( templateName.matches( "^\\d+#\\d+#\\d+$" ) ) //$NON-NLS-1$
-//                {
-//                    retval = templateName + ".ftl"; //$NON-NLS-1$
-//                }
-//                else
-//                {
+                if( templateName.matches( "^\\d+#\\d+#\\d+$" ) ) //$NON-NLS-1$
+                {
+                    retval = templateName + ".ftl"; //$NON-NLS-1$
+                }
+                else
+                {
                     // we need to figure out how to map this back to a valid project path.
                     // first if it contains _SERVLET_CONTEXT_ we know that this path is pointing to a plugin
 
@@ -142,7 +142,7 @@ public class PortalSourceLookupParticipant extends AbstractSourceLookupParticipa
                         }
                     }
                 }
-//                }
+                }
             }
             catch( Exception e )
             {

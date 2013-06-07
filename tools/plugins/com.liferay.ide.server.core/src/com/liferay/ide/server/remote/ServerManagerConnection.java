@@ -60,7 +60,7 @@ public class ServerManagerConnection extends RemoteConnection implements IServer
     {
         if( isAlive() )
         {
-            Object response = getJSONAPI( getDebugPortAPI() );
+            Object response = invokeJSONAPI( getDebugPortAPI() );
 
             if( response instanceof JSONObject )
             {
@@ -113,7 +113,7 @@ public class ServerManagerConnection extends RemoteConnection implements IServer
 
         try
         {
-            response = getJSONAPI( getPluginsAPI() );
+            response = invokeJSONAPI( getPluginsAPI() );
         }
         catch( APIException e1 )
         {
@@ -234,7 +234,7 @@ public class ServerManagerConnection extends RemoteConnection implements IServer
     {
         JSONObject status = null;
 
-        Object jsonResponse = getJSONAPI( getIsAliveAPI() );
+        Object jsonResponse = invokeJSONAPI( getIsAliveAPI() );
 
         if( jsonResponse instanceof JSONObject )
         {
@@ -262,7 +262,7 @@ public class ServerManagerConnection extends RemoteConnection implements IServer
 
     public boolean isAppInstalled( String appName ) throws APIException
     {
-        Object response = getJSONAPI( getPluginURI(appName) );
+        Object response = invokeJSONAPI( getPluginURI(appName) );
 
         if( response instanceof JSONObject )
         {
@@ -309,7 +309,7 @@ public class ServerManagerConnection extends RemoteConnection implements IServer
 
     public boolean isLiferayPluginStarted( String appName ) throws APIException
     {
-        final Object response = getJSONAPI( getPluginURI(appName) );
+        final Object response = invokeJSONAPI( getPluginURI(appName) );
 
         if( response instanceof JSONObject )
         {

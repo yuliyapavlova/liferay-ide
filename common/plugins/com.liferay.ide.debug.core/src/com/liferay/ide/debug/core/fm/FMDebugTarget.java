@@ -62,7 +62,6 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
     private FMThread fmThread;
     private IThread[] threads = new IThread[0];
     private EventDispatchJob eventDispatchJob;
-//    private Map<Long, DebuggedEnvironment> envs = new HashMap<Long, DebuggedEnvironment>();
 
     // suspend state
     private boolean suspended = false;
@@ -172,7 +171,6 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
 
                             if( bpLineNumber == lineNumber && remoteTemplateName.equals( templateName ) )
                             {
-//                                envs.put( environment.getId(), environment );
                                 fmThread.setEnvironment( event.getEnvironment() );
                                 fmThread.setBreakpoints( new IBreakpoint[] { breakpoint } );
 
@@ -226,15 +224,31 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
         DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener( this );
     }
 
-    public void addRemoteBreakpoint( Debugger debugger, IBreakpoint localBreakpoint ) throws RemoteException
+    public void addRemoteBreakpoint( final Debugger debugger, final IBreakpoint localBreakpoint ) throws RemoteException
     {
-        String templateName = localBreakpoint.getMarker().getAttribute( FMLineBreakpoint.ATTR_TEMPLATE_NAME, null );
-        int line = localBreakpoint.getMarker().getAttribute( IMarker.LINE_NUMBER, -1 );
+        final String templateName = localBreakpoint.getMarker().getAttribute( FMLineBreakpoint.ATTR_TEMPLATE_NAME, null );
+        final int line = localBreakpoint.getMarker().getAttribute( IMarker.LINE_NUMBER, -1 );
 
         if( ! CoreUtil.isNullOrEmpty( templateName ) && line > -1 )
         {
-            Breakpoint remoteBreakpoint = new Breakpoint( templateName, line );
-            debugger.addBreakpoint( remoteBreakpoint );
+            new Job("add fm breakpoint")
+            {
+                @Override
+                protected IStatus run( IProgressMonitor monitor )
+                {
+                    try
+                    {
+                        Breakpoint remoteBreakpoint = new Breakpoint( templateName, line );
+                        debugger.addBreakpoint( remoteBreakpoint );
+                    }
+                    catch( RemoteException e )
+                    {
+                        return LiferayDebugCore.createErrorStatus( "Could not add remote breakpoint", e );
+                    }
+
+                    return Status.OK_STATUS;
+                }
+            }.schedule();
         }
     }
 
