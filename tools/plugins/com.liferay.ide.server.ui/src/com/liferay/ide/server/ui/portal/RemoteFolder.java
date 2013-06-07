@@ -114,5 +114,6 @@ public abstract class RemoteFolder extends Node
     public void clearCache()
     {
         this.cachedChildren = null;
+        this.cacheChildrenJob = null;
     }
 }

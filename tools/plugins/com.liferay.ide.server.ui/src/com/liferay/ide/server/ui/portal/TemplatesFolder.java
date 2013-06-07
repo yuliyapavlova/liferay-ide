@@ -41,19 +41,24 @@ public class TemplatesFolder extends RemoteFolder
                     IPortalConnection connection = getPortalConnection();
 
                     List<TemplateEntry> templateEntries = new ArrayList<TemplateEntry>();
+                    Long[] classNameIds = getCastedParent().getClassNameIds();
 
-                    JSONArray templates = connection.getTemplates( getCastedParent().getGroupId(), getCastedParent().getClassNameId() );
-
-                    for( int i = 0; i < templates.length(); i++ )
+                    for( long classNameId : classNameIds )
                     {
-                        JSONObject template = templates.getJSONObject( i );
+                        JSONArray templates = connection.getTemplates( getCastedParent().getGroupId(), classNameId );
 
-                        TemplateEntry templateEntry = new TemplateEntry( TemplatesFolder.this );
-                        long companyId = template.getLong( "companyId" ); //$NON-NLS-1$
-                        template.put( "companyGroupId", companyGroupIds.get( companyId ) ); //$NON-NLS-1$
-                        templateEntry.initFromJSON( template );
+                        for( int i = 0; i < templates.length(); i++ )
+                        {
+                            JSONObject template = templates.getJSONObject( i );
 
-                        templateEntries.add( templateEntry );
+                            TemplateEntry templateEntry = new TemplateEntry( TemplatesFolder.this );
+                            templateEntry.setADT( true ); // TODO not always true
+                            long companyId = template.getLong( "companyId" ); //$NON-NLS-1$
+                            template.put( "companyGroupId", companyGroupIds.get( companyId ) ); //$NON-NLS-1$
+                            templateEntry.initFromJSON( template );
+
+                            templateEntries.add( templateEntry );
+                        }
                     }
 
                     setChildren( templateEntries.toArray( new Object[0] ) );

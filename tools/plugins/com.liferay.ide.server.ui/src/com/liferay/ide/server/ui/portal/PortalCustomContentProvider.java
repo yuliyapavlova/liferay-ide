@@ -25,7 +25,7 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
 {
 
     private final Map<String, SitesFolder> sitesFolders = new HashMap<String, SitesFolder>();
-    private final Map<String, Long> appTypeClassNameIds = new HashMap<String, Long>();
+    private final Map<String, Long> adtClassNameIds = new HashMap<String, Long>();
     private final Map<Long, Long> companyGroupIds = new HashMap<Long, Long>();
 
     private final Map<String, IStatus> checkApiStatuses = new HashMap<String, IStatus>();
@@ -95,9 +95,11 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
                                 {
                                     IPortalConnection portalConnection = LiferayServerCore.getPortalConnection( server );
 
-                                    long ddlClassNameId = portalConnection.fetchClassNameId( IPortalConnection.DDM_CLASSNAME );
-
-                                    appTypeClassNameIds.put( IPortalConnection.DDM_CLASSNAME, ddlClassNameId );
+                                    for( String adtClassName : IPortalConnection.ADT_CLASS_NAMES )
+                                    {
+                                        long ddlClassNameId = portalConnection.fetchClassNameId( adtClassName );
+                                        adtClassNameIds.put( adtClassName, ddlClassNameId );
+                                    }
 
                                     JSONObject company = portalConnection.getCompanyIdByVirtualHost();
 
@@ -166,7 +168,7 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
     private void insertSitesNode( IServer server, Set currentChildren )
     {
         //put sites folder at the top of the list
-        SitesFolder node = new SitesFolder( this.getConfig(), server, this.appTypeClassNameIds, this.companyGroupIds );
+        SitesFolder node = new SitesFolder( this.getConfig(), server, this.adtClassNameIds, this.companyGroupIds );
 
         this.sitesFolders.put( server.getId(), node );
 

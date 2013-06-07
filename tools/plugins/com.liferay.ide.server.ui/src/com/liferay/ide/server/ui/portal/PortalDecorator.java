@@ -61,6 +61,17 @@ public class PortalDecorator extends LabelProvider implements ILightweightLabelD
                 decoration.addSuffix( "" ); //$NON-NLS-1$
             }
         }
+        else if ( element instanceof SiteFolder )
+        {
+            SiteFolder folder = (SiteFolder) element;
+
+            String friendlyUrl = folder.getFriendlyUrl();
+
+            if( ! CoreUtil.isNullOrEmpty( friendlyUrl ) )
+            {
+                decoration.addSuffix( " [" + friendlyUrl + "]" ); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+        }
         else if( element instanceof Node )
         {
             final Node node = (Node) element;

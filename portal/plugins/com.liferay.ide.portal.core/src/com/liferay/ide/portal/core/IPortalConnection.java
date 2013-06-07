@@ -29,7 +29,16 @@ import org.json.JSONObject;
 public interface IPortalConnection extends IRemoteConnection
 {
 
-    String DDM_CLASSNAME = "com.liferay.portlet.dynamicdatamapping.model.DDMStructure"; //$NON-NLS-1$
+    public static final String[] ADT_CLASS_NAMES =
+    {
+        "com.liferay.portlet.blogs.model.BlogsEntry", //$NON-NLS-1$
+        "com.liferay.portlet.wiki.model.WikiPage",//$NON-NLS-1$
+        "com.liferay.portlet.asset.model.AssetCategory",//$NON-NLS-1$
+        "com.liferay.portal.kernel.repository.model.FileEntry",//$NON-NLS-1$
+        "com.liferay.portlet.asset.model.AssetEntry",//$NON-NLS-1$
+        "com.liferay.portal.model.LayoutSet",//$NON-NLS-1$
+        "com.liferay.portlet.asset.model.AssetTag",//$NON-NLS-1$
+    };
 
     JSONObject getCompanyIdByVirtualHost() throws APIException;
 

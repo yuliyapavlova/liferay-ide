@@ -16,18 +16,19 @@ import org.eclipse.wst.server.core.IServer;
 public class AppTypeFolder extends RemoteFolder
 {
 
-    private long classNameId;
+    private Long[] classNameIds;
     private Map<Long, Long> companyGroupIds;
 
     public AppTypeFolder( ICommonContentExtensionSite ext,
                           IServer server,
                           Object parent,
                           String displayName,
-                          long classNameId, Map<Long, Long> companyGroupIds )
+                          Long[] classNameIds,
+                          Map<Long, Long> companyGroupIds )
     {
         super( ext, server, parent, displayName );
 
-        this.classNameId = classNameId;
+        this.classNameIds = classNameIds;
         this.companyGroupIds = companyGroupIds;
     }
 
@@ -64,9 +65,9 @@ public class AppTypeFolder extends RemoteFolder
         return getCastedParent().getGroupId();
     }
 
-    public long getClassNameId()
+    public Long[] getClassNameIds()
     {
-        return this.classNameId;
+        return this.classNameIds;
     }
 
 }

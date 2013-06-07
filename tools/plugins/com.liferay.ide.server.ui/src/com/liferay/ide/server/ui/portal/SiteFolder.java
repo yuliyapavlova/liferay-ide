@@ -1,6 +1,5 @@
 package com.liferay.ide.server.ui.portal;
 
-import com.liferay.ide.portal.core.IPortalConnection;
 import com.liferay.ide.ui.util.UIUtil;
 
 import java.util.Map;
@@ -22,7 +21,11 @@ public class SiteFolder extends RemoteFolder
     private String friendlyUrl;
     private Map<Long, Long> companyGroupIds;
 
-    public SiteFolder( ICommonContentExtensionSite ext, IServer server, Object parent, Map<String, Long> classNameIds, Map<Long, Long> companyGroupIds )
+    public SiteFolder( ICommonContentExtensionSite ext,
+                       IServer server,
+                       Object parent,
+                       Map<String, Long> classNameIds,
+                       Map<Long, Long> companyGroupIds )
     {
         super( ext, server, parent, "<undefined>" ); //$NON-NLS-1$
         this.classNameIds = classNameIds;
@@ -44,13 +47,11 @@ public class SiteFolder extends RemoteFolder
             @Override
             protected IStatus run( IProgressMonitor monitor )
             {
-                long ddlClassNameId = classNameIds.get( IPortalConnection.DDM_CLASSNAME );
+                Long[] ids = classNameIds.values().toArray( new Long[0] );
 
                 Object[] children =
                 {
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", -1, companyGroupIds ), //$NON-NLS-1$
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "DDL", ddlClassNameId, companyGroupIds ), //$NON-NLS-1$
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "WCM", -1, companyGroupIds ), //$NON-NLS-1$
+                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", ids, companyGroupIds ), //$NON-NLS-1$
                 };
 
                 setChildren( children );
@@ -68,5 +69,9 @@ public class SiteFolder extends RemoteFolder
         return this.groupId;
     }
 
+    public String getFriendlyUrl()
+    {
+        return this.friendlyUrl;
+    }
 
 }
