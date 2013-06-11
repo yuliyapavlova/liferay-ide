@@ -52,8 +52,14 @@ public class TemplatesFolder extends RemoteFolder
                             JSONObject template = templates.getJSONObject( i );
 
                             TemplateEntry templateEntry = new TemplateEntry( TemplatesFolder.this );
-                            templateEntry.setADT( true ); // TODO not always true
+
+                            if( ( (AppTypeFolder) getParent() ).getDisplayName().equals( "ADT" ) ) //$NON-NLS-1$
+                            {
+                                templateEntry.setADT( true );
+                            }
+
                             long companyId = template.getLong( "companyId" ); //$NON-NLS-1$
+
                             template.put( "companyGroupId", companyGroupIds.get( companyId ) ); //$NON-NLS-1$
                             templateEntry.initFromJSON( template );
 

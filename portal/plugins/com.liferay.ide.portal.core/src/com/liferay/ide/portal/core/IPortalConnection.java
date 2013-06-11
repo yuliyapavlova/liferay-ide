@@ -42,9 +42,15 @@ public interface IPortalConnection extends IRemoteConnection
 
     String DDM_CLASSNAME = "com.liferay.portlet.dynamicdatamapping.model.DDMStructure"; //$NON-NLS-1$
 
-    JSONObject getCompanyIdByVirtualHost() throws APIException;
+    long fetchClassNameId( String value ) throws APIException;
 
 //    JSONArray getJournalArticles( long groupId, long userId ) throws APIException;
+
+    JSONObject getCompanyGroup( long companyId ) throws APIException;
+
+    JSONObject getCompanyIdByVirtualHost() throws APIException;
+
+    JSONObject getGroup( long companyId, String name ) throws APIException;
 
     JSONArray getStructures( long groupId ) throws APIException;
 
@@ -55,9 +61,5 @@ public interface IPortalConnection extends IRemoteConnection
     JSONObject getUserByEmailAddress( long companyId ) throws APIException;
 
     JSONArray getUserSites() throws APIException;
-
-    long fetchClassNameId( String value ) throws APIException;
-
-    JSONObject getGroup( long companyId, String name ) throws APIException;
 
 }

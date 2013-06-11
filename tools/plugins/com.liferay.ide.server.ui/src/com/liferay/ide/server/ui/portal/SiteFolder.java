@@ -60,14 +60,14 @@ public class SiteFolder extends RemoteFolder
 
                     Object[] children =
                     {
-                        new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", ids, companyGroupIds ), //$NON-NLS-1$
-                        new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "DDL", new Long[] { ddmClassNameId }, companyGroupIds ) //$NON-NLS-1$
+                        new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", ids, companyGroupIds ) //$NON-NLS-1$
                         {
                             protected boolean hasStructures()
                             {
                                 return false;
                             }
                         },
+                        new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "DDL", new Long[] { ddmClassNameId }, companyGroupIds ) //$NON-NLS-1$
                     };
 
                     setChildren( children );

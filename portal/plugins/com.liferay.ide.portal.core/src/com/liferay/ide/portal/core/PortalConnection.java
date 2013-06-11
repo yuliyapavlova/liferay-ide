@@ -47,6 +47,7 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
     private static final String GET_USER_BY_EMAIL_ADDRESS_API = _API + _USER + "/get-user-by-email-address"; //$NON-NLS-1$
     private static final String GET_USER_SITES_API = _API + _GROUP + "/get-user-sites"; //$NON-NLS-1$
     private static final String GET_TEMPLATES_API = _API + _DDMTEMPLATE + "/get-templates";  //$NON-NLS-1$
+    private static final String GET_COMPANYGROUP_API = _API + _GROUP + "/get-company-group";  //$NON-NLS-1$
 
     public JSONObject getCompanyIdByVirtualHost() throws APIException
     {
@@ -64,6 +65,25 @@ public class PortalConnection extends RemoteConnection implements IPortalConnect
         }
 
         return company;
+    }
+
+
+    public JSONObject getCompanyGroup( long companyId ) throws APIException
+    {
+        JSONObject companyGroup = null;
+
+        Object jsonResponse = invokeJSONAPI( GET_COMPANYGROUP_API, "companyId", companyId ); //$NON-NLS-1$
+
+        if( jsonResponse instanceof JSONObject )
+        {
+            companyGroup = (JSONObject) jsonResponse;
+        }
+        else
+        {
+            throw new APIException( GET_COMPANYGROUP_API, "Unable to get JSONObject" ); //$NON-NLS-1$
+        }
+
+        return companyGroup;
     }
 
 //    public JSONArray getJournalArticles( long groupId, long folderId ) throws APIException

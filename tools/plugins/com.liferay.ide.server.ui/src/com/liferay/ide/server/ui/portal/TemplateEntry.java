@@ -18,26 +18,29 @@ public class TemplateEntry extends Node
         super( parent );
     }
 
-    
+
     public void setADT( boolean adt )
     {
         this.adt = adt;
     }
-    
-    
+
+
     public boolean isADT()
     {
         return this.adt;
     }
-    
+
     public void initFromJSON( JSONObject template )
     {
         try
         {
             setDisplayName( template.getString( "nameCurrentValue" ) ); //$NON-NLS-1$
 
-            // template ids are made up of
+            // template ids are made up the following for DDL templates
             // companyId#companyGroupId#templateKey
+            // for adt templates they look like this:
+            // companyId#companyGroupId#templateId
+
             long companyId = template.getLong( "companyId" ); //$NON-NLS-1$
 //            long groupId = template.getLong( "groupId" ); //$NON-NLS-1$
             long companyGroupId = template.getLong( "companyGroupId" ); //$NON-NLS-1$
@@ -52,7 +55,6 @@ public class TemplateEntry extends Node
             {
                 setId( NLS.bind( ID_PATTERN, new Object[] { companyId, companyGroupId, templateKey } ) );
             }
-            
 
             this.script = template.getString( "script" ); //$NON-NLS-1$
         }

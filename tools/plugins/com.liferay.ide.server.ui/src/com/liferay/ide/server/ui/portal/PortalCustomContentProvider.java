@@ -105,9 +105,9 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
 
                                     long companyId = company.getLong( "companyId" ); //$NON-NLS-1$
 
-                                    JSONObject group = portalConnection.getGroup( companyId, String.valueOf( companyId ) );
+                                    JSONObject companyGroup = portalConnection.getCompanyGroup( companyId );
 
-                                    long companyGroupId = group.getLong( "groupId" ); //$NON-NLS-1$
+                                    long companyGroupId = companyGroup.getLong( "groupId" ); //$NON-NLS-1$
 
                                     companyGroupIds.put( companyId, companyGroupId );
 

@@ -61,6 +61,10 @@ public class PortalTests
             JSONObject company = connection.getCompanyIdByVirtualHost();
             long companyId = company.getLong( "companyId" ); //$NON-NLS-1$
 
+            JSONObject companyGroup = connection.getCompanyGroup( companyId );
+            long companyGroupId = companyGroup.getLong( "groupId" );
+            System.out.println(companyGroupId);
+
             JSONObject user = connection.getUserByEmailAddress(companyId);
             long userId = user.getLong( "userId" ); //$NON-NLS-1$
             System.out.println("userId " + userId); //$NON-NLS-1$
