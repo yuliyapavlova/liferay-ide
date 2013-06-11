@@ -1,5 +1,8 @@
 package com.liferay.ide.server.ui.portal;
 
+import com.liferay.ide.core.remote.APIException;
+import com.liferay.ide.portal.core.IPortalConnection;
+import com.liferay.ide.server.core.LiferayServerCore;
 import com.liferay.ide.ui.util.UIUtil;
 
 import java.util.Map;
@@ -49,14 +52,32 @@ public class SiteFolder extends RemoteFolder
             {
                 Long[] ids = classNameIds.values().toArray( new Long[0] );
 
-                Object[] children =
+                IPortalConnection portalConnection = LiferayServerCore.getPortalConnection( getServer() );
+
+                try
                 {
-                    new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", ids, companyGroupIds ), //$NON-NLS-1$
-                };
+                    long ddmClassNameId = portalConnection.fetchClassNameId( IPortalConnection.DDM_CLASSNAME );
 
-                setChildren( children );
+                    Object[] children =
+                    {
+                        new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "ADT", ids, companyGroupIds ), //$NON-NLS-1$
+                        new AppTypeFolder( getExt(), getServer(), SiteFolder.this, "DDL", new Long[] { ddmClassNameId }, companyGroupIds ) //$NON-NLS-1$
+                        {
+                            protected boolean hasStructures()
+                            {
+                                return false;
+                            }
+                        },
+                    };
 
-                UIUtil.refreshContent( getExt(), this );
+                    setChildren( children );
+
+                    UIUtil.refreshContent( getExt(), this );
+                }
+                catch( APIException e )
+                {
+                    e.printStackTrace();
+                }
 
                 return Status.OK_STATUS;
             }

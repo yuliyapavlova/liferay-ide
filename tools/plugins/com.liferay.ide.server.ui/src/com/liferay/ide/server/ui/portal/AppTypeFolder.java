@@ -3,6 +3,8 @@ package com.liferay.ide.server.ui.portal;
 import com.liferay.ide.core.util.StringPool;
 import com.liferay.ide.ui.util.UIUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -32,6 +34,11 @@ public class AppTypeFolder extends RemoteFolder
         this.companyGroupIds = companyGroupIds;
     }
 
+    protected boolean hasStructures()
+    {
+        return true;
+    }
+
     @Override
     protected Job createCacheChildrenJob()
     {
@@ -40,13 +47,16 @@ public class AppTypeFolder extends RemoteFolder
             @Override
             protected IStatus run( IProgressMonitor monitor )
             {
-                Object[] children =
-                {
-                    new StructuresFolder( getExt(), getServer(), AppTypeFolder.this ),
-                    new TemplatesFolder( getExt(), getServer(), AppTypeFolder.this, companyGroupIds ),
-                };
+                List<Object> children = new ArrayList<Object>();
 
-                setChildren( children );
+                if( hasStructures() )
+                {
+                    children.add( new StructuresFolder( getExt(), getServer(), AppTypeFolder.this ) );
+                }
+
+                children.add( new TemplatesFolder( getExt(), getServer(), AppTypeFolder.this, companyGroupIds ) );
+
+                setChildren( children.toArray( new Object[0] ) );
 
                 UIUtil.refreshContent( getExt(), this );
 

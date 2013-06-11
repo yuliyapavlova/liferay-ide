@@ -97,8 +97,8 @@ public class PortalCustomContentProvider extends PluginsCustomContentProvider
 
                                     for( String adtClassName : IPortalConnection.ADT_CLASS_NAMES )
                                     {
-                                        long ddlClassNameId = portalConnection.fetchClassNameId( adtClassName );
-                                        adtClassNameIds.put( adtClassName, ddlClassNameId );
+                                        long adtClassNameId = portalConnection.fetchClassNameId( adtClassName );
+                                        adtClassNameIds.put( adtClassName, adtClassNameId );
                                     }
 
                                     JSONObject company = portalConnection.getCompanyIdByVirtualHost();

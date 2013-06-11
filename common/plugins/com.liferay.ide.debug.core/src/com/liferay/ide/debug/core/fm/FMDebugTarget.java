@@ -243,6 +243,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
                     }
                     catch( RemoteException e )
                     {
+                        debuggerClient = null;
                         return LiferayDebugCore.createErrorStatus( "Could not add remote breakpoint", e );
                     }
 
@@ -304,6 +305,7 @@ public class FMDebugTarget extends FMDebugElement implements IDebugTarget
             }
             catch( RemoteException e )
             {
+                debuggerClient = null;
                 LiferayDebugCore.logError( "Unable to remove remote breakpoint", e );
             }
         }

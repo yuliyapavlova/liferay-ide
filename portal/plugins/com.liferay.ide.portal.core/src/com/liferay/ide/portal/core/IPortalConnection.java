@@ -40,6 +40,8 @@ public interface IPortalConnection extends IRemoteConnection
         "com.liferay.portlet.asset.model.AssetTag",//$NON-NLS-1$
     };
 
+    String DDM_CLASSNAME = "com.liferay.portlet.dynamicdatamapping.model.DDMStructure"; //$NON-NLS-1$
+
     JSONObject getCompanyIdByVirtualHost() throws APIException;
 
 //    JSONArray getJournalArticles( long groupId, long userId ) throws APIException;

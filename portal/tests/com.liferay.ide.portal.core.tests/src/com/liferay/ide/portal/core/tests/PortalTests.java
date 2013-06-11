@@ -90,15 +90,18 @@ public class PortalTests
                     }
                 }
 
-                long classNameId = connection.fetchClassNameId( IPortalConnection.DDM_CLASSNAME );
-
-                JSONArray templates = connection.getTemplates( groupId, classNameId );
-
-                for( int k = 0; k < templates.length(); k++ )
+                for( String className : IPortalConnection.ADT_CLASS_NAMES )
                 {
-                    JSONObject template = templates.getJSONObject( k );
+                    long classNameId = connection.fetchClassNameId( className );
 
-                    System.out.println(template);
+                    JSONArray templates = connection.getTemplates( groupId, classNameId );
+
+                    for( int k = 0; k < templates.length(); k++ )
+                    {
+                        JSONObject template = templates.getJSONObject( k );
+
+                        System.out.println(template);
+                    }
                 }
 
 //                JSONArray articles = connection.getJournalArticles( groupId, 0 );
