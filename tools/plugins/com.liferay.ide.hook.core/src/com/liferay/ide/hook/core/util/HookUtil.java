@@ -17,13 +17,18 @@
 package com.liferay.ide.hook.core.util;
 
 import com.liferay.ide.core.util.CoreUtil;
+import com.liferay.ide.hook.core.HookCore;
 import com.liferay.ide.hook.core.model.CustomJspDir;
 import com.liferay.ide.hook.core.model.Hook;
+import com.liferay.ide.hook.core.model.Hook6xx;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.sapphire.modeling.xml.RootXmlResource;
+import org.eclipse.sapphire.modeling.xml.XmlResourceStore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -92,6 +97,24 @@ public class HookUtil
         }
 
         return dtdVersion;
+    }
+
+    public static Hook getHookModel( IProject project )
+    {
+        Hook retval = null;
+
+        final IFile hookFile = CoreUtil.getDocrootFile( project, "WEB-INF/liferay-hook.xml" ); //$NON-NLS-1$
+
+        try
+        {
+            retval = Hook6xx.TYPE.instantiate( new RootXmlResource( new XmlResourceStore( hookFile.getContents() ) ) );
+        }
+        catch( Exception e )
+        {
+            HookCore.logError( "Could not get hook model for project " + project.getName(), e ); //$NON-NLS-1$
+        }
+
+        return retval;
     }
 
 }
