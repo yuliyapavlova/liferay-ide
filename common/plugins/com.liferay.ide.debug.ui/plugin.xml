@@ -80,6 +80,16 @@
                tooltip="Suspend the related freemarker engine thread that is currently waiting for debug client to send resume.">
          </command>
       </menuContribution>
+      <menuContribution
+            allPopups="true"
+            locationURI="menu:compareWithMenu">
+         <command
+               commandId="com.liferay.ide.debug.ui.freemarker.suspendRelatedThread"
+               icon="icons/fm_suspend.png"
+               label="Suspend Freemarker Thread"
+               style="push">
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.viewActions">
