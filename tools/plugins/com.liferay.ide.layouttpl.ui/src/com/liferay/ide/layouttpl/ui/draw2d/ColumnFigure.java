@@ -87,8 +87,17 @@ public class ColumnFigure extends RoundedRectangle
                 while( width > getPreferredSize().width() - 1 )
                 {
                     height--;
-                    fontData[i].setHeight( height );
-                    width = getFontWidth( fontData[i] );
+
+                    if( height > 0 && width > 0 )
+                    {
+                        fontData[i].setHeight( height );
+                        width = getFontWidth( fontData[i] );
+                    }
+                    else
+                    {
+                        System.out.println("cindy");
+                        break;
+                    }
                 }
             }
 
@@ -132,6 +141,12 @@ public class ColumnFigure extends RoundedRectangle
         return text;
     }
 
+    @Override
+    public Dimension getPreferredSize( int wHint, int hHint )
+    {
+        return getSize();
+    }
+
     public void setText( String text )
     {
         this.text = text;
@@ -139,6 +154,11 @@ public class ColumnFigure extends RoundedRectangle
 
     public boolean shouldDrawText()
     {
+        if( getChildren().size() > 0 )
+        {
+            drawText = false;
+        }
+
         return drawText;
     }
 

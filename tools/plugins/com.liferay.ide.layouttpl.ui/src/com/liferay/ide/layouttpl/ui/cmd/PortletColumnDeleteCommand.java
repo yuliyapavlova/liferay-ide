@@ -17,7 +17,7 @@
 
 package com.liferay.ide.layouttpl.ui.cmd;
 
-import com.liferay.ide.layouttpl.ui.model.LayoutTplDiagram;
+import com.liferay.ide.layouttpl.core.model.PortletRowLayoutElement;
 import com.liferay.ide.layouttpl.ui.model.PortletColumn;
 import com.liferay.ide.layouttpl.ui.model.PortletLayout;
 
@@ -32,7 +32,7 @@ public class PortletColumnDeleteCommand extends Command
     protected PortletColumn adjustedColumn = null;
     protected int adjustedColumnWeight = 0;
     protected final PortletColumn child;
-    protected LayoutTplDiagram diagram = null;
+    protected PortletRowLayoutElement rowLayout = null;
     protected final PortletLayout parent;
     protected int parentIndex = 0;
     protected boolean wasRemoved;
@@ -62,14 +62,31 @@ public class PortletColumnDeleteCommand extends Command
 
     public void redo()
     {
+        int childIndex = 0;
+
+        for( int i = 0; i < parent.getColumns().size(); i++ ) //cannot calculate index using numId because container columns' numId=0
+        {
+            if( child.equals( parent.getColumns().get( i ) ) )
+            {
+                childIndex = i;
+                break;
+            }
+        }
+
         wasRemoved = parent.removeColumn( child );
         final int columnsNum = parent.getColumns().size();
 
         if( columnsNum == 0 )
         {
-            diagram = (LayoutTplDiagram) parent.getParent();
-            parentIndex = diagram.getRows().indexOf( parent );
-            diagram.removeChild( parent );
+            rowLayout = (PortletRowLayoutElement) parent.getParent();
+            parentIndex = rowLayout.getRows().indexOf( parent );
+            rowLayout.removeChild( parent );
+
+//            if( rowLayout instanceof PortletColumnElement )
+//            {
+////                ( (PortletColumnElement) rowLayout );
+//
+//            }
         }
         else if( columnsNum == 1 )
         {
@@ -81,7 +98,6 @@ public class PortletColumnDeleteCommand extends Command
         {
             //if there are 2 or more columns left, pick the right adjacent one only when there are more right remaining ones than the left,
             //otherwise pick the left one.
-            final int childIndex = child.getNumId() - ( (PortletColumn) parent.getColumns().get( 0 ) ).getNumId();
             int adjustedColumnIndex = 0;
 
             if( childIndex < ( ( columnsNum + 1 ) / 2 ) )
@@ -116,9 +132,9 @@ public class PortletColumnDeleteCommand extends Command
             parent.addColumn( child );
         }
 
-        if( diagram != null )
+        if( rowLayout != null )
         {
-            diagram.addRow( parent, parentIndex );
+            rowLayout.addRow( parent, parentIndex );
         }
     }
 

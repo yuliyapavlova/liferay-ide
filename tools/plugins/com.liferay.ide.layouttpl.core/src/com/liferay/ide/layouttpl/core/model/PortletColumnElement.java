@@ -137,11 +137,6 @@ public class PortletColumnElement extends PortletRowLayoutElement
         return last;
     }
 
-    @Override
-    public void removeChild( ModelElement child )
-    {
-    }
-
     public void setClassName( String className )
     {
         this.className = className;

@@ -23,13 +23,10 @@ import com.liferay.ide.layouttpl.ui.policies.PortletColumnLayoutEditPolicy;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.GridData;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.swt.SWT;
@@ -59,17 +56,10 @@ public class PortletColumnEditPart extends PortletRowLayoutEditPart
     {
         IFigure f;
 
-        if( getModelChildren().isEmpty() )
-        {
-            f = createFigureForModel();
-            f.setOpaque( true ); // non-transparent figure
-        }
-        else
-        {
-            f = super.createFigure();
-        }
-
+        f = createFigureForModel();
+        f.setOpaque( true ); // non-transparent figure
         f.setBackgroundColor( new Color( null, 232, 232, 232 ) );
+        configureFigure( f );
 
         return f;
     }
@@ -95,30 +85,6 @@ public class PortletColumnEditPart extends PortletRowLayoutEditPart
         gd.heightHint = getCastedParent().getDefaultColumnHeight();
 
         return gd;
-    }
-
-    @Override
-    protected Panel createPanel()
-    {
-        return new Panel()
-        {
-            @Override
-            protected void paintFigure( Graphics graphics )
-            {
-                Rectangle r = Rectangle.SINGLETON.setBounds( getBounds() );
-                r.width -= 1;
-                r.height -= 1;
-
-                graphics.drawRoundRectangle( r, 20, 20 ); //draw the outline
-
-                r.width -= 1;
-                r.height -= 1;
-                r.x += 1;
-                r.y += 1;
-
-                graphics.fillRoundRectangle( r, 20, 20 ); //fill the color
-            }
-        };
     }
 
     @Override

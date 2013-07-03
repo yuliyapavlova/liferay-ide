@@ -17,6 +17,7 @@ package com.liferay.ide.layouttpl.ui.parts;
 
 import com.liferay.ide.layouttpl.ui.policies.LayoutTplDiagramLayoutEditPolicy;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
@@ -29,14 +30,6 @@ import org.eclipse.swt.graphics.Color;
 public class LayoutTplDiagramEditPart extends PortletRowLayoutEditPart
 {
     public static final int DIAGRAM_MARGIN = 10;
-
-    @Override
-    protected void configurePanel( Panel panel )
-    {
-        super.configurePanel( panel );
-
-        panel.setBackgroundColor( new Color( null, 10, 10, 10 ) );
-    }
 
     protected void createEditPolicies()
     {
@@ -52,6 +45,16 @@ public class LayoutTplDiagramEditPart extends PortletRowLayoutEditPart
     public int getMargin()
     {
         return DIAGRAM_MARGIN;
+    }
+
+    @Override
+    protected IFigure createFigure()
+    {
+        Panel panel = new Panel();
+        panel.setBackgroundColor( new Color( null, 10, 10, 10 ) );
+        configureFigure( panel );
+
+        return panel;
     }
 
 }

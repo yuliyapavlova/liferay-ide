@@ -26,7 +26,6 @@ import org.eclipse.draw2d.GridLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutListener;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractEditPart;
@@ -39,21 +38,19 @@ public abstract class PortletRowLayoutEditPart extends BaseGraphicalEditPart
 {
     public static final int DEFAULT_COLUMN_HEIGHT = -1;
 
-    protected Panel panel;
-
     protected boolean shouldUpdateConstraints = false;
 
-    protected void configurePanel( Panel panel )
+    protected void configureFigure( IFigure figure )
     {
         GridLayout gridLayout = new GridLayout( 1, false );
         gridLayout.marginHeight = 0;
         gridLayout.marginWidth = 0;
         gridLayout.verticalSpacing = 0;
 
-        panel.setLayoutManager( gridLayout );
-        panel.setBorder( new MarginBorder( getMargin() ) );
+        figure.setLayoutManager( gridLayout );
+        figure.setBorder( new MarginBorder( getMargin() ) );
 
-        panel.addLayoutListener( new LayoutListener()
+        figure.addLayoutListener( new LayoutListener()
         {
 
             public void invalidate( IFigure container )
@@ -84,20 +81,6 @@ public abstract class PortletRowLayoutEditPart extends BaseGraphicalEditPart
         } );
     }
 
-    @Override
-    protected IFigure createFigure()
-    {
-        panel = createPanel();
-        configurePanel( panel );
-
-        return panel;
-    }
-
-    protected Panel createPanel()
-    {
-        return new Panel();
-    }
-
     protected PortletRowLayoutElement getCastedModel()
     {
         return (PortletRowLayoutElement) getModel();
@@ -105,12 +88,7 @@ public abstract class PortletRowLayoutEditPart extends BaseGraphicalEditPart
 
     public int getContainerWidth()
     {
-        if( panel != null ) //XXX to be continued, temporarily fix NullPointerException for parent column
-        {
-            return panel.getSize().width - ( getMargin() * 2 );
-        }
-
-        return 0;
+        return getFigure().getSize().width - ( getMargin() * 2 );
     }
 
     public abstract int getMargin();
