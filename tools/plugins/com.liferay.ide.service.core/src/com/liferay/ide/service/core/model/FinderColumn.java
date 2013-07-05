@@ -15,11 +15,10 @@
 
 package com.liferay.ide.service.core.model;
 
-import org.eclipse.sapphire.modeling.IModelElement;
-import org.eclipse.sapphire.modeling.ModelElementType;
-import org.eclipse.sapphire.modeling.Value;
-import org.eclipse.sapphire.modeling.ValueProperty;
-import org.eclipse.sapphire.modeling.annotations.GenerateImpl;
+import org.eclipse.sapphire.Element;
+import org.eclipse.sapphire.ElementType;
+import org.eclipse.sapphire.Value;
+import org.eclipse.sapphire.ValueProperty;
 import org.eclipse.sapphire.modeling.annotations.Image;
 import org.eclipse.sapphire.modeling.annotations.Label;
 import org.eclipse.sapphire.modeling.annotations.PossibleValues;
@@ -31,15 +30,14 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 /**
  * @author Gregory Amerson
  */
-@GenerateImpl
 @Image(path = "images/finder_column_16x16.png")
-public interface FinderColumn extends IModelElement 
+public interface FinderColumn extends Element
 {
 
-    ModelElementType TYPE = new ModelElementType( FinderColumn.class );
-    
+    ElementType TYPE = new ElementType( FinderColumn.class );
+
 	// *** Name ***
-    
+
     @XmlBinding(path = "@name")
 	@Label(standard = "&name")
     @Required

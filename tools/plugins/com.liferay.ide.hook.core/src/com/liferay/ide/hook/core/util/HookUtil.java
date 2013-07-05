@@ -37,7 +37,7 @@ public class HookUtil
 
     public static IFolder getCustomJspFolder(Hook hook, IProject project)
     {
-        CustomJspDir element = hook.getCustomJspDir().element();
+        CustomJspDir element = hook.getCustomJspDir().nearest( CustomJspDir.class );
 
         if( element != null )
         {
@@ -46,7 +46,7 @@ public class HookUtil
 
             if( element != null && webappRoot != null )
             {
-                org.eclipse.sapphire.modeling.Path customJspDir = element.getValue().getContent();
+                org.eclipse.sapphire.modeling.Path customJspDir = element.getValue().content();
 
                 for( IContainer folder : webappRoot.getUnderlyingFolders() )
                 {

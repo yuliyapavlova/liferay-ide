@@ -20,15 +20,14 @@ import com.liferay.ide.service.core.model.internal.PackagePathValidationService;
 import com.liferay.ide.service.core.model.internal.RelationshipsBindingImpl;
 import com.liferay.ide.service.core.model.internal.ShowRelationshipLabelsBinding;
 
+import org.eclipse.sapphire.Element;
+import org.eclipse.sapphire.ElementList;
+import org.eclipse.sapphire.ElementType;
+import org.eclipse.sapphire.ListProperty;
+import org.eclipse.sapphire.Value;
+import org.eclipse.sapphire.ValueProperty;
 import org.eclipse.sapphire.VersionCompatibilityTarget;
-import org.eclipse.sapphire.modeling.IModelElement;
-import org.eclipse.sapphire.modeling.ListProperty;
-import org.eclipse.sapphire.modeling.ModelElementList;
-import org.eclipse.sapphire.modeling.ModelElementType;
-import org.eclipse.sapphire.modeling.Value;
-import org.eclipse.sapphire.modeling.ValueProperty;
 import org.eclipse.sapphire.modeling.annotations.DefaultValue;
-import org.eclipse.sapphire.modeling.annotations.GenerateImpl;
 import org.eclipse.sapphire.modeling.annotations.Label;
 import org.eclipse.sapphire.modeling.annotations.Service;
 import org.eclipse.sapphire.modeling.annotations.Type;
@@ -41,11 +40,10 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlListBinding;
  * @author Gregory Amerson
  * @author Cindy Li
  */
-@GenerateImpl
 @VersionCompatibilityTarget( version = "${ Version }", versioned = "Service Builder" )
-public interface ServiceBuilder extends IModelElement
+public interface ServiceBuilder extends Element
 {
-	ModelElementType TYPE = new ModelElementType(ServiceBuilder.class);
+	ElementType TYPE = new ElementType(ServiceBuilder.class);
 
 	// *** Package-path ***
 
@@ -99,7 +97,7 @@ public interface ServiceBuilder extends IModelElement
 	@XmlListBinding(mappings = @XmlListBinding.Mapping(element = "entity", type = Entity.class))
 	ListProperty PROP_ENTITIES = new ListProperty(TYPE, "Entities"); //$NON-NLS-1$
 
-	ModelElementList<Entity> getEntities();
+	ElementList<Entity> getEntities();
 
 	// *** Exceptions ***
 
@@ -108,14 +106,14 @@ public interface ServiceBuilder extends IModelElement
 	@XmlListBinding(path = "exceptions", mappings = @XmlListBinding.Mapping(element = "exception", type = Exception.class))
 	ListProperty PROP_EXCEPTIONS = new ListProperty(TYPE, "Exceptions"); //$NON-NLS-1$
 
-	ModelElementList<Exception> getExceptions();
+	ElementList<Exception> getExceptions();
 
 	@Type(base = ServiceBuilderImport.class)
 	@Label(standard = "service builder imports")
 	@XmlListBinding(mappings = @XmlListBinding.Mapping(element = "service-builder-import", type = ServiceBuilderImport.class))
 	ListProperty PROP_SERVICE_BUILDER_IMPORTS = new ListProperty(TYPE, "ServiceBuilderImports"); //$NON-NLS-1$
 
-	ModelElementList<ServiceBuilderImport> getServiceBuilderImports();
+	ElementList<ServiceBuilderImport> getServiceBuilderImports();
 
 	@Type( base = Boolean.class )
 	@DefaultValue( text = "true" )
@@ -132,6 +130,6 @@ public interface ServiceBuilder extends IModelElement
     @CustomXmlListBinding( impl = RelationshipsBindingImpl.class )
     ListProperty PROP_RELATIONSHIPS = new ListProperty(TYPE, "Relationships"); //$NON-NLS-1$
 
-    ModelElementList<Relationship> getRelationships();
+    ElementList<Relationship> getRelationships();
 
 }

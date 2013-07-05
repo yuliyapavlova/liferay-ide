@@ -14,15 +14,14 @@
  *******************************************************************************/
 package com.liferay.ide.service.core.model;
 
-import org.eclipse.sapphire.modeling.IModelElement;
-import org.eclipse.sapphire.modeling.ListProperty;
-import org.eclipse.sapphire.modeling.ModelElementList;
-import org.eclipse.sapphire.modeling.ModelElementType;
-import org.eclipse.sapphire.modeling.Value;
-import org.eclipse.sapphire.modeling.ValueProperty;
+import org.eclipse.sapphire.Element;
+import org.eclipse.sapphire.ElementList;
+import org.eclipse.sapphire.ElementType;
+import org.eclipse.sapphire.ListProperty;
+import org.eclipse.sapphire.Value;
+import org.eclipse.sapphire.ValueProperty;
 import org.eclipse.sapphire.modeling.annotations.CountConstraint;
 import org.eclipse.sapphire.modeling.annotations.DefaultValue;
-import org.eclipse.sapphire.modeling.annotations.GenerateImpl;
 import org.eclipse.sapphire.modeling.annotations.Image;
 import org.eclipse.sapphire.modeling.annotations.Label;
 import org.eclipse.sapphire.modeling.annotations.Required;
@@ -33,12 +32,11 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlListBinding;
 /**
  * @author Gregory Amerson
  */
-@GenerateImpl
 @Image(path = "images/finder_16x16.gif")
-public interface Finder extends IModelElement 
+public interface Finder extends Element
 {
-    ModelElementType TYPE = new ModelElementType( Finder.class );
-    
+    ElementType TYPE = new ElementType( Finder.class );
+
 	// *** Name ***
 
 	@XmlBinding(path = "@name")
@@ -100,13 +98,13 @@ public interface Finder extends IModelElement
 	void setDbIndex(Boolean value);
 
 	// *** Finder Columns ***
-    
+
 	@Type(base = FinderColumn.class)
 	@Label(standard = "finder columns")
 	@XmlListBinding(mappings = @XmlListBinding.Mapping(element = "finder-column", type = FinderColumn.class))
 	@CountConstraint(min = 1)
 	ListProperty PROP_FINDER_COLUMNS = new ListProperty(TYPE, "FinderColumns"); //$NON-NLS-1$
 
-	ModelElementList<FinderColumn> getFinderColumns();
+	ElementList<FinderColumn> getFinderColumns();
 
 }
