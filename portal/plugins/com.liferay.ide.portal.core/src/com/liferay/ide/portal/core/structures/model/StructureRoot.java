@@ -12,9 +12,9 @@
  * details.
  *
  * Contributors:
- * 		Gregory Amerson - initial implementation and ongoing maintenance
+ *      Gregory Amerson - initial implementation and ongoing maintenance
  *******************************************************************************/
-package com.liferay.ide.portal.core.model;
+package com.liferay.ide.portal.core.structures.model;
 
 import org.eclipse.sapphire.Element;
 import org.eclipse.sapphire.ElementList;
@@ -32,10 +32,10 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlListBinding;
  * @author Gregory Amerson
  */
 @XmlBinding( path = "root" )
-public interface StructuresRoot extends Element
+public interface StructureRoot extends Element
 {
 
-    ElementType TYPE = new ElementType( StructuresRoot.class );
+    ElementType TYPE = new ElementType( StructureRoot.class );
 
     // *** AvailableLocales ***
 
@@ -75,8 +75,5 @@ public interface StructuresRoot extends Element
     ListProperty PROP_DYNAMIC_ELEMENTS = new ListProperty( TYPE, "DynamicElements" ); //$NON-NLS-1$
 
     ElementList<DynamicElement> getDynamicElements();
-
-
-
 
 }
