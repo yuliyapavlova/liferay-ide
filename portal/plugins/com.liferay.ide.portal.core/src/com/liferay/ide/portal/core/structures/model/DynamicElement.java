@@ -12,7 +12,7 @@
  * details.
  *
  * Contributors:
- * 		Gregory Amerson - initial implementation and ongoing maintenance
+ *      Gregory Amerson - initial implementation and ongoing maintenance
  *******************************************************************************/
 package com.liferay.ide.portal.core.structures.model;
 
@@ -44,6 +44,82 @@ public interface DynamicElement extends Element
     Value<String> getDataType();
 
     void setDataType( String value );
+
+    // *** Required ***
+
+    @Type( base = Boolean.class )
+    @Label( standard = "required" )
+    @XmlBinding( path = "@required" )
+    ValueProperty PROP_REQUIRED = new ValueProperty( TYPE, "Required" ); //$NON-NLS-1$
+
+    Value<Boolean> isRequired();
+
+    void setRequired( String value );
+
+    void setRequired( Boolean value );
+
+    // *** ShowLabel ***
+
+    @Type( base = Boolean.class )
+    @Label( standard = "show label" )
+    @XmlBinding( path = "@showLabel" )
+    ValueProperty PROP_SHOW_LABEL = new ValueProperty( TYPE, "ShowLabel" ); //$NON-NLS-1$
+
+    Value<Boolean> isShowLabel();
+
+    void setShowLabel( String value );
+
+    void setShowLabel( Boolean value );
+
+
+    // *** Value ***
+
+    @Label( standard = "value" )
+    @XmlBinding( path = "@value" )
+    ValueProperty PROP_VALUE = new ValueProperty( TYPE, "Value" ); //$NON-NLS-1$
+
+    Value<String> getValue();
+
+    void setValue( String value );
+
+
+    // *** Multiple ***
+
+    @Type( base = Boolean.class )
+    @Label( standard = "multiple" )
+    @XmlBinding( path = "@multiple" )
+    ValueProperty PROP_MULTIPLE = new ValueProperty( TYPE, "Multiple" ); //$NON-NLS-1$
+
+    Value<Boolean> isMultiple();
+
+    void setMultiple( String value );
+
+    void setMultiple( Boolean value );
+
+
+    // *** ReadOnly ***
+
+    @Type( base = Boolean.class )
+    @Label( standard = "read only" )
+    @XmlBinding( path = "@readOnly" )
+    ValueProperty PROP_READ_ONLY = new ValueProperty( TYPE, "ReadOnly" ); //$NON-NLS-1$
+
+    Value<Boolean> isReadOnly();
+
+    void setReadOnly( String value );
+
+    void setReadOnly( Boolean value );
+
+
+    // *** IndexType ***
+
+    @Label( standard = "index type" )
+    @XmlBinding( path = "@indexType" )
+    ValueProperty PROP_INDEX_TYPE = new ValueProperty( TYPE, "IndexType" ); //$NON-NLS-1$
+
+    Value<String> getIndexType();
+
+    void setIndexType( String value );
 
     // *** FieldNamespace ***
 

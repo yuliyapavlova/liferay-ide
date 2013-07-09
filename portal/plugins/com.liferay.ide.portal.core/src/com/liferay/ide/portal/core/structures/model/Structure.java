@@ -19,8 +19,9 @@ package com.liferay.ide.portal.core.structures.model;
 import com.liferay.ide.portal.core.structures.model.internal.CDATAValueBinding;
 
 import org.eclipse.sapphire.Element;
+import org.eclipse.sapphire.ElementHandle;
+import org.eclipse.sapphire.ElementProperty;
 import org.eclipse.sapphire.ElementType;
-import org.eclipse.sapphire.ImpliedElementProperty;
 import org.eclipse.sapphire.Value;
 import org.eclipse.sapphire.ValueProperty;
 import org.eclipse.sapphire.modeling.annotations.DefaultValue;
@@ -79,8 +80,9 @@ public interface Structure extends Element
 
     @Type( base = StructureRoot.class )
     @Label( standard = "structure root" )
-    ImpliedElementProperty PROP_ROOT = new ImpliedElementProperty( TYPE, "Root" ); //$NON-NLS-1$
+    @XmlBinding( path = "root" )
+    ElementProperty PROP_ROOT = new ElementProperty( TYPE, "Root" ); //$NON-NLS-1$
 
-    StructureRoot getRoot();
+    ElementHandle<StructureRoot> getRoot();
 
 }

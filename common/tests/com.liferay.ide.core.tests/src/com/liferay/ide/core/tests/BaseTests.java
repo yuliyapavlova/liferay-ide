@@ -107,7 +107,12 @@ public class BaseTests
 
         assertEquals( file.getFullPath().lastSegment(), filePath.lastSegment() );
 
-        return type.instantiate( new RootXmlResource( new XmlResourceStore( file.getContents() ) ) );
+        final InputStream contents = file.getContents();
+        final Element element = type.instantiate( new RootXmlResource( new XmlResourceStore( contents ) ) );
+
+        contents.close();
+
+        return element;
     }
 
 }
