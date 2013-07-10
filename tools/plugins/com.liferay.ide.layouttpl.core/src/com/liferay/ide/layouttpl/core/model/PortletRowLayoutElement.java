@@ -28,6 +28,7 @@ public class PortletRowLayoutElement extends ModelElement implements PropertyCha
 
     public static final String ROW_ADDED_PROP = "LayoutTplDiagram.RowAdded"; //$NON-NLS-1$
     public static final String ROW_REMOVED_PROP = "LayoutTplDiagram.RowRemoved"; //$NON-NLS-1$
+    public static final String ROW_UPDATED = "LayoutTplDiagram.RowUpdated"; //$NON-NLS-1$
 
     protected List<ModelElement> rows = new ArrayList<ModelElement>();
 
@@ -70,7 +71,9 @@ public class PortletRowLayoutElement extends ModelElement implements PropertyCha
     {
         String prop = evt.getPropertyName();
 
-        if( PortletLayoutElement.COLUMN_ADDED_PROP.equals( prop ) || PortletLayoutElement.COLUMN_REMOVED_PROP.equals( prop ) )
+        if( PortletLayoutElement.COLUMN_ADDED_PROP.equals( prop ) ||
+            PortletLayoutElement.COLUMN_REMOVED_PROP.equals( prop ) ||
+            PortletLayoutElement.CHILD_COLUMN_WEIGHT_CHANGED_PROP.equals( prop ))
         {
             updateColumns();
         }
@@ -154,5 +157,10 @@ public class PortletRowLayoutElement extends ModelElement implements PropertyCha
         }
 
         return numIdCount;
+    }
+
+    public void fireUpdate()
+    {
+        firePropertyChange( ROW_UPDATED, null, null );
     }
 }

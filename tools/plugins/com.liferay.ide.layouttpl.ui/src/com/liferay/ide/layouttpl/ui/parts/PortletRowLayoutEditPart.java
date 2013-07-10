@@ -131,7 +131,8 @@ public abstract class PortletRowLayoutEditPart extends BaseGraphicalEditPart
     {
         String prop = evt.getPropertyName();
 
-        if( PortletRowLayoutElement.ROW_ADDED_PROP.equals( prop ) || PortletRowLayoutElement.ROW_REMOVED_PROP.equals( prop ) )
+        if( PortletRowLayoutElement.ROW_ADDED_PROP.equals( prop ) || PortletRowLayoutElement.ROW_REMOVED_PROP.equals( prop )
+                        )//|| PortletRowLayoutElement.ROW_UPDATED.equals( prop ) )
         {
             refreshChildren();
             List rows = getChildren();

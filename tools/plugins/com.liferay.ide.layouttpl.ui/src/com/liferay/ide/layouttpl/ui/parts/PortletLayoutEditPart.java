@@ -21,6 +21,7 @@ import com.liferay.ide.layouttpl.ui.model.LayoutTplDiagram;
 import com.liferay.ide.layouttpl.ui.model.PortletColumn;
 import com.liferay.ide.layouttpl.ui.model.PortletLayout;
 import com.liferay.ide.layouttpl.ui.policies.PortletLayoutLayoutEditPolicy;
+import com.liferay.ide.ui.util.UIUtil;
 
 import java.beans.PropertyChangeEvent;
 import java.util.List;
@@ -207,34 +208,48 @@ public class PortletLayoutEditPart extends BaseGraphicalEditPart
         if( numColumns > 1 )
         {
             // get width of our own part to calculate new width
+//            this.getFigure().getParent().getLayoutManager().layout( this.getFigure() );
+//            int rowWidth = this.getFigure().getParent().getLayoutManager().getPreferredSize( this.getFigure(), -1, -1 ).width - ( PortletLayoutEditPart.LAYOUT_MARGIN * 2 );
+            System.out.println( "before width = " + this.getFigure().getSize().width );
+            this.getFigure().validate();
+            this.getFigure().getParent().getParent().validate();
+            System.out.println( "after width = " + this.getFigure().getSize().width );
             int rowWidth = this.getFigure().getSize().width - ( PortletLayoutEditPart.LAYOUT_MARGIN * 2 );
 
             if( rowWidth > 0 )
             {
                 for( Object col : columns )
                 {
-                    PortletColumnEditPart portletColumnPart = (PortletColumnEditPart) col;
+                    final PortletColumnEditPart portletColumnPart = (PortletColumnEditPart) col;
                     PortletColumn column = (PortletColumn) portletColumnPart.getModel();
-                    // if (column.getWeight() == PortletColumn.DEFAULT_WEIGHT) {
-                    // column.setWeight(100);
-                    // }
+                     if (column.getWeight() == PortletColumn.DEFAULT_WEIGHT) {
+                     column.setWeight(100);
+                     }
                     GridData rowData = portletColumnPart.createGridData();
 
                     double percent = column.getWeight() / 100d;
                     rowData.widthHint = (int) ( percent * rowWidth ) - ( COLUMN_SPACING * 2 );
                     this.setLayoutConstraint( portletColumnPart, portletColumnPart.getFigure(), rowData );
+                    UIUtil.async( new Runnable(){
+
+                        public void run()
+                        {
+//                            portletColumnPart.refreshVisuals();
+
+                        }} );
+
                 }
             }
-            else
-            {
-                this.needsRefreshPostLayout = true;
-            }
+//            else
+//            {
+//                this.needsRefreshPostLayout = true;
+//            }
         }
 
         gridLayout.numColumns = numColumns;
-        gridLayout.invalidate();
+//        gridLayout.invalidate();
 
-        this.getFigure().repaint();
+//        this.getFigure().repaint();
     }
 
 }

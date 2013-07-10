@@ -41,6 +41,7 @@ public class ColumnFigure extends RoundedRectangle
         // setText("50%");
     }
 
+
     @Override
     public void paintFigure( Graphics graphics )
     {
@@ -51,29 +52,27 @@ public class ColumnFigure extends RoundedRectangle
             return;
         }
 
-        if( !shouldDrawText() )
+        if( getChildren().size() > 0 )
         {
             return;
         }
 
-        correctFont();
+        String textString = getText();
+//        System.out.println("about to draw " + textString);
 
-        if( graphics.getFont() != null )
-        {
-            graphics.setTextAntialias( SWT.ON );
-            graphics.setFont( getFont() );
-            Dimension extent = FigureUtilities.getTextExtents( getText(), graphics.getFont() );
+        graphics.setTextAntialias( SWT.ON );
+        graphics.setFont( getCorrectedFont( graphics.getFont() ) );
+        Dimension extent = FigureUtilities.getTextExtents( getText(), graphics.getFont() );
 
-            graphics.drawString( getText(), bounds.x + ( bounds.width / 2 ) - ( extent.width / 2 ), bounds.y +
-                ( bounds.height / 2 ) - ( extent.height / 2 ) );
-        }
+//        System.out.println("drawing " + textString);
+
+        graphics.drawString( textString, bounds.x + ( bounds.width / 2 ) - ( extent.width / 2 ), bounds.y +
+            ( bounds.height / 2 ) - ( extent.height / 2 ) );
     }
 
-    protected void correctFont()
+    protected Font getCorrectedFont(Font initialFont)
     {
-        Font initialFont = this.getFont();
-
-        if( initialFont != null && ( !this.getFont().isDisposed() ) && ( !this.getFont().getDevice().isDisposed() ) )
+        if( initialFont != null && !this.getFont().isDisposed()  && ( !this.getFont().getDevice().isDisposed() ) )
         {
             FontData[] fontData = initialFont.getFontData();
 
@@ -108,13 +107,16 @@ public class ColumnFigure extends RoundedRectangle
             }
 
             correctedFont = new Font( this.getFont().getDevice(), fontData );
-            setFont( correctedFont );
 
             if( oldFont != null )
             {
                 oldFont.dispose();
             }
+
+            return correctedFont;
         }
+
+        return null;
     }
 
     @Override
@@ -150,16 +152,6 @@ public class ColumnFigure extends RoundedRectangle
     public void setText( String text )
     {
         this.text = text;
-    }
-
-    public boolean shouldDrawText()
-    {
-        if( getChildren().size() > 0 )
-        {
-            drawText = false;
-        }
-
-        return drawText;
     }
 
     public void setDrawText( boolean drawText )
